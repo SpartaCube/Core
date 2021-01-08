@@ -1,0 +1,17 @@
+redis:
+  host: 172.18.0.1
+  port: 6380
+  password: Zkvo5le1
+  clientName: Serveur_mc
+
+tabcomplete:
+  visiteur:
+    - "sethome"
+    - "home"
+  support:
+    - "mute"
+    - "tempmute" 
+  moderateur:
+    - "tempban"
+    - "vanish"
+    - "mod"

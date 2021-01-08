@@ -1,0 +1,6 @@
+{
+    "workbench.iconTheme": "eq-material-theme-icons-light",
+    "workbench.colorTheme": "Eclipse Dark",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.dependency.packagePresentation": "hierarchical"
+}
