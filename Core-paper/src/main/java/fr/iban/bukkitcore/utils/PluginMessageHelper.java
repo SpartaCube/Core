@@ -1,5 +1,6 @@
 package fr.iban.bukkitcore.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -18,6 +19,7 @@ public class PluginMessageHelper {
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, BUNGEECORD_CHANNEL, new PluginMessageReceivedListener());
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, BUNGEECORD_CHANNEL);
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "proxy:chat");
+		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "proxy:annonce");
 	}
 	
 	public static void receivePluginMessage(String channel, byte[] bytes) {
@@ -48,6 +50,14 @@ public class PluginMessageHelper {
 	    out.writeUTF(player.getUniqueId().toString());
 	    out.writeUTF(message);
 	    player.sendPluginMessage(CoreBukkitPlugin.getInstance(), "proxy:chat", out.toByteArray());
+	}
+	
+	public static void sendAnnonce(Player player , String annonce) {
+	    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+	    out.writeUTF("Annonce");
+	    out.writeUTF(player.getUniqueId().toString());
+	    out.writeUTF(annonce);
+	    player.sendPluginMessage(CoreBukkitPlugin.getInstance(), "proxy:annonce", out.toByteArray());
 	}
 	
 	public static void askServerName(Player player) {

@@ -3,11 +3,13 @@ package fr.iban.bukkitcore;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
 import com.google.common.collect.Iterables;
 
+import fr.iban.bukkitcore.commands.AnnonceCMD;
 import fr.iban.bukkitcore.commands.PacketLogCMD;
 import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
@@ -23,12 +25,15 @@ import fr.iban.bukkitcore.utils.PluginMessageHelper;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
 import fr.iban.common.data.sql.DbManager;
+import net.milkbowl.vault.economy.Economy;
 
 public final class CoreBukkitPlugin extends JavaPlugin {
 	
 	private static CoreBukkitPlugin instance;
 	private String serverName;
 	private boolean packetlogging = false;
+	
+	public static Economy econ = null;
 
     @Override
     public void onEnable() {
@@ -46,9 +51,11 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         		);
         
         getCommand("serveur").setExecutor(new ServeurCMD());
+        getCommand("annonce").setExecutor(new AnnonceCMD());
         getCommand("survie").setExecutor(new SurvieCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
         getCommand("packetlog").setExecutor(new PacketLogCMD(this));
+        setupEconomy();
         
         PluginMessageHelper.registerChannels(this);
         
@@ -99,6 +106,22 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 			pm.registerEvents(listener, this);
 		}
 
+	}
+	
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		econ = rsp.getProvider();
+		return econ != null;
+	}
+
+	public static Economy getEcon() {
+		return econ;
 	}
 	
 	public static CoreBukkitPlugin getInstance() {
