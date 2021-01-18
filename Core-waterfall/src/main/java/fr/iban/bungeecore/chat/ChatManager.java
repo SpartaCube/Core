@@ -42,8 +42,8 @@ public class ChatManager {
 
 		for (ProxiedPlayer p: ProxyServer.getInstance().getPlayers()) {
 			String player1 = p.getName();
-			String player2 = "§6§l" + "@" + player1 + "§r";
-			String actionbar = "§6§l" + player.getName() + " vous a mentionné dans le tchat";
+			String player2 = "§6" + "@" + player1 + "§r";
+			String actionbar = "§6" + player.getName() + " vous a mentionné dans le tchat";
 
 			if (message.toLowerCase().contains(player1.toLowerCase())) {
 				msg = msg.replace(player1, player2);
