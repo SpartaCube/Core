@@ -132,6 +132,10 @@ public class LevelUtils {
 			promoteAndBroadcast(player, group);
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawners give " + player.getName() + " IRON_GOLEM 1");
 			break;
+		case 120:
+			group = "Colosse";
+			promoteAndBroadcast(player, group);
+			break;
 		default:
 			break;
 		}

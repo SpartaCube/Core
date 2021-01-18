@@ -16,7 +16,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 public class TpyesCMD extends Command implements TabExecutor{
 
 	private TeleportManager tpm;
-	
+
 
 	public TpyesCMD(String name, String permission, String alias, TeleportManager tpm) {
 		super(name, permission, alias);
@@ -54,7 +54,13 @@ public class TpyesCMD extends Command implements TabExecutor{
 					TpRequest request = (TpRequest)tpm.getTpRequests(player).get(tpm.getTpRequests(player).size() - 1);
 					ProxiedPlayer target = ProxyServer.getInstance().getPlayer(request.getPlayerID());
 					if(target != null) {
-						tpm.delayedTeleport(player, target, 3);
+						if(request.getRequestType() == RequestType.TP) {
+							tpm.delayedTeleport(target, player, 3);
+						}else if(request.getRequestType() == RequestType.TPHERE) {
+							tpm.delayedTeleport(player, target, 3);
+						}
+						player.sendMessage(TextComponent.fromLegacyText("§aDemande de téléportation acceptée."));
+						tpm.getTpRequests(player).remove(request);
 					}else {
 						player.sendMessage(TextComponent.fromLegacyText("§aLe joueur n'est plus en ligne."));
 					}

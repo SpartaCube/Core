@@ -1,17 +1,13 @@
 package fr.iban.bukkitcore;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
-import com.google.common.collect.Iterables;
-
-import fr.iban.bukkitcore.commands.PacketLogCMD;
-import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
-import fr.iban.bukkitcore.commands.SurvieCMD;
 import fr.iban.bukkitcore.listeners.AsyncChatListener;
 import fr.iban.bukkitcore.listeners.DeathListener;
 import fr.iban.bukkitcore.listeners.InventoryListener;
@@ -46,9 +42,6 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         		);
         
         getCommand("serveur").setExecutor(new ServeurCMD());
-        getCommand("survie").setExecutor(new SurvieCMD());
-        getCommand("ressource").setExecutor(new RessourceCMD());
-        getCommand("packetlog").setExecutor(new PacketLogCMD(this));
         
         PluginMessageHelper.registerChannels(this);
         
@@ -57,7 +50,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         redisClient.getTopic("TeleportToLocation").addListener(new TeleportToLocationListener());
         
         if(!Bukkit.getOnlinePlayers().isEmpty()) {
-        	PluginMessageHelper.askServerName(Iterables.getOnlyElement(Bukkit.getOnlinePlayers()));
+        	for(Player player : Bukkit.getOnlinePlayers()) {
+        		PluginMessageHelper.askServerName(player);
+        		break;
+        	}
         }
         
 //        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this,
