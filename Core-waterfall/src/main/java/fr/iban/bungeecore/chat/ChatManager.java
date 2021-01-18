@@ -11,6 +11,7 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -38,10 +39,32 @@ public class ChatManager {
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
 			return;
 		}
-
-		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
+		
+		   for (ProxiedPlayer p: ProxyServer.getInstance().getPlayers()) {
+		   String player1 = p.getName();
+		   String player2 = "§6§l" + "@" + player1 + "§r";
+		   String actionbar = "§6§l" + player.getName() + " vous a mentionné dans le tchat";
+		   
+		   if (message.toLowerCase().contains(player1.toLowerCase())) {
+			   msg = msg.replace(player1, player2);
+			   ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
+			   p.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(actionbar));
+		        } else   	 
+			 ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
+	   }
 	}
+	
+	public void sendAnnonce(UUID uuid, String annonce) {
+		ProxyServer server = ProxyServer.getInstance();
+		ProxiedPlayer player = server.getPlayer(uuid);
+		String msg = annonce;
 
+		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
+			return;
+		}
+		   ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #99ffcc§l" + msg))));
+	}
+	
 	public boolean isMuted() {
 		return isMuted;
 	}
