@@ -26,7 +26,7 @@ public class ChatManager {
 		ProxiedPlayer player = server.getPlayer(uuid);
 		Account account = new AccountProvider(player.getUniqueId()).getAccount();
 		String msg = message;
-		
+
 		if(player.hasPermission("spartacube.colors")) {
 			msg = translateColors(HexColor.translateHexColorCodes("#", "", msg));
 		}
@@ -39,21 +39,20 @@ public class ChatManager {
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
 			return;
 		}
-		
-		   for (ProxiedPlayer p: ProxyServer.getInstance().getPlayers()) {
-		   String player1 = p.getName();
-		   String player2 = "§6§l" + "@" + player1 + "§r";
-		   String actionbar = "§6§l" + player.getName() + " vous a mentionné dans le tchat";
-		   
-		   if (message.toLowerCase().contains(player1.toLowerCase())) {
-			   msg = msg.replace(player1, player2);
-			   ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
-			   p.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(actionbar));
-		        } else   	 
-			 ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
-	   }
+
+		for (ProxiedPlayer p: ProxyServer.getInstance().getPlayers()) {
+			String player1 = p.getName();
+			String player2 = "§6§l" + "@" + player1 + "§r";
+			String actionbar = "§6§l" + player.getName() + " vous a mentionné dans le tchat";
+
+			if (message.toLowerCase().contains(player1.toLowerCase())) {
+				msg = msg.replace(player1, player2);
+				p.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(actionbar));
+			} 
+			ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
+		}
 	}
-	
+
 	public void sendAnnonce(UUID uuid, String annonce) {
 		ProxyServer server = ProxyServer.getInstance();
 		ProxiedPlayer player = server.getPlayer(uuid);
@@ -62,9 +61,9 @@ public class ChatManager {
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
 			return;
 		}
-		   ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #99ffcc§l" + msg))));
+		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #99ffcc§l" + msg))));
 	}
-	
+
 	public boolean isMuted() {
 		return isMuted;
 	}
@@ -72,11 +71,11 @@ public class ChatManager {
 	public void setMuted(boolean isMuted) {
 		this.isMuted = isMuted;
 	}
-	
+
 	private String translateColors(String string) {
 		return ChatColor.translateAlternateColorCodes('&', string);
 	}
-	
+
 	private void sendStaffMessage(ProxiedPlayer sender, String message) {
 		ProxyServer.getInstance().getPlayers().forEach( p -> {
 			if(p.hasPermission("spartacube.staffchat")) {
@@ -84,7 +83,7 @@ public class ChatManager {
 			}
 		});
 	}
-	
+
 	public void toggleChat(CommandSender sender) {
 		isMuted = !isMuted;
 		if(isMuted) {
@@ -93,11 +92,11 @@ public class ChatManager {
 			ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§aLe chat n'est plus muet."));
 		}
 	}
-	
+
 	/*
 	 * Luckperms
 	 */
-	
+
 	private LuckPerms luckapi = LuckPermsProvider.get();
 
 	private User loadUser(ProxiedPlayer player) {

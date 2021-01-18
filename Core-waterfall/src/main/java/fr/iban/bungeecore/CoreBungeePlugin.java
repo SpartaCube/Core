@@ -59,6 +59,7 @@ public final class CoreBungeePlugin extends Plugin {
 		teleportManager = new TeleportManager(this);
 
 		getProxy().registerChannel("proxy:chat");
+		getProxy().registerChannel("proxy:annonce");
 		
 		registerEvents(
 				new ProxyJoinQuitListener(),
@@ -100,6 +101,7 @@ public final class CoreBungeePlugin extends Plugin {
 		DbManager.closeAllDbConnections();
 		saveConfig();
 		getProxy().unregisterChannel("proxy:chat");
+		getProxy().unregisterChannel("proxy:annonce");
 	}
 
 	public void registerEvents(Listener... listeners) {
