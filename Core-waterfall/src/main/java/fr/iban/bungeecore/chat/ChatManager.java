@@ -61,7 +61,7 @@ public class ChatManager {
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
 			return;
 		}
-		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #99ffcc§l" + msg))));
+		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #7bc8fe§l" + msg))));
 	}
 
 	public boolean isMuted() {
