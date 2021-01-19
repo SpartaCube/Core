@@ -54,7 +54,6 @@ public class ChatManager {
 			} 
 		}
 		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
-		}
 	}
 
 	public void sendAnnonce(UUID uuid, String annonce) {
@@ -83,9 +82,9 @@ public class ChatManager {
 	private void sendStaffMessage(ProxiedPlayer sender, String message) {
 		ProxyServer.getInstance().getPlayers().forEach( p -> {
 			if(p.hasPermission("spartacube.staffchat")) { 
-		      if (!StaffChatToggle.sc.contains(p)) {
-				p.sendMessage(TextComponent.fromLegacyText("§8[§c§l"+ StringUtil.capitalize(sender.getServer().getInfo().getName()) +"§8] §6§lStaff §e"+sender.getName()+" §8➤ §6§l"+ message));
-			   }
+				if (!StaffChatToggle.sc.contains(p)) {
+					p.sendMessage(TextComponent.fromLegacyText("§8[§c§l"+ StringUtil.capitalize(sender.getServer().getInfo().getName()) +"§8] §6§lStaff §e"+sender.getName()+" §8➤ §6§l"+ message));
+				}
 			}
 		});
 	}
