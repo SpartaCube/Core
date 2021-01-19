@@ -82,7 +82,7 @@ public final class CoreBungeePlugin extends Plugin {
 				new AnnounceCMD("announce"),
 				new ChatCMD("chat"),
 				new StaffChatToggle("sctoggle", "spartacube.sctoggle", "staffchattoggle"),
-				new MessageCMD("msg", "spartacube.msg", "message", "m", "w", "tell"),
+				new MessageCMD("msg", "spartacube.msg", "message", "m", "w", "tell", "t"),
 				new ReplyCMD("reply", "spartacube.reply", "r"),
 				new SudoCMD("sudo", "spartacube.sudo"),
 				new SocialSpyCMD("socialspy", "spartacube.socialspy"),
