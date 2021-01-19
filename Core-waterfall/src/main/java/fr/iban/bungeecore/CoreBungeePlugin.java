@@ -4,12 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import fr.iban.bungeecore.chat.ChatManager;
 import fr.iban.bungeecore.commands.AnnounceCMD;
 import fr.iban.bungeecore.commands.BackCMD;
 import fr.iban.bungeecore.commands.ChatCMD;
+import fr.iban.bungeecore.commands.MessageCMD;
+import fr.iban.bungeecore.commands.MsgToggleCMD;
+import fr.iban.bungeecore.commands.ReplyCMD;
+import fr.iban.bungeecore.commands.SocialSpyCMD;
+import fr.iban.bungeecore.commands.StaffChatToggle;
+import fr.iban.bungeecore.commands.SudoCMD;
 import fr.iban.bungeecore.commands.TpCMD;
 import fr.iban.bungeecore.commands.TpaCMD;
 import fr.iban.bungeecore.commands.TpahereCMD;
@@ -28,6 +35,7 @@ import fr.iban.common.data.redis.RedisCredentials;
 import fr.iban.common.data.sql.DbManager;
 import fr.iban.common.data.sql.DbTables;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -36,6 +44,8 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 public final class CoreBungeePlugin extends Plugin {
+	
+    public static HashMap<ProxiedPlayer, ProxiedPlayer> r = new HashMap<>();
 
 	private static CoreBungeePlugin instance;
 	private Configuration configuration;
@@ -71,6 +81,12 @@ public final class CoreBungeePlugin extends Plugin {
 		registerCommands(
 				new AnnounceCMD("announce"),
 				new ChatCMD("chat"),
+				new StaffChatToggle("sctoggle", "spartacube.sctoggle", "staffchattoggle"),
+				new MessageCMD("msg", "spartacube.msg", "message", "m", "w", "tell"),
+				new ReplyCMD("reply", "spartacube.reply", "r"),
+				new SudoCMD("sudo", "spartacube.sudo"),
+				new SocialSpyCMD("socialspy", "spartacube.socialspy"),
+				new MsgToggleCMD("msgtoggle", "spartacube.msgtoggle"),
 				new TpCMD("tp", "spartacube.tp", teleportManager),
 				new TphereCMD("tphere", "spartacube.tp", "s", teleportManager),
 				new TpaCMD("tpa", "spartacube.tpa", teleportManager),

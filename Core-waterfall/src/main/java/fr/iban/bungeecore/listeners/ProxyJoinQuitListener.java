@@ -16,8 +16,10 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -59,6 +61,35 @@ public class ProxyJoinQuitListener implements Listener {
 		});
 
 	}
+	
+	   @EventHandler
+	    public void ServerConnectEvent (ServerConnectEvent e) {
+	        if(!e.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)){
+	            return;
+	    }
+	        e.setTarget(ProxyServer.getInstance().getServerInfo("Lobby"));
+	    }
+	
+	  @EventHandler
+	  public void onQuit(PlayerDisconnectEvent e) {
+	    ProxiedPlayer p = e.getPlayer();
+	    if (CoreBungeePlugin.r.containsKey(p)) {
+	      ProxiedPlayer target = CoreBungeePlugin.r.get(p);
+	      if (target != null)
+	        if (CoreBungeePlugin.r.get(target) == p)
+	         CoreBungeePlugin.r.remove(target);  
+	      CoreBungeePlugin.r.remove(p);
+	    } 
+	  }
+	  
+	   @EventHandler(priority = 64)
+	   public void BungeeChat(ChatEvent event) {
+	     ProxiedPlayer player = (ProxiedPlayer)event.getSender();
+	      if(event.getMessage().toLowerCase().startsWith("/luckpermsbungee:") || event.getMessage().toLowerCase().startsWith("/bperm") || event.getMessage().toLowerCase().startsWith("/lpb") || event.getMessage().toLowerCase().startsWith("/luckpermsbungee")) {
+	       event.setCancelled(true);
+	        player.sendMessage(TextComponent.fromLegacyText("§6SpartaCube §8➤ §cCette commande est désactivé"));
+	     } 
+	   }
 
 	@EventHandler
 	public void onDisconnect(PlayerDisconnectEvent e) {
