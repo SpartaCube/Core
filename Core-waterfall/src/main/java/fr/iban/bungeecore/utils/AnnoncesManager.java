@@ -28,7 +28,7 @@ public class AnnoncesManager {
 	
 	private BaseComponent[] getMessage(int id, String msg, String command) {
 		String croix = " §7[§c✕§7]";
-		BaseComponent[] announceDisable = new ComponentBuilder(croix).event(ChatUtils.getShowTextHoverEvent("§cClic pour ne plus afficher cette annnonce")).event(ChatUtils.getCommandClickEvent("/annonce disable " + id)).create();
+		BaseComponent[] announceDisable = new ComponentBuilder(croix).event(ChatUtils.getShowTextHoverEvent("§cClic pour ne plus afficher cette annnonce")).event(ChatUtils.getCommandClickEvent("/announce disable " + id)).create();
 		ComponentBuilder announceBuilder = new ComponentBuilder(msg);
 		if(command != null) {
 			announceBuilder.event(ChatUtils.getShowTextHoverEvent("§aClic pour lancer la commande §5"+command));

@@ -46,7 +46,8 @@ public class TeleportManager {
 				}
 			}));
 		}
-	}	
+	}
+	
 	public void delayedTeleport(ProxiedPlayer player, SLocation location, int delay) {
 		player.sendMessage(TextComponent.fromLegacyText("§aTéléportation dans " + delay + " secondes. §cNe bougez pas !"));
 		if(isTeleportWaiting(player)) {
