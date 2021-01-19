@@ -13,8 +13,8 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class MessageCMD extends Command implements TabExecutor {
 
-	public MessageCMD(String name, String permission, String name2, String name3, String name4, String name5) {
-		super(name, permission, name2, name3, name4, name5);
+	public MessageCMD(String name, String permission, String name2, String name3, String name4, String name5, String name6) {
+		super(name, permission, name2, name3, name4, name5, name6);
 	}
 	 
 	public void execute(CommandSender sender, String[] args) {
