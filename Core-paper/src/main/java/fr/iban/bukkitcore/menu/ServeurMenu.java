@@ -19,19 +19,17 @@ public class ServeurMenu extends Menu {
 	}
 
 	@Override
-	public int getSlots() {
-		return 9;
+	public int getRows() {
+		return 1;
 	}
 
 	@Override
-	public void handleMenu(InventoryClickEvent e) {	
+	public void handleMenu(InventoryClickEvent e) {
 		if(e.getClickedInventory() == e.getView().getTopInventory()) {
 			if(e.getCurrentItem().getType() == Material.GRASS) {
 				PluginMessageHelper.sendPlayerToServer(player, "survie");
-			}else if(e.getCurrentItem().getType() == Material.GOLDEN_APPLE) {
-				PluginMessageHelper.sendPlayerToServer(player, "uhc");
 			}else if (e.getCurrentItem().getType() == Material.IRON_PICKAXE) {
-				PluginMessageHelper.sendPlayerToServer(player, "ressources");
+				new RessourceMenu(player).open();
 			}
 		}
 	}
@@ -39,7 +37,6 @@ public class ServeurMenu extends Menu {
 	@Override
 	public void setMenuItems() {
 		inventory.setItem(2, new ItemBuilder(Material.GRASS).setName("§2§lSurvie").setLore("§aCliquez pour rejoindre le serveur survie.").build());
-		inventory.setItem(4, new ItemBuilder(Material.GOLDEN_APPLE).setName("§2§lUHC").setLore("§aCliquez pour rejoindre l'event UHC.").build());
 		inventory.setItem(6, new ItemBuilder(Material.IRON_PICKAXE).setName("§2§lRessources").setLore("§aCliquez pour rejoindre le serveur ressources.").build());
 		for(int i = 0 ; i < inventory.getSize() ; i++) {
 			if(inventory.getItem(i) == null)

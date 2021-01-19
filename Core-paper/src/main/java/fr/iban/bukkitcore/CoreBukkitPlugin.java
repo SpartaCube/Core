@@ -1,13 +1,12 @@
 package fr.iban.bukkitcore;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
-
-import com.google.common.collect.Iterables;
 
 import fr.iban.bukkitcore.commands.AnnonceCMD;
 import fr.iban.bukkitcore.commands.PacketLogCMD;
@@ -33,7 +32,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 	private String serverName;
 	private boolean packetlogging = false;
 	
-	public static Economy econ = null;
+	private Economy econ = null;
 
     @Override
     public void onEnable() {
@@ -51,7 +50,8 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         		);
         
         getCommand("serveur").setExecutor(new ServeurCMD());
-        getCommand("annonce").setExecutor(new AnnonceCMD());
+
+        getCommand("annonce").setExecutor(new AnnonceCMD(this));
         getCommand("survie").setExecutor(new SurvieCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
         getCommand("packetlog").setExecutor(new PacketLogCMD(this));
@@ -64,7 +64,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         redisClient.getTopic("TeleportToLocation").addListener(new TeleportToLocationListener());
         
         if(!Bukkit.getOnlinePlayers().isEmpty()) {
-        	PluginMessageHelper.askServerName(Iterables.getOnlyElement(Bukkit.getOnlinePlayers()));
+        	for(Player player : Bukkit.getOnlinePlayers()) {
+        		PluginMessageHelper.askServerName(player);
+        		break;
+        	}
         }
         
 //        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this,
@@ -120,7 +123,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 		return econ != null;
 	}
 
-	public static Economy getEcon() {
+	public Economy getEcon() {
 		return econ;
 	}
 	

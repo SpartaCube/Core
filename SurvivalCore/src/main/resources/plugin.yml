@@ -22,3 +22,5 @@ commands:
   addhomes:
   pvp:
   grades:
+  dolphin:
+    aliases: [dophin]

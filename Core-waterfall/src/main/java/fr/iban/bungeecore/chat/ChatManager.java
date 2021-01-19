@@ -54,6 +54,7 @@ public class ChatManager {
 			} 
 		}
 		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
+		}
 	}
 
 	public void sendAnnonce(UUID uuid, String annonce) {
