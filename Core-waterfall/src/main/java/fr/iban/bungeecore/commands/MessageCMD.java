@@ -13,8 +13,8 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class MessageCMD extends Command implements TabExecutor {
 
-	public MessageCMD(String name, String permission, String name2, String name3) {
-		super(name, permission, name2, name3);
+	public MessageCMD(String name, String permission, String name2, String name3, String name4, String name5) {
+		super(name, permission, name2, name3, name4, name5);
 	}
 	 
 	public void execute(CommandSender sender, String[] args) {
@@ -25,7 +25,7 @@ public class MessageCMD extends Command implements TabExecutor {
 	        ProxiedPlayer player = (ProxiedPlayer)sender;
 	        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
 	        if (target == null) {
-	          player.sendMessage(TextComponent.fromLegacyText("§c" + target.getName() + "  est hors-ligne!" + ChatColor.RESET));
+	          player.sendMessage(TextComponent.fromLegacyText("§c" + args[0] + " est hors-ligne!" + ChatColor.RESET));
 	          return;
 	        } 
 	         
@@ -34,29 +34,27 @@ public class MessageCMD extends Command implements TabExecutor {
 	          for (int i = 1; i < args.length; i++)
 	            sb.append(args[i]).append(" "); 
 	          String msg = sb.toString();
-	          String message = "§c" + player.getName() + " §7 ➔  " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg;
+	          for (ProxiedPlayer staff : CoreBungeePlugin.getInstance().getProxy().getPlayers()) {    
+	              if (SocialSpyCMD.sp.contains(staff)) {
+	                 staff.sendMessage(TextComponent.fromLegacyText("§8[§cSocialSpy§8] §c" + player.getName() + " §7➔ " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg));
+	                }  
+	             }
 	          if (!MsgToggleCMD.tmsg.contains(target) || player.hasPermission("spartacube.msgtogglebypass")) {
 		          player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §c" + target.getName() + "  §6➤§7 " + msg  + ChatColor.RESET));
 		          target.sendMessage(TextComponent.fromLegacyText("§c" + player.getName() + "  §7➔ §8Moi §6➤§7 " + msg + ChatColor.RESET));
-		          System.out.println(message);
+		          System.out.println("§c" + player.getName() + " §7 ➔  " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg);
 	            } else {
 	              player.sendMessage(TextComponent.fromLegacyText("§c" + target.getName() + " a désactivé ses messages"));
 	            }  	
-	          for (ProxiedPlayer staff : CoreBungeePlugin.getInstance().getProxy().getPlayers()) {    
-	              if (SocialSpyCMD.sp.contains(staff)) {
-	                 String format = "§8[§cSocialSpy§8] §c" + player.getName() + " §7➔ " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg;
-	                 staff.sendMessage(TextComponent.fromLegacyText(format));
-	                }  
-	             }
 	          if (!CoreBungeePlugin.r.containsKey(player)) {
 	        	  CoreBungeePlugin.r.put(player, target);
 	          } else {
 	        	  CoreBungeePlugin.r.replace(player, target);
 	          } 
 	          if (!CoreBungeePlugin.r.containsKey(target)) {
-	        	CoreBungeePlugin.r.put(target, player);
+	        	  CoreBungeePlugin.r.put(target, player);
 	          } else {
-	        	CoreBungeePlugin.r.replace(target, player);
+	        	  CoreBungeePlugin.r.replace(target, player);
 	          } 
 	        } else {
 	          sender.sendMessage(TextComponent.fromLegacyText("§cVeuillez entrez un message." + ChatColor.RESET));

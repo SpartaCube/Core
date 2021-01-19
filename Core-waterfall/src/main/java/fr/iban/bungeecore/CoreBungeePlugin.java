@@ -15,6 +15,7 @@ import fr.iban.bungeecore.commands.MessageCMD;
 import fr.iban.bungeecore.commands.MsgToggleCMD;
 import fr.iban.bungeecore.commands.ReplyCMD;
 import fr.iban.bungeecore.commands.SocialSpyCMD;
+import fr.iban.bungeecore.commands.StaffChatToggle;
 import fr.iban.bungeecore.commands.SudoCMD;
 import fr.iban.bungeecore.commands.TpCMD;
 import fr.iban.bungeecore.commands.TpaCMD;
@@ -80,7 +81,8 @@ public final class CoreBungeePlugin extends Plugin {
 		registerCommands(
 				new AnnounceCMD("announce"),
 				new ChatCMD("chat"),
-				new MessageCMD("msg", "spartacube.msg", "m", "mp"),
+				new StaffChatToggle("sctoggle", "spartacube.sctoggle", "staffchattoggle"),
+				new MessageCMD("msg", "spartacube.msg", "message", "m", "w", "tell"),
 				new ReplyCMD("reply", "spartacube.reply", "r"),
 				new SudoCMD("sudo", "spartacube.sudo"),
 				new SocialSpyCMD("socialspy", "spartacube.socialspy"),

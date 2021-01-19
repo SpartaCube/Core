@@ -2,6 +2,9 @@ package fr.iban.bungeecore.chat;
 
 import java.util.UUID;
 
+import fr.iban.bungeecore.CoreBungeePlugin;
+import fr.iban.bungeecore.commands.SocialSpyCMD;
+import fr.iban.bungeecore.commands.StaffChatToggle;
 import fr.iban.bungeecore.utils.HexColor;
 import fr.iban.common.data.AccountProvider;
 import fr.iban.spartacube.data.Account;
@@ -78,8 +81,10 @@ public class ChatManager {
 
 	private void sendStaffMessage(ProxiedPlayer sender, String message) {
 		ProxyServer.getInstance().getPlayers().forEach( p -> {
-			if(p.hasPermission("spartacube.staffchat")) {
+			if(p.hasPermission("spartacube.staffchat")) { 
+		      if (!StaffChatToggle.sc.contains(p)) {
 				p.sendMessage(TextComponent.fromLegacyText("§8[§c§l"+ StringUtil.capitalize(sender.getServer().getInfo().getName()) +"§8] §6§lStaff §e"+sender.getName()+" §8➤ §6§l"+ message));
+			   }
 			}
 		});
 	}

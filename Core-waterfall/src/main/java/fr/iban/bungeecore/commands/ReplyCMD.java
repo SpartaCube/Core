@@ -37,9 +37,18 @@ public class ReplyCMD extends Command implements TabExecutor {
 	          for (int i = 0; i < args.length; i++)
 	            sb.append(args[i]).append(" "); 
 	          String msg = sb.toString();
-	          player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §c" + target.getName() + " §6➤§7 " + msg + ChatColor.RESET));
-	          target.sendMessage(TextComponent.fromLegacyText("§c" + player.getName() + " §7➔ §8Moi §6➤§7 " + msg + ChatColor.RESET));
-	          System.out.println(TextComponent.fromLegacyText("§c" + player.getName() + " §7➔ " + "§8" + target.getName() + " §6➤ " + "§7" + msg));
+	          for (ProxiedPlayer staff : CoreBungeePlugin.getInstance().getProxy().getPlayers()) {    
+	              if (SocialSpyCMD.sp.contains(staff)) {
+	                 staff.sendMessage(TextComponent.fromLegacyText("§8[§cSocialSpy§8] §c" + player.getName() + " §7➔ " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg));
+	                }  
+	             }
+	          if (!MsgToggleCMD.tmsg.contains(target) || player.hasPermission("spartacube.msgtogglebypass")) {
+		          player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §c" + target.getName() + " §6➤§7 " + msg + ChatColor.RESET));
+		          target.sendMessage(TextComponent.fromLegacyText("§c" + player.getName() + " §7➔ §8Moi §6➤§7 " + msg + ChatColor.RESET));
+		          System.out.println("§c" + player.getName() + " §7 ➔  " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg);
+	            } else {
+	              player.sendMessage(TextComponent.fromLegacyText("§c" + target.getName() + " a désactivé ses messages"));
+	            }  
 	        } else {
 	          sender.sendMessage(TextComponent.fromLegacyText("§cTu ne peux pas répondre, car personne ne t'a écrit." + ChatColor.RESET));
 	        } 
