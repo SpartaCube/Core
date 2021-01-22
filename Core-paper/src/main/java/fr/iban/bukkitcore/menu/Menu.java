@@ -86,6 +86,29 @@ public abstract class Menu implements InventoryHolder {
         return item;
     }
     
+    //Set the border for the menu
+    public void addMenuBorder(){
+
+        for (int i = 0; i < 10; i++) {
+            if (inventory.getItem(i) == null) {
+                inventory.setItem(i, FILLER_GLASS);
+            }
+        }
+
+        inventory.setItem(17, FILLER_GLASS);
+        inventory.setItem(18, FILLER_GLASS);
+        inventory.setItem(26, FILLER_GLASS);
+        inventory.setItem(27, FILLER_GLASS);
+        inventory.setItem(35, FILLER_GLASS);
+        inventory.setItem(36, FILLER_GLASS);
+
+        for (int i = 44; i < 54; i++) {
+            if (inventory.getItem(i) == null) {
+                inventory.setItem(i, FILLER_GLASS);
+            }
+        }
+    }
+    
     public void fillWithGlass() {
 		for (int i = inventory.firstEmpty() ; inventory.firstEmpty() != -1; i = inventory.firstEmpty()) {
 			inventory.setItem(i, FILLER_GLASS);

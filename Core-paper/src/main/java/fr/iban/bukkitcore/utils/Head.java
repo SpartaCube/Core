@@ -8,7 +8,13 @@ import me.arcaniax.hdb.api.HeadDatabaseAPI;
 public enum Head {
 	
 	CHEST("227"),
-	CHEST_DIRT("775");
+	CHEST_DIRT("775"),
+	HAL("41548"),
+	NO_ENTRY("19778"),
+	GRASS("24064"),
+	OAK_RIGHT("7826"),
+	OAK_LEFT("7827")
+	;
 	
 	private static HeadDatabaseAPI api;
 	private String id;
