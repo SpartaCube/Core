@@ -2,8 +2,6 @@ package fr.iban.bungeecore.chat;
 
 import java.util.UUID;
 
-import fr.iban.bungeecore.CoreBungeePlugin;
-import fr.iban.bungeecore.commands.SocialSpyCMD;
 import fr.iban.bungeecore.commands.StaffChatToggle;
 import fr.iban.bungeecore.utils.HexColor;
 import fr.iban.common.data.AccountProvider;

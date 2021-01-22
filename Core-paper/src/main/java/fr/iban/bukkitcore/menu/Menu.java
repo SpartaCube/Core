@@ -20,7 +20,7 @@ public abstract class Menu implements InventoryHolder {
     //Protected values that can be accessed in the menus
 	protected Player player;
     protected Inventory inventory;
-    protected ItemStack FILLER_GLASS = makeItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+    protected ItemStack FILLER_GLASS = makeItem(Material.WHITE_STAINED_GLASS_PANE, " ");
 
     //let each menu decide their name
     public abstract String getMenuName();
@@ -84,6 +84,12 @@ public abstract class Menu implements InventoryHolder {
         item.setItemMeta(itemMeta);
 
         return item;
+    }
+    
+    public void fillWithGlass() {
+		for (int i = inventory.firstEmpty() ; inventory.firstEmpty() != -1; i = inventory.firstEmpty()) {
+			inventory.setItem(i, FILLER_GLASS);
+		}
     }
 
 }

@@ -15,6 +15,7 @@ import fr.iban.bukkitcore.commands.ServeurCMD;
 import fr.iban.bukkitcore.commands.SurvieCMD;
 import fr.iban.bukkitcore.listeners.AsyncChatListener;
 import fr.iban.bukkitcore.listeners.DeathListener;
+import fr.iban.bukkitcore.listeners.HeadDatabaseListener;
 import fr.iban.bukkitcore.listeners.InventoryListener;
 import fr.iban.bukkitcore.listeners.JoinQuitListeners;
 import fr.iban.bukkitcore.listeners.PlayerMoveListener;
@@ -42,6 +43,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         RedisAccess.init(new RedisCredentials(getConfig().getString("redis.host"), getConfig().getString("redis.password"), getConfig().getInt("redis.port"), getConfig().getString("redis.clientName")));
         
         registerListeners(
+        		new HeadDatabaseListener(),
         		new InventoryListener(),
         		new AsyncChatListener(),
         		new JoinQuitListeners(this),

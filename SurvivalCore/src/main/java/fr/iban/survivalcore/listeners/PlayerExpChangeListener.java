@@ -24,9 +24,9 @@ public class PlayerExpChangeListener implements Listener {
 		AccountProvider ac = new AccountProvider(player.getUniqueId());
 		Account account = ac.getAccount();
 		if(!SurvivalCorePlugin.ess.getUser(player.getUniqueId()).isAfk()) {
-			if(checkLast(player) < 10) {
+			if(checkLast(player) < 6) {
 				short levelbefore = account.getLevel();
-				account.addExp((e.getAmount() < 20 ? e.getAmount() : 20));
+				account.addExp((e.getAmount() < 12 ? e.getAmount() : 12));
 				getXPLogs(player).put(System.currentTimeMillis(), e.getAmount());
 				short levelafter = account.getLevel();				
 				e.getPlayer().sendActionBar(LevelUtils.getLevelProgressBar(account, 20));
