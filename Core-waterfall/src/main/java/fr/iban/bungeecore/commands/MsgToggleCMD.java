@@ -19,11 +19,11 @@ public class MsgToggleCMD extends Command {
 	      ProxiedPlayer player = (ProxiedPlayer)sender;
 	      if (tmsg.contains(player)) {
 	        tmsg.remove(player);
-	        player.sendMessage(TextComponent.fromLegacyText("§aVous pouvez à nouveau recevoir des messages de message"));
+	        player.sendMessage(TextComponent.fromLegacyText("§aVous pouvez à nouveau recevoir les messages des joueurs"));
 	        return;
 	    } 
 	      tmsg.add(player);
-	      player.sendMessage(TextComponent.fromLegacyText("§cVous ne pouvez plus recevoir de message"));
+	      player.sendMessage(TextComponent.fromLegacyText("§cVous ne pouvez plus recevoir les messages des joueurs"));
 	    } else {
 	    sender.sendMessage(TextComponent.fromLegacyText("§cSeul un joueur peut faire cette commande"));
 	  } 
