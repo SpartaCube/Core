@@ -1,5 +1,9 @@
 package fr.iban.bukkitcore;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -22,6 +26,7 @@ import fr.iban.bukkitcore.listeners.PlayerMoveListener;
 import fr.iban.bukkitcore.teleport.TeleportToLocationListener;
 import fr.iban.bukkitcore.teleport.TeleportToPlayerListener;
 import fr.iban.bukkitcore.utils.PluginMessageHelper;
+import fr.iban.bukkitcore.utils.TextCallback;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
 import fr.iban.common.data.sql.DbManager;
@@ -32,6 +37,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 	private static CoreBukkitPlugin instance;
 	private String serverName;
 	private boolean packetlogging = false;
+	private Map<UUID, TextCallback> textInputs;
 	
 	private Economy econ = null;
 
@@ -42,10 +48,12 @@ public final class CoreBukkitPlugin extends JavaPlugin {
     	DbManager.initAllDbConnections();
         RedisAccess.init(new RedisCredentials(getConfig().getString("redis.host"), getConfig().getString("redis.password"), getConfig().getInt("redis.port"), getConfig().getString("redis.clientName")));
         
+        textInputs = new HashMap<>();
+        
         registerListeners(
         		new HeadDatabaseListener(),
         		new InventoryListener(),
-        		new AsyncChatListener(),
+        		new AsyncChatListener(this),
         		new JoinQuitListeners(this),
         		new PlayerMoveListener(),
         		new DeathListener(this)
@@ -147,6 +155,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 
 	public void setPacketlogging(boolean packetlogging) {
 		this.packetlogging = packetlogging;
+	}
+
+	public Map<UUID, TextCallback> getTextInputs() {
+		return textInputs;
 	}
 
 }
