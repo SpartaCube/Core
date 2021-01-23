@@ -14,7 +14,8 @@ public enum Head {
 	GRASS("24064"),
 	OAK_RIGHT("7826"),
 	OAK_LEFT("7827"),
-	OAK_PLUS("2336")
+	OAK_PLUS("2336"),
+	GLOBE("2981")
 	;
 	
 	private static HeadDatabaseAPI api;
