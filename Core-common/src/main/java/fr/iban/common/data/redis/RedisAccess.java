@@ -43,7 +43,7 @@ public class RedisAccess {
 	}
 	
 	public RedissonClient getRedissonClient() {
-		if(redissonClient.isShutdown()) {
+		if(redissonClient == null || redissonClient.isShutdown()) {
 			System.out.println("REDIS OFF - TENTATIVE DE RECONNEXION");
 			redissonClient = initRedisson(credentials);
 		}

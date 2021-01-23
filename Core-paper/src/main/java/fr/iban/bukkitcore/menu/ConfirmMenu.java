@@ -57,7 +57,7 @@ public class ConfirmMenu extends Menu {
 		ItemStack cancelItem = getCancelItem();
 		ItemStack middleItem = getMiddleItem();
 		for (int i = 0; i < getSlots(); i++) {
-			int rowSlot = (getSlots()+9) % 9;
+			int rowSlot = (i+9) % 9;
 			if(rowSlot < 4) {
 				inventory.setItem(i, confirmItem);
 			}else if(rowSlot > 4) {

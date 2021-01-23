@@ -24,25 +24,29 @@ public abstract class PaginatedMenu extends Menu {
 	//that the loop is on
 	protected int index = 0;
 
-	protected int elementAmount = -1;
-
+	
 	public PaginatedMenu(Player player) {
 		super(player);
+	}
+	
+	public int getElementAmount() {
+		return -1;
 	}
 
 
 	//Set the border and menu buttons for the menu
 	@Override
 	public void addMenuBorder(){
+		
+		index = page*getMaxItemsPerPage();
 
-		if(elementAmount != -1 && elementAmount > maxItemsPerPage && (index+getMaxItemsPerPage() + 1) <= elementAmount) {
+		if(getElementAmount() != -1 && getElementAmount() > maxItemsPerPage && (index+getMaxItemsPerPage() + 1) <= getElementAmount()) {
 			inventory.setItem(50, makeItem(Material.GREEN_STAINED_GLASS_PANE, ChatColor.GREEN + "Suivant"));
 		}
 
 		if(page > 0) {
 			inventory.setItem(48, makeItem(Material.GREEN_STAINED_GLASS_PANE, ChatColor.GREEN + "Précédent"));
 		}
-
 
 		inventory.setItem(49, makeItem(Material.RED_STAINED_GLASS_PANE, ChatColor.DARK_RED + "Fermer"));
 
