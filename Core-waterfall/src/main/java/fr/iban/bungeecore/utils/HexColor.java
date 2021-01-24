@@ -17,6 +17,9 @@ public enum HexColor {
 	FLAT_LIGHT_RED("#ff7675"),
 	FLAT_RED("#d63031"),
 	FLAT_PINK("#e84393"),
+	GOLD("#f9d186"),
+	LIGHT_RED("#ff5353"),
+	ORANGE("#f9561f"),
 	FLAT_GREEN("#00b894"),
 	FLAT_LIGHT_GREEN("#55efc4"),
 	FLAT_BLUE2("#3742fa");

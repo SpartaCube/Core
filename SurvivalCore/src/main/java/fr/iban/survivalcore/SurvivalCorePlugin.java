@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.earth2me.essentials.Essentials;
 
+import fr.iban.bukkitcore.utils.PluginMessageHelper;
 import net.milkbowl.vault.economy.Economy;
 
 public final class SurvivalCorePlugin extends JavaPlugin {
@@ -24,6 +25,7 @@ public final class SurvivalCorePlugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+        PluginMessageHelper.registerChannels(this);
 		instance = this;
 		
 		saveDefaultConfig();

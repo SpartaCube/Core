@@ -94,11 +94,12 @@ public class LevelUtils {
 				
 				@Override
 				public void run() {
-					Bukkit.broadcastMessage(HexColor.FLAT_PINK.getColor() + player.getName() + " a été promu " + group + "!");					
+					PluginMessageHelper.sendRankUp(player, group);			
 				}
 			}.runTaskLater(SurvivalCorePlugin.getInstance(), 2L);
 		}
 	}
+	
 
 	private static void promote(Player player, int level) {
 		String group = null;
@@ -132,7 +133,7 @@ public class LevelUtils {
 			promoteAndBroadcast(player, group);
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawners give " + player.getName() + " IRON_GOLEM 1");
 			break;
-		case 120:
+		case 150:
 			group = "Colosse";
 			promoteAndBroadcast(player, group);
 			break;
