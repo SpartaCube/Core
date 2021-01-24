@@ -71,10 +71,10 @@ public class ChatManager {
 		String groupe = group;
 		
 	    if(groupe.toLowerCase().equals("spartiate")) {
-		    ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.GOLD.getColor() + player.getName() + " a été promu " + HexColor.ORANGE.getColor() + group + HexColor.GOLD.getColor() + "!" + " Félicitations à lui pour avoir atteint le dernier grade !"));
+		    ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.GOLD_FLAT.getColor() + "➤ " + HexColor.GOLD.getColor() + player.getName() + " a été promu " + HexColor.SPARTIATE.getColor() + group + HexColor.GOLD.getColor() + " !" + " Félicitations à lui pour avoir atteint le dernier grade !"));
 	    } else {
-	    	ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.GOLD.getColor() + player.getName() + " a été promu " + group + "!"));
-	    }
+	    	ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.GOLD_FLAT.getColor() + "➤ " + HexColor.GOLD.getColor() + player.getName() + " a été promu " + HexColor.valueOf(groupe.toUpperCase()).getColor() + group + HexColor.GOLD.getColor() + " !"));
+	    } 
 	    
 	}
 

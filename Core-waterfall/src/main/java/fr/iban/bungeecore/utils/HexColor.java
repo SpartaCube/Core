@@ -18,10 +18,20 @@ public enum HexColor {
 	FLAT_RED("#d63031"),
 	FLAT_PINK("#e84393"),
 	GOLD("#f9d186"),
+	GOLD_FLAT("#e19506"),
+	CITOYEN("#606060"),
+	HOPLITE("#7E5109"),
+	COMMANDANT("#D3623B"),
+	SEIGNEUR("#CA2C68"),
+	ROI("#0067B0"),
+	LÉGENDE("#6E248D"),
+	TITAN("#0bc1aa"),
+	COLOSSE("#850b0b"),
+	SPARTIATE("#f9561f"),
 	LIGHT_RED("#ff5353"),
-	ORANGE("#f9561f"),
 	FLAT_GREEN("#00b894"),
 	FLAT_LIGHT_GREEN("#55efc4"),
+	GRAY("#5c575a"),
 	FLAT_BLUE2("#3742fa");
     
     private String hex;
@@ -29,6 +39,10 @@ public enum HexColor {
 
     private HexColor(String hex) {
 	this.hex = hex;
+    }
+    
+    public static String Color(String hex) {
+    return hex;
     }
     
     
