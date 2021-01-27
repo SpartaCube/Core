@@ -68,13 +68,8 @@ public class ChatManager {
 	public void sendRankup(UUID uuid, String group) {
 		ProxyServer server = ProxyServer.getInstance();
 		ProxiedPlayer player = server.getPlayer(uuid);
-		String groupe = group;
 		
-	    if(groupe.toLowerCase().equals("spartiate")) {
-		    ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.GOLD_FLAT.getColor() + "➤ " + HexColor.GOLD.getColor() + player.getName() + " a été promu " + HexColor.SPARTIATE.getColor() + group + HexColor.GOLD.getColor() + " !" + " Félicitations à lui pour avoir atteint le dernier grade !"));
-	    } else {
-	    	ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.GOLD_FLAT.getColor() + "➤ " + HexColor.GOLD.getColor() + player.getName() + " a été promu " + HexColor.valueOf(groupe.toUpperCase()).getColor() + group + HexColor.GOLD.getColor() + " !"));
-	    } 
+	    	ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.FLAT_PINK.getColor() + player.getName() + " a été promu " + group + "!"));
 	    
 	}
 
