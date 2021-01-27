@@ -50,24 +50,33 @@ public class ProxyJoinQuitListener implements Listener {
 			account.setName(player.getName());
 			account.setIp(player.getAddress().getHostString());
 			accountProvider.sendAccountToRedis(account);
+		});
 
-			if(accountProvider.hasPlayedBefore()) {
+	}
+	
+	   @EventHandler
+	    public void ServerConnectEvent(ServerConnectEvent e) {
+	        if(!e.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)){
+	            return;
+	    }
+	             e.setTarget(ProxyServer.getInstance().getServerInfo("Lobby"));
+	    }
+	
+            @EventHandler
+	    public void ServerConnectedEvent(ServerConnectedEvent e) {
+	        ProxiedPlayer player = e.getPlayer();
+		UUID uuid = player.getUniqueId();
+	        
+		AccountProvider accountProvider = new AccountProvider(uuid);
+	        Account account = accountProvider.getAccount();
+		
+		if(accountProvider.hasPlayedBefore()) {
 				TextComponent message = new TextComponent(new StringBuilder().append("§8[§a+§8] §8").append(String.format(ArrayUtils.getRandomFromArray(joinMessages), player.getName())).toString());
 				message.setHoverEvent(ChatUtils.getShowTextHoverEvent(ChatColor.GRAY+"Vu pour la dernière fois " + getLastSeen(account.getLastSeen())));
 				ProxyServer.getInstance().broadcast(message);
 			}else {
 				ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§8≫ §7" + player.getName() + " s'est connecté pour la première fois !" ));
 			}
-		});
-
-	}
-	
-	   @EventHandler
-	    public void ServerConnectEvent (ServerConnectEvent e) {
-	        if(!e.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)){
-	            return;
-	    }
-	        e.setTarget(ProxyServer.getInstance().getServerInfo("Lobby"));
 	    }
 	
 	  @EventHandler
