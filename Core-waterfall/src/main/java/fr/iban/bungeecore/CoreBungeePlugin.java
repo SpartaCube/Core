@@ -69,6 +69,7 @@ public final class CoreBungeePlugin extends Plugin {
 		teleportManager = new TeleportManager(this);
 
 		getProxy().registerChannel("proxy:chat");
+		getProxy().registerChannel("survival:annonce");
 		getProxy().registerChannel("proxy:annonce");
 		
 		registerEvents(
@@ -118,6 +119,7 @@ public final class CoreBungeePlugin extends Plugin {
 		saveConfig();
 		getProxy().unregisterChannel("proxy:chat");
 		getProxy().unregisterChannel("proxy:annonce");
+		getProxy().unregisterChannel("survival:annonce");
 	}
 
 	public void registerEvents(Listener... listeners) {
