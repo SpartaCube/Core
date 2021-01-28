@@ -64,6 +64,14 @@ public class ChatManager {
 		}
 		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #7bc8fe§l" + msg))));
 	}
+	
+	public void sendRankup(UUID uuid, String group) {
+		ProxyServer server = ProxyServer.getInstance();
+		ProxiedPlayer player = server.getPlayer(uuid);
+		
+	    	ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.FLAT_PINK.getColor() + player.getName() + " a été promu " + group + "!"));
+	    
+	}
 
 	public boolean isMuted() {
 		return isMuted;
