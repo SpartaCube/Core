@@ -1,5 +1,6 @@
 package fr.iban.bukkitcore.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,7 +22,7 @@ public class AsyncChatListener implements Listener {
 	public void onChat(AsyncPlayerChatEvent e) {
 		Player player = e.getPlayer();
 		if(plugin.getTextInputs().containsKey(player.getUniqueId())) {
-			plugin.getTextInputs().get(player.getUniqueId()).call(e.getMessage());
+			Bukkit.getScheduler().runTask(plugin, () -> plugin.getTextInputs().get(player.getUniqueId()).call(e.getMessage()));
 			e.setCancelled(true);
 			return;
 		}
