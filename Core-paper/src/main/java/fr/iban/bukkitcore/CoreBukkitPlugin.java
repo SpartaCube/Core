@@ -29,7 +29,8 @@ import fr.iban.bukkitcore.utils.PluginMessageHelper;
 import fr.iban.bukkitcore.utils.TextCallback;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
-import fr.iban.common.data.sql.DbManager;
+import fr.iban.common.data.sql.DbAccess;
+import fr.iban.common.data.sql.DbCredentials;
 import net.milkbowl.vault.economy.Economy;
 
 public final class CoreBukkitPlugin extends JavaPlugin {
@@ -45,7 +46,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
     public void onEnable() {
     	instance = this;
     	saveDefaultConfig();
-    	DbManager.initAllDbConnections();
+    	
+    	
+    	
+    	DbAccess.initPool(new DbCredentials(getConfig().getString("database.host"), getConfig().getString("database.user"), getConfig().getString("database.password"), getConfig().getString("database.dbname"), getConfig().getInt("database.port")));
         RedisAccess.init(new RedisCredentials(getConfig().getString("redis.host"), getConfig().getString("redis.password"), getConfig().getInt("redis.port"), getConfig().getString("redis.clientName")));
         
         textInputs = new HashMap<>();
@@ -108,7 +112,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         RedisAccess.close();
-        DbManager.closeAllDbConnections();
+        DbAccess.closePool();;
     }
     
 	private void registerListeners(Listener... listeners) {

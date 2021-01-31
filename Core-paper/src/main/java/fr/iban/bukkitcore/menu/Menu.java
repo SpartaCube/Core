@@ -113,6 +113,7 @@ public abstract class Menu implements InventoryHolder {
         }
     }
     
+    
     public void fillWithGlass() {
 		for (int i = inventory.firstEmpty() ; inventory.firstEmpty() != -1; i = inventory.firstEmpty()) {
 			inventory.setItem(i, FILLER_GLASS);

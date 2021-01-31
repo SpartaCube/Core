@@ -14,7 +14,7 @@ import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 
 import fr.iban.common.data.redis.RedisAccess;
-import fr.iban.common.data.sql.DbManager;
+import fr.iban.common.data.sql.DbAccess;
 import fr.iban.spartacube.data.Account;
 
 public class AccountProvider {
@@ -43,7 +43,7 @@ public class AccountProvider {
 	}
 
 	private Account getAccountFromDB(){
-		DataSource ds = DbManager.BD.getDbAccess().getDataSource();
+		DataSource ds = DbAccess.getDataSource();
 		Account account = new Account(uuid);
 
 		try(Connection connection = ds.getConnection()){
@@ -75,7 +75,7 @@ public class AccountProvider {
 	}
 
 	public void sendAccountToDB(Account account) {
-		try (Connection connection = DbManager.BD.getDbAccess().getDataSource().getConnection()){
+		try (Connection connection = DbAccess.getDataSource().getConnection()){
 			try(PreparedStatement ps = connection.prepareStatement("INSERT INTO sc_players (uuid, name, exp, lastseen, maxclaims, allowpvp) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=VALUES(name), exp=VALUES(exp), lastseen=VALUES(lastseen), maxclaims=VALUES(maxclaims), allowpvp=VALUES(allowpvp)")){
 				ps.setString(1, uuid.toString());
 				ps.setString(2, (account.getName() == null ? "NonDefini" : account.getName()));

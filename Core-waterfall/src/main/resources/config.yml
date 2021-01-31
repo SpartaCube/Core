@@ -4,6 +4,13 @@ redis:
   password: Zkvo5le1
   clientName: Serveur_mc
 
+database:
+  host: 172.18.0.1
+  port: 3306
+  user: user
+  dbname: dbname
+  password: password
+
 tabcomplete:
   visiteur:
     - "sethome"

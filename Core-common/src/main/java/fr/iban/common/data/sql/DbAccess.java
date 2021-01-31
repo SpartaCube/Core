@@ -7,15 +7,9 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class DbAccess {
 
-	private DbCredentials credentials;
-	private HikariDataSource dataSource;
+	private static HikariDataSource dataSource;
 
-	public DbAccess(DbCredentials credentials){
-		this.credentials = credentials;
-	}
-
-
-	public void initPool() {
+	public static void initPool(DbCredentials credentials) {
 
 		HikariConfig hikariConfig = new HikariConfig();
 		hikariConfig.setJdbcUrl(credentials.toURI());
@@ -26,17 +20,17 @@ public class DbAccess {
 		hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
 		hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 		System.out.println("Tentative de connexion à la bdd " + credentials.toURI());
-		this.dataSource = new HikariDataSource(hikariConfig);
+		dataSource = new HikariDataSource(hikariConfig);
 		System.out.println("Connection effectuée.");
 	}
 
-	public void closePool(){
-		if(this.dataSource != null && !this.dataSource.isClosed())
-			this.dataSource.close();
+	public static void closePool(){
+		if(dataSource != null && !dataSource.isClosed())
+			dataSource.close();
 	}
 
-	public DataSource getDataSource() {
-		return this.dataSource;
+	public static DataSource getDataSource() {
+		return dataSource;
 	}
 
 }

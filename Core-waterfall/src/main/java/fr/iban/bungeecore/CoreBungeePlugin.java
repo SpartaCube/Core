@@ -32,7 +32,8 @@ import fr.iban.bungeecore.teleport.TeleportManager;
 import fr.iban.bungeecore.utils.AnnoncesManager;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
-import fr.iban.common.data.sql.DbManager;
+import fr.iban.common.data.sql.DbAccess;
+import fr.iban.common.data.sql.DbCredentials;
 import fr.iban.common.data.sql.DbTables;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -61,7 +62,7 @@ public final class CoreBungeePlugin extends Plugin {
 		loadConfig();
 		
 		RedisAccess.init(new RedisCredentials(configuration.getString("redis.host"), configuration.getString("redis.password"), configuration.getInt("redis.port"), configuration.getString("redis.clientName")));
-		DbManager.initAllDbConnections();
+    	DbAccess.initPool(new DbCredentials(configuration.getString("database.host"), configuration.getString("database.user"), configuration.getString("database.pass"), configuration.getString("database.dbname"), configuration.getInt("database.port")));
 		DbTables.createTables();
 		
 		announceManager = new AnnoncesManager();
@@ -115,7 +116,7 @@ public final class CoreBungeePlugin extends Plugin {
 	public void onDisable() {
 		new SaveAccounts().run();
 		RedisAccess.close();
-		DbManager.closeAllDbConnections();
+		DbAccess.closePool();
 		saveConfig();
 		getProxy().unregisterChannel("proxy:chat");
 		getProxy().unregisterChannel("proxy:annonce");

@@ -54,7 +54,7 @@ public class DbTables {
 					") engine = InnoDB;");
 	}
 	private static void createTable(String statement) {
-		try (Connection connection = DbManager.BD.getDbAccess().getDataSource().getConnection()) {
+		try (Connection connection = DbAccess.getDataSource().getConnection()) {
 			try(PreparedStatement preparedStatemente = connection.prepareStatement(statement)){
 				preparedStatemente.executeUpdate();
 			}
