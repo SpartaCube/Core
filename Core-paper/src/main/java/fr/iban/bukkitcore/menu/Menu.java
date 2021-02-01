@@ -142,6 +142,10 @@ public abstract class Menu implements InventoryHolder {
 		}
 		return res;
 	}
+	
+	protected boolean displayNameEquals(ItemStack item, String toCompare) {
+		return item.getItemMeta().getDisplayName().equals(toCompare);
+	}
 
 }
 
