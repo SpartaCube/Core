@@ -47,10 +47,10 @@ public abstract class PaginatedMenu extends Menu {
 		}
 
 		if(page > 0) {
-			inventory.setItem(lastRowFirst+4, makeItem(Material.GREEN_STAINED_GLASS_PANE, ChatColor.GREEN + "Précédent"));
+			inventory.setItem(lastRowFirst+3, makeItem(Material.GREEN_STAINED_GLASS_PANE, ChatColor.GREEN + "Précédent"));
 		}
 
-		inventory.setItem(lastRowFirst+3, makeItem(Material.RED_STAINED_GLASS_PANE, ChatColor.DARK_RED + "Fermer"));
+		inventory.setItem(lastRowFirst+4, makeItem(Material.RED_STAINED_GLASS_PANE, ChatColor.DARK_RED + "Fermer"));
 
 		super.addMenuBorder();
 	}

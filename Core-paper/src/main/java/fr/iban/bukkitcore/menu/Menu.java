@@ -21,105 +21,116 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public abstract class Menu implements InventoryHolder {
 
-    //Protected values that can be accessed in the menus
+	//Protected values that can be accessed in the menus
 	protected Player player;
-    protected Inventory inventory;
-    protected ItemStack FILLER_GLASS = makeItem(Material.WHITE_STAINED_GLASS_PANE, " ");
+	protected Inventory inventory;
+	protected ItemStack FILLER_GLASS = makeItem(Material.WHITE_STAINED_GLASS_PANE, " ");
 
-    //let each menu decide their name
-    public abstract String getMenuName();
-    
-    public abstract int getRows();
+	//let each menu decide their name
+	public abstract String getMenuName();
 
-    public int getSlots() {
-    	return getRows()*9;
-    }
+	public abstract int getRows();
 
-    //let each menu decide how the items in the menu will be handled when clicked
-    public abstract void handleMenu(InventoryClickEvent e);
-    
-    public void handleMenuClose(InventoryCloseEvent e) {
-    	
-    }
+	public int getSlots() {
+		return getRows()*9;
+	}
 
-    //let each menu decide what items are to be placed in the inventory menu
-    public abstract void setMenuItems();
-    
-    public Menu(Player player) {
-    	this.player = player;
-    }
+	//let each menu decide how the items in the menu will be handled when clicked
+	public abstract void handleMenu(InventoryClickEvent e);
 
-    //When called, an inventory is created and opened for the player
-    public void open() {
-        //The owner of the inventory created is the Menu itself,
-        // so we are able to reverse engineer the Menu object from the
-        // inventoryHolder in the MenuListener class when handling clicks
-        inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
+	public void handleMenuClose(InventoryCloseEvent e) {
 
-        //grab all the items specified to be used for this menu and add to inventory
-        this.setMenuItems();
+	}
 
-        //open the inventory for the player
-        player.openInventory(inventory);
-    }
+	//let each menu decide what items are to be placed in the inventory menu
+	public abstract void setMenuItems();
 
-    //Overridden method from the InventoryHolder interface
-    @Override
-    public Inventory getInventory() {
-        return inventory;
-    }
+	public Menu(Player player) {
+		this.player = player;
+	}
 
-    //Helpful utility method to fill all remaining slots with "filler glass"
-    public void setFillerGlass(){
-        for (int i = 0; i < getSlots(); i++) {
-            if (inventory.getItem(i) == null){
-                inventory.setItem(i, FILLER_GLASS);
-            }
-        }
-    }
+	//When called, an inventory is created and opened for the player
+	public void open() {
+		//The owner of the inventory created is the Menu itself,
+		// so we are able to reverse engineer the Menu object from the
+		// inventoryHolder in the MenuListener class when handling clicks
+		inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
 
-    public ItemStack makeItem(Material material, String displayName, String... lore) {
+		//grab all the items specified to be used for this menu and add to inventory
+		this.setMenuItems();
 
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(displayName);
+		//open the inventory for the player
+		player.openInventory(inventory);
+	}
 
-        itemMeta.setLore(Arrays.asList(lore));
-        item.setItemMeta(itemMeta);
+	//Overridden method from the InventoryHolder interface
+	@Override
+	public Inventory getInventory() {
+		return inventory;
+	}
 
-        return item;
-    }
-    
-    //Set the border for the menu
-    public void addMenuBorder(){
+	//Helpful utility method to fill all remaining slots with "filler glass"
+	public void setFillerGlass(){
+		for (int i = 0; i < getSlots(); i++) {
+			if (inventory.getItem(i) == null){
+				inventory.setItem(i, FILLER_GLASS);
+			}
+		}
+	}
 
-        for (int i = 0; i < 10; i++) {
-            if (inventory.getItem(i) == null) {
-                inventory.setItem(i, FILLER_GLASS);
-            }
-        }
+	public ItemStack makeItem(Material material, String displayName, String... lore) {
 
-        inventory.setItem(17, FILLER_GLASS);
-        inventory.setItem(18, FILLER_GLASS);
-        inventory.setItem(26, FILLER_GLASS);
-        inventory.setItem(27, FILLER_GLASS);
-        inventory.setItem(35, FILLER_GLASS);
-        inventory.setItem(36, FILLER_GLASS);
+		ItemStack item = new ItemStack(material);
+		ItemMeta itemMeta = item.getItemMeta();
+		itemMeta.setDisplayName(displayName);
 
-        for (int i = 44; i < 54; i++) {
-            if (inventory.getItem(i) == null) {
-                inventory.setItem(i, FILLER_GLASS);
-            }
-        }
-    }
-    
-    
-    public void fillWithGlass() {
+		itemMeta.setLore(Arrays.asList(lore));
+		item.setItemMeta(itemMeta);
+
+		return item;
+	}
+
+	//Set the border for the menu
+	public void addMenuBorder(){
+
+		for (int i = 0; i < 10; i++) {
+			if (inventory.getItem(i) == null) {
+				inventory.setItem(i, FILLER_GLASS);
+			}
+		}
+
+		if(getRows() >= 2) {
+			inventory.setItem(9, FILLER_GLASS);
+			inventory.setItem(17, FILLER_GLASS);
+		}
+		if(getRows() >= 3) {
+			inventory.setItem(18, FILLER_GLASS);
+			inventory.setItem(26, FILLER_GLASS);
+		}
+		if(getRows() >= 4) {
+			inventory.setItem(35, FILLER_GLASS);
+			inventory.setItem(27, FILLER_GLASS);
+		}
+
+		if(getRows() >= 5) {
+			inventory.setItem(36, FILLER_GLASS);
+			inventory.setItem(44, FILLER_GLASS);
+		}
+
+		for (int i = getSlots() - 9; i < getSlots(); i++) {
+			if (inventory.getItem(i) == null) {
+				inventory.setItem(i, FILLER_GLASS);
+			}
+		}
+	}
+
+
+	public void fillWithGlass() {
 		for (int i = inventory.firstEmpty() ; inventory.firstEmpty() != -1; i = inventory.firstEmpty()) {
 			inventory.setItem(i, FILLER_GLASS);
 		}
-    }
-    
+	}
+
 	protected List<String> splitString(String msg, int lineSize) {
 		List<String> res = new ArrayList<>();
 
