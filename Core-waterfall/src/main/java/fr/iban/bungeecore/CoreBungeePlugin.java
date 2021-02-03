@@ -62,7 +62,7 @@ public final class CoreBungeePlugin extends Plugin {
 		loadConfig();
 		
 		RedisAccess.init(new RedisCredentials(configuration.getString("redis.host"), configuration.getString("redis.password"), configuration.getInt("redis.port"), configuration.getString("redis.clientName")));
-    	DbAccess.initPool(new DbCredentials(configuration.getString("database.host"), configuration.getString("database.user"), configuration.getString("database.pass"), configuration.getString("database.dbname"), configuration.getInt("database.port")));
+    	DbAccess.initPool(new DbCredentials(configuration.getString("database.host"), configuration.getString("database.user"), configuration.getString("database.password"), configuration.getString("database.dbname"), configuration.getInt("database.port")));
 		DbTables.createTables();
 		
 		announceManager = new AnnoncesManager();
