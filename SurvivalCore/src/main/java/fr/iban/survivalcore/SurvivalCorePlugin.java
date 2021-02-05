@@ -17,6 +17,8 @@ public final class SurvivalCorePlugin extends JavaPlugin {
 
 	private static SurvivalCorePlugin instance;
 	
+	private static final String RANKUP_CHANNEL = "survie:rankup";
+	
 	public static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
     private static Economy econ = null;
 

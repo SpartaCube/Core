@@ -8,17 +8,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import fr.iban.bukkitcore.CoreBukkitPlugin;
+import fr.iban.survivalcore.SurvivalCorePlugin;
 import fr.iban.survivalcore.listeners.PluginMessageReceivedListener;
 
 public class PluginMessageHelper {
 	
 	private static final String BUNGEECORD_CHANNEL = "BungeeCord";
+	private static final String RANKUP_CHANNEL = "survie:rankup";
 
 	public static void registerChannels(Plugin plugin) {
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, BUNGEECORD_CHANNEL, new PluginMessageReceivedListener());
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, BUNGEECORD_CHANNEL);
-		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "survival:annonce");
-	    plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "survival:annonce", new PluginMessageReceivedListener());
+		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, RANKUP_CHANNEL);
+	    plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, RANKUP_CHANNEL, new PluginMessageReceivedListener());
 	}
 	
 	public static void receivePluginMessage(String channel, byte[] bytes) {
@@ -35,7 +37,7 @@ public class PluginMessageHelper {
 	    out.writeUTF("Rankup");
 	    out.writeUTF(player.getUniqueId().toString());
 	    out.writeUTF(group);
-	    player.sendPluginMessage(CoreBukkitPlugin.getInstance(), "survival:annonce", out.toByteArray());
+	    player.sendPluginMessage(SurvivalCorePlugin.getInstance(), RANKUP_CHANNEL, out.toByteArray());
 	}
 	
 	// public static void sendPlayerToServer(Player player , String targetName) {

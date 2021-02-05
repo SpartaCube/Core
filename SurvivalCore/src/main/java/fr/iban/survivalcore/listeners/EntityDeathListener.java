@@ -9,6 +9,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import fr.iban.survivalcore.utils.PluginMessageHelper;
+
 public class EntityDeathListener implements Listener {
 	
 	@EventHandler
@@ -109,6 +111,7 @@ public class EntityDeathListener implements Listener {
 
         if (message != null)
             e.setDeathMessage(message);
+            PluginMessageHelper.sendRankUp(player, message);
         
 	}
 
