@@ -111,6 +111,7 @@ public class EntityDeathListener implements Listener {
 
         if (message != null)
             e.setDeathMessage(message);
+            PluginMessageHelper.sendRankUp(player, message);
         
 	}
 
