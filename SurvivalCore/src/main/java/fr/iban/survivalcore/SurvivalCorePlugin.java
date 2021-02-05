@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.earth2me.essentials.Essentials;
 
-import fr.iban.bukkitcore.utils.PluginMessageHelper;
+import fr.iban.survivalcore.utils.PluginMessageHelper;
 import net.milkbowl.vault.economy.Economy;
 
 public final class SurvivalCorePlugin extends JavaPlugin {
@@ -16,9 +16,7 @@ public final class SurvivalCorePlugin extends JavaPlugin {
 	 */
 
 	private static SurvivalCorePlugin instance;
-	
-	private static final String RANKUP_CHANNEL = "survie:rankup";
-	
+		
 	public static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
     private static Economy econ = null;
 
@@ -27,8 +25,9 @@ public final class SurvivalCorePlugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-        PluginMessageHelper.registerChannels(this);
 		instance = this;
+        PluginMessageHelper.registerChannels(this);
+
 		
 		saveDefaultConfig();
 		this.registrar = new Registrar(this);
