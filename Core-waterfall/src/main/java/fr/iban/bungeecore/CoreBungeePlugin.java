@@ -47,6 +47,8 @@ import net.md_5.bungee.config.YamlConfiguration;
 public final class CoreBungeePlugin extends Plugin {
 	
     public static HashMap<ProxiedPlayer, ProxiedPlayer> r = new HashMap<>();
+    
+	private static final String RANKUP_CHANNEL = "survie:rankup";
 
 	private static CoreBungeePlugin instance;
 	private Configuration configuration;
@@ -70,7 +72,7 @@ public final class CoreBungeePlugin extends Plugin {
 		teleportManager = new TeleportManager(this);
 
 		getProxy().registerChannel("proxy:chat");
-		getProxy().registerChannel("survival:annonce");
+		getProxy().registerChannel(RANKUP_CHANNEL);
 		getProxy().registerChannel("proxy:annonce");
 		
 		registerEvents(
@@ -120,7 +122,7 @@ public final class CoreBungeePlugin extends Plugin {
 		saveConfig();
 		getProxy().unregisterChannel("proxy:chat");
 		getProxy().unregisterChannel("proxy:annonce");
-		getProxy().unregisterChannel("survival:annonce");
+		getProxy().unregisterChannel(RANKUP_CHANNEL);
 	}
 
 	public void registerEvents(Listener... listeners) {
