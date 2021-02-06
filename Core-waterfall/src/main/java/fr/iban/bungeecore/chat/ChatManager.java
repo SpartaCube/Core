@@ -94,10 +94,11 @@ public class ChatManager {
 		ProxyServer.getInstance().getPlayers().forEach( p -> {
 			if(p.hasPermission("spartacube.staffchat")) { 
 				if (!StaffChatToggle.sc.contains(p)) {
-					p.sendMessage(TextComponent.fromLegacyText("§8[§c§l"+ StringUtil.capitalize(sender.getServer().getInfo().getName()) +"§8] §6§lStaff §e"+sender.getName()+" §8➤ §6§l"+ message));
+					p.sendMessage(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "" , "§8[§3§lStaff§8] " + "§l" + getPrefix(sender) + "§l" + sender.getName() + " §8➤ " + getSuffix(sender) + message))));
 				}
 			}
 		});
+		ProxyServer.getInstance().getLogger().info(translateColors(HexColor.translateHexColorCodes("#", "" , "§8[§3§lStaff§8] " + "§l" + getPrefix(sender) + "§l" + sender.getName() + " §8➤ " + getSuffix(sender) + message)));
 	}
 
 	public void toggleChat(CommandSender sender) {
