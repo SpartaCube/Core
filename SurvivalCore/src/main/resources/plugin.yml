@@ -19,6 +19,7 @@ commands:
   stoptuto:
   boutique:
   level:
+    aliases: [niveau]
   addhomes:
   pvp:
   grades:
