@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import fr.iban.common.data.AccountProvider;
 import fr.iban.spartacube.data.Account;
@@ -58,5 +59,18 @@ public class XPProvider {
 		}
 		return amountLastTenMin;
 	}
+
+//	public static int getBoost(Player player){
+//		int boost = 0;
+//		for (PermissionAttachmentInfo perms : player.getEffectivePermissions()) {
+//			if (perms.getPermission().startsWith("boost")) {
+//				int i = Integer.parseInt(perms.getPermission().split("boost")[1]);
+//				if(i > boost) {
+//					boost = i;
+//				}
+//			}
+//		}
+//		return boost;
+//	}
 
 }

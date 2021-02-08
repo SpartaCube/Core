@@ -1,8 +1,12 @@
 package fr.iban.spartacube.data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import fr.iban.common.data.Boost;
 
 public class Account {
 
@@ -24,6 +28,7 @@ public class Account {
 	private Set<Integer> blackListedAnnounces = new HashSet<>();
 	private boolean pvp = false;
 	private String ip;
+	private List<Boost> boosts;
 
 	public Account(UUID uuid) {
 		this.uuid = uuid;
@@ -128,5 +133,16 @@ public class Account {
 	
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public List<Boost> getBoosts() {
+		if(boosts == null) {
+			boosts = new ArrayList<>();
+		}
+		return boosts;
+	}
+	
+	public void setBoosts(List<Boost> boosts) {
+		this.boosts = boosts;
 	}
 }

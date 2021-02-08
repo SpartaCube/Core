@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -56,10 +58,10 @@ public class AccountProvider {
 
 						long lastseen = rs.getLong("lastseen");
 						account.setLastSeen(lastseen);
-						
+
 						boolean allowpvp = rs.getBoolean("allowpvp");
 						account.setPvp(allowpvp);
-						
+
 						short maxclaims = rs.getShort("maxclaims");
 						account.setMaxClaims(maxclaims);
 					}else {
@@ -68,6 +70,7 @@ public class AccountProvider {
 				}
 			}
 			account.setBlackListedAnnounces(getBlackListedAnnouncesFromDB(connection));
+			account.setBoosts(getBoostsFromDB(connection));
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}		
@@ -86,6 +89,7 @@ public class AccountProvider {
 				ps.executeUpdate();
 			}
 			saveBlackListedAnnouncesToDB(account.getBlackListedAnnounces(), connection);
+			saveBoostsToDB(connection, account.getBoosts());
 			if(account.getIp() != null) {
 				saveIpToDB(account.getIp(), connection);
 			}
@@ -107,7 +111,7 @@ public class AccountProvider {
 		RBucket<Account> accountBukket = client.getBucket(key);
 		accountBukket.set(account);
 	}
-	
+
 	public void removeAccountFromRedis() {
 		RedissonClient client = redisAccess.getRedissonClient();
 		String key = REDIS_KEY+uuid.toString();
@@ -117,23 +121,23 @@ public class AccountProvider {
 
 	public Set<Integer> getBlackListedAnnouncesFromDB(Connection connection) throws SQLException{
 		Set<Integer> announces = new HashSet<>();
-			try(PreparedStatement ps = 
-					connection.prepareStatement(
-							"SELECT idAnnonce "
-									+ "FROM sc_players, sc_annonces_blacklist "
-									+ "WHERE uuid = ? "
-									+ "AND sc_players.id=sc_annonces_blacklist.id"))
-			{
-				ps.setString(1, uuid.toString());
-				try(ResultSet rs = ps.executeQuery()){
-					while(rs.next()) {
-						announces.add(rs.getInt("idAnnonce"));
-					}
+		try(PreparedStatement ps = 
+				connection.prepareStatement(
+						"SELECT idAnnonce "
+								+ "FROM sc_players, sc_annonces_blacklist "
+								+ "WHERE uuid = ? "
+								+ "AND sc_players.id=sc_annonces_blacklist.id"))
+		{
+			ps.setString(1, uuid.toString());
+			try(ResultSet rs = ps.executeQuery()){
+				while(rs.next()) {
+					announces.add(rs.getInt("idAnnonce"));
 				}
 			}
+		}
 		return announces;
 	}
-	
+
 	public void saveBlackListedAnnouncesToDB(Set<Integer> blacklist, Connection connection) throws SQLException {
 		final String INSERT_SQL = "INSERT INTO sc_annonces_blacklist(id, idAnnonce) VALUES ((SELECT id FROM sc_players WHERE uuid=?), ?) ON DUPLICATE KEY UPDATE id=VALUES(id);";
 		for(int idA : blacklist) {
@@ -144,7 +148,7 @@ public class AccountProvider {
 			ps.close();
 		}
 	}
-	
+
 	public void saveIpToDB(String ip, Connection connection) throws SQLException {
 		final String INSERT_SQL = "INSERT INTO sc_players_ip(id, ip) VALUES ((SELECT id FROM sc_players WHERE uuid=?), HEX(INET6_ATON(?))) ON DUPLICATE KEY UPDATE id=VALUES(id);";
 		PreparedStatement ps = connection.prepareStatement(INSERT_SQL);
@@ -152,6 +156,35 @@ public class AccountProvider {
 		ps.setString(2, ip);
 		ps.executeUpdate();
 		ps.close();
+	}
+
+	public void saveBoostsToDB(Connection connection, List<Boost> boosts) throws SQLException {
+		final String INSERT_SQL = "INSERT INTO sc_boosts(id, owner, end, value) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=VALUES(id);";
+		for(Boost boost : boosts) {
+			PreparedStatement ps = connection.prepareStatement(INSERT_SQL);
+			ps.setInt(1, boost.getId());
+			ps.setString(2, uuid.toString());
+			ps.setLong(3, boost.getEnd());
+			ps.setInt(4, boost.getValue());
+			ps.executeUpdate();
+			ps.close();
+		}
+	}
+
+	public List<Boost> getBoostsFromDB(Connection connection) throws SQLException{
+		List<Boost> boosts = new ArrayList<>();
+		try(PreparedStatement ps = 
+				connection.prepareStatement(
+						"SELECT * FROM sc_boosts WHERE owner = ? "
+						)){
+			ps.setString(1, uuid.toString());
+			try(ResultSet rs = ps.executeQuery()){
+				while(rs.next()) {
+					boosts.add(new Boost(rs.getInt("id"), rs.getInt("value"), rs.getLong("end")));
+				}
+			}
+		}
+		return boosts;
 	}
 
 	public boolean hasPlayedBefore() {

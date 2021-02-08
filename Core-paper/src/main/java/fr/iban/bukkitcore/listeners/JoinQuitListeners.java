@@ -1,6 +1,7 @@
 package fr.iban.bukkitcore.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -28,7 +29,11 @@ public class JoinQuitListeners implements Listener {
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
+		Player player = e.getPlayer();
 		e.setQuitMessage(null);
+		if(plugin.getTextInputs().containsKey(player.getUniqueId())) {
+			plugin.getTextInputs().remove(player.getUniqueId());
+		}
 	}
 
 }

@@ -10,6 +10,7 @@ public class DbTables {
 		createplayersTable();
 		createAnnounceBLTable();
 		createIpTable();
+		createBoostsTable();
 	}
 
 	/*
@@ -30,6 +31,16 @@ public class DbTables {
 					"  CONSTRAINT UC_sc_players_uuid" +
 					"  UNIQUE (uuid)" +
 					") engine = InnoDB;");
+	}
+	
+	private static void createBoostsTable() {
+		createTable("CREATE TABLE IF NOT EXISTS sc_boosts ("
+				+ " id int auto_increment PRIMARY KEY,"
+				+ " owner varchar(255), "
+				+ " end bigint, "
+				+ " value int "
+				+ ");"
+				);
 	}
 
 	private static void createAnnounceBLTable() {
