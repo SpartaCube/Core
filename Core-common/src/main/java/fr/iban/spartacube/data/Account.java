@@ -145,4 +145,17 @@ public class Account {
 	public void setBoosts(List<Boost> boosts) {
 		this.boosts = boosts;
 	}
+	
+	public int getTotalBoost() {
+		int somme = 0;
+		for(Boost boost : boosts) {
+			if(boost.getEnd() > System.currentTimeMillis()) {
+				somme += boost.getValue();
+			}else {
+				//TODO remove from db
+				boosts.remove(boost);
+			}
+		}
+		return somme > 100 ? 100 : somme;
+	}
 }

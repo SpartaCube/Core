@@ -9,6 +9,7 @@
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/commands/ActionBarCMD.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/listeners/CommandListener.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/LuckPermsUtils.java
+/home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/commands/BoostCMD.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/listeners/PlayerFishListener.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/papi/SpartaCubePlaceHolder.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/Lang.java

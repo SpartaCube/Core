@@ -35,10 +35,11 @@ public class DbTables {
 	
 	private static void createBoostsTable() {
 		createTable("CREATE TABLE IF NOT EXISTS sc_boosts ("
-				+ " id int auto_increment PRIMARY KEY,"
+				+ " id int,"
 				+ " owner varchar(255), "
 				+ " end bigint, "
-				+ " value int "
+				+ " value int, "
+				+ " CONSTRAINT PRIMARY KEY (id, owner)"
 				+ ");"
 				);
 	}
