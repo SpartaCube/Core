@@ -1,5 +1,6 @@
 package fr.iban.survivalcore.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,8 +18,6 @@ public class SimpleCommands implements CommandExecutor {
 		if(sender instanceof Player) {
 
 			Player player = (Player)sender;
-			AccountProvider ap = new AccountProvider(player.getUniqueId());
-			Account account = ap.getAccount();
 
 			switch (label) {
 			case "site":
@@ -48,13 +47,30 @@ public class SimpleCommands implements CommandExecutor {
 				player.chat("/st quit");
 				break;
 			case "pvp":
-				account.togglePVP();
-				if(account.isPvp()) {
-					player.sendMessage("§aPVP activé.");
-				}else {
-					player.sendMessage("§cPVP desactivé.");
+				if(args.length == 0) {
+					AccountProvider ap = new AccountProvider(player.getUniqueId());
+					Account account = ap.getAccount();
+					account.togglePVP();
+					if(account.isPvp()) {
+						player.sendMessage("§aPVP activé.");
+					}else {
+						player.sendMessage("§cPVP desactivé.");
+					}
+					ap.sendAccountToRedis(account);
+				}else if(args.length == 1) {
+					Player target = Bukkit.getPlayer(args[0]);
+					if(target != null) {
+						AccountProvider ap = new AccountProvider(target.getUniqueId());
+						Account account = ap.getAccount();
+						account.togglePVP();
+						if(account.isPvp()) {
+							player.sendMessage("§aPVP de "+ target.getName() +" activé.");
+						}else {
+							player.sendMessage("§cPVP "+ target.getName() +" desactivé.");
+						}
+						ap.sendAccountToRedis(account);
+					}
 				}
-				ap.sendAccountToRedis(account);
 				break;
 			default:
 				break;

@@ -17,7 +17,9 @@ public enum Head {
 	OAK_PLUS("2336"),
 	GLOBE("2981"),
 	FIREBALL("6385"),
-	TNTCREEP("16044");
+	TNTCREEP("16044"),
+	OAK_L("175"),
+	OAK_INFO("20774")
 	;
 	
 	private static HeadDatabaseAPI api;

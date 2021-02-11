@@ -6,7 +6,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import fr.iban.common.data.AccountProvider;
 import fr.iban.spartacube.data.Account;
@@ -19,9 +18,13 @@ public class XPProvider {
 		return CompletableFuture.runAsync(() -> {
 			AccountProvider ap = new AccountProvider(player.getUniqueId());
 			Account account = ap.getAccount();
+			
 			if(applynerf && checkLast(player, 6) > 12) {
 				return;
 			}
+			
+			//On log l'xp ajouté
+			getXPLogs(player).put(System.currentTimeMillis(), amount);
 
 			short levelbefore = account.getLevel();
 			account.addExp(amount > 12 ? 12 : amount);
@@ -33,9 +36,6 @@ public class XPProvider {
 				LevelUtils.sendLevelUpReward(account, levelbefore, levelafter);
 
 			ap.sendAccountToRedis(account);
-
-			//On log l'xp ajouté
-			getXPLogs(player).put(System.currentTimeMillis(), amount);
 		});
 	}
 
