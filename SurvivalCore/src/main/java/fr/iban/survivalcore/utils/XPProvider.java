@@ -27,7 +27,8 @@ public class XPProvider {
 			getXPLogs(player).put(System.currentTimeMillis(), amount);
 
 			short levelbefore = account.getLevel();
-			account.addExp(amount > 12 ? 12 : amount);
+			int multiplieur = 1+(account.getTotalBoost()/100);
+			account.addExp(amount*multiplieur > 12*multiplieur ? 12*multiplieur : amount*multiplieur);
 			short levelafter = account.getLevel();
 
 			player.sendActionBar(LevelUtils.getLevelProgressBar(account, 20));
@@ -59,18 +60,5 @@ public class XPProvider {
 		}
 		return amountLastTenMin;
 	}
-
-//	public static int getBoost(Player player){
-//		int boost = 0;
-//		for (PermissionAttachmentInfo perms : player.getEffectivePermissions()) {
-//			if (perms.getPermission().startsWith("boost")) {
-//				int i = Integer.parseInt(perms.getPermission().split("boost")[1]);
-//				if(i > boost) {
-//					boost = i;
-//				}
-//			}
-//		}
-//		return boost;
-//	}
 
 }
