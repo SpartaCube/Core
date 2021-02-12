@@ -2,6 +2,7 @@ package fr.iban.spartacube.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -148,12 +149,14 @@ public class Account {
 	
 	public int getTotalBoost() {
 		int somme = 0;
-		for(Boost boost : boosts) {
+		Iterator<Boost> it = boosts.iterator();
+		while(it.hasNext()) {
+			Boost boost = it.next();
 			if(boost.getEnd() > System.currentTimeMillis()) {
 				somme += boost.getValue();
 			}else {
 				//TODO remove from db
-				boosts.remove(boost);
+				it.remove();
 			}
 		}
 		return somme > 100 ? 100 : somme;
