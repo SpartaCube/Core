@@ -1,5 +1,7 @@
 package fr.iban.bukkitcore.listeners;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,10 +27,13 @@ public class PlayerMoveListener implements Listener {
 
 		if (x == 0 && y == 0 && z == 0) return;
 
-		if(isTeleportWaiting(player)) {
-			redis.getMap("PendingTeleports").fastPut(player.getUniqueId(), Boolean.FALSE);
-			player.sendMessage("§cVous avez bougé, téléportation annulée.");
-		}
+
+		CompletableFuture.runAsync(() -> {
+			if(isTeleportWaiting(player)) {
+				redis.getMap("PendingTeleports").fastPut(player.getUniqueId(), Boolean.FALSE);
+				player.sendMessage("§cVous avez bougé, téléportation annulée.");
+			}
+		});
 	}
 
 	private boolean isTeleportWaiting(Player player) {
