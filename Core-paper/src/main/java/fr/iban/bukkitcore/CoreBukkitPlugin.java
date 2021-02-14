@@ -13,7 +13,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
 import fr.iban.bukkitcore.commands.AnnonceCMD;
+import fr.iban.bukkitcore.commands.BanHammerCMD;
+import fr.iban.bukkitcore.commands.FeedCMD;
 import fr.iban.bukkitcore.commands.PacketLogCMD;
+import fr.iban.bukkitcore.commands.RepairCMD;
 import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
 import fr.iban.bukkitcore.commands.SurvieCMD;
@@ -39,14 +42,32 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 	private String serverName;
 	private boolean packetlogging = false;
 	private Map<UUID, TextCallback> textInputs;
+
+	  
+	public static String[] lores;
+	  
+	public static boolean blockall;
+	  
+	private boolean blockanvil;
+	  
+	private String msg;
+	  
+	private int delay;
 	
 	private Economy econ = null;
 
     @Override
     public void onEnable() {
     	instance = this;
+	    String loresraw = getConfig().getString("lores");
+	    blockall = getConfig().getBoolean("blockalllores");
+	    this.blockanvil = getConfig().getBoolean("blockanvilrepair");
+	    this.msg = getConfig().getString("message");
+	    this.delay = Integer.parseInt(getConfig().getString("delay"));
     	saveDefaultConfig();
-    	
+		if (loresraw.contains(";")) {
+		  lores = loresraw.split(";"); 
+		}
     	
     	
     	DbAccess.initPool(new DbCredentials(getConfig().getString("database.host"), getConfig().getString("database.user"), getConfig().getString("database.password"), getConfig().getString("database.dbname"), getConfig().getInt("database.port")));
@@ -68,7 +89,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         getCommand("annonce").setExecutor(new AnnonceCMD(this));
         getCommand("survie").setExecutor(new SurvieCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
+        getCommand("banhammer").setExecutor(new BanHammerCMD(this));
         getCommand("packetlog").setExecutor(new PacketLogCMD(this));
+        getCommand("feed").setExecutor(new FeedCMD(this));
+        getCommand("repair").setExecutor(new RepairCMD(this));
         setupEconomy();
         
         PluginMessageHelper.registerChannels(this);
@@ -155,6 +179,21 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 
 	public boolean isPacketlogging() {
 		return packetlogging;
+	}
+	
+	public String getMSG() {
+		return msg;
+	}
+	
+	public boolean getBlockAnvil() {
+		return blockanvil;
+	}
+	public String[] getLores() {
+		return lores;
+	}
+	
+	public int getDelay() {
+		return delay;
 	}
 
 	public void setPacketlogging(boolean packetlogging) {

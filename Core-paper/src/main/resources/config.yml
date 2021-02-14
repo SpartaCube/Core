@@ -10,3 +10,8 @@ database:
   user: user
   dbname: dbname
   password: password
+  
+blockalllores: true
+lores: Mine du 3x3
+message: Cette item n'est pas réparable.
+delay: 60

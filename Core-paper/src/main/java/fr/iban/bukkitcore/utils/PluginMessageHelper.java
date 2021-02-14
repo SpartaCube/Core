@@ -19,6 +19,7 @@ public class PluginMessageHelper {
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, BUNGEECORD_CHANNEL);
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "proxy:chat");
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "proxy:annonce");
+		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "proxy:ban");
 	}
 	
 	public static void receivePluginMessage(String channel, byte[] bytes) {
@@ -49,6 +50,14 @@ public class PluginMessageHelper {
 	    out.writeUTF(player.getUniqueId().toString());
 	    out.writeUTF(message);
 	    player.sendPluginMessage(CoreBukkitPlugin.getInstance(), "proxy:chat", out.toByteArray());
+	}
+	
+	public static void sendBanHammer(Player player , String message) {
+	    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+	    out.writeUTF("Ban");
+	    out.writeUTF(player.getName());
+	    out.writeUTF(message);
+	    player.sendPluginMessage(CoreBukkitPlugin.getInstance(), "proxy:ban", out.toByteArray());
 	}
 	
 	public static void sendAnnonce(Player player , String annonce) {

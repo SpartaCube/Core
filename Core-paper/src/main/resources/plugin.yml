@@ -11,3 +11,6 @@ commands:
   ressource:
   packetlog:
   annonce:
+  banhammer:
+  feed:
+  repair:
