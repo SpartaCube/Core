@@ -1,0 +1,17 @@
+redis:
+  host: 172.18.0.1
+  port: 6379
+  password: null
+  clientName: Serveur_mc
+
+database:
+  host: 172.18.0.1
+  port: 3306
+  user: user
+  dbname: dbname
+  password: password
+  
+blockalllores: true
+lores: Mine du 3x3
+message: Cette item n'est pas réparable.
+delay: 60
