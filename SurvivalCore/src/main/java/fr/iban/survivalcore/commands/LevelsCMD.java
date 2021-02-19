@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import fr.iban.common.data.AccountProvider;
 import fr.iban.spartacube.data.Account;
 import fr.iban.survivalcore.utils.HexColor;
+import fr.iban.survivalcore.utils.LevelUtils;
 
 public class LevelsCMD implements CommandExecutor {
 
@@ -28,10 +29,37 @@ public class LevelsCMD implements CommandExecutor {
 			}else {
 				sender.sendMessage("§cCe joueur n'est pas en ligne.");
 			}
+		}else if(args.length > 1 && sender.hasPermission("levels.admin")){
+			//level set <joueur> nombre
+			if(args.length == 3 && args[0].equalsIgnoreCase("set")) {
+				Player target = Bukkit.getPlayer(args[1]);
+				if(target != null) {
+					int nombre = Integer.parseInt(args[2]);
+					AccountProvider ap = new AccountProvider(target.getUniqueId());
+					Account account = ap.getAccount();
+					account.setExp(LevelUtils.getLevelExp(nombre));
+					ap.sendAccountToRedis(account);
+					sender.sendMessage("§a"+target.getName() + " est maintenant niveau " + nombre);
+				}else {
+					sender.sendMessage("§cCe joueur n'est pas en ligne !");
+				}
+			}
+			if(args.length == 3 && args[0].equalsIgnoreCase("addxp")) {
+				Player target = Bukkit.getPlayer(args[1]);
+				if(target != null) {
+					int nombre = Integer.parseInt(args[2]);
+					AccountProvider ap = new AccountProvider(target.getUniqueId());
+					Account account = ap.getAccount();
+					account.addExp(nombre);
+					ap.sendAccountToRedis(account);
+					sender.sendMessage("§a"+target.getName() + " a reçu" + nombre + " xp.");
+				}else {
+					sender.sendMessage("§cCe joueur n'est pas en ligne !");
+				}
+			}
 		}
 		return false;
 	}
-	
-	
+
 
 }

@@ -89,8 +89,14 @@ public class LevelUtils {
 	private static void promoteAndBroadcast(Player player, String group) {
 		if(!player.hasPermission("group."+group.toLowerCase())) {
 			player.sendMessage(HexColor.FLAT_BLUE_GREEN .getColor()+ "- Promotion au grade " + group);
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " group add "+group);
-			PluginMessageHelper.sendRankUp(player, group);			
+			new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " group add "+group);
+					PluginMessageHelper.sendRankUp(player, group);					
+				}
+			}.runTask(SurvivalCorePlugin.getInstance());
 		}
 	}
 	
