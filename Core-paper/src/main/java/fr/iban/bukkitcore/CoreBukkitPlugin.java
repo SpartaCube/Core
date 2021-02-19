@@ -45,8 +45,6 @@ public final class CoreBukkitPlugin extends JavaPlugin {
     	instance = this;
     	saveDefaultConfig();
     	
-    	
-    	
     	DbAccess.initPool(new DbCredentials(getConfig().getString("database.host"), getConfig().getString("database.user"), getConfig().getString("database.password"), getConfig().getString("database.dbname"), getConfig().getInt("database.port")));
         RedisAccess.init(new RedisCredentials(getConfig().getString("redis.host"), getConfig().getString("redis.password"), getConfig().getInt("redis.port"), getConfig().getString("redis.clientName")));
         

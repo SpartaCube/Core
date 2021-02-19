@@ -40,16 +40,6 @@ public class Registrar {
 		registerEvent(new VillagerEvents());
 		registerEvent(new RaidTriggerListener());
 		registerEvent(new PortalListeners());
-		//registerEvent(new SpawnListeners());
-//		registerEvent(new BukkitTabLoadListener());
-//
-//		
-//		TABAPI.registerPlayerPlaceholder(new PlayerPlaceholder("%niveau%", 3000) {
-//			@Override
-//			public String get(TabPlayer p) {
-//				return LevelUtils.getLevelProgressBar(PlayerManager.get(p.getUniqueId()), 20);
-//			}
-//		});
 		
 		new SpartaCubePlaceHolder(main).register();
 		

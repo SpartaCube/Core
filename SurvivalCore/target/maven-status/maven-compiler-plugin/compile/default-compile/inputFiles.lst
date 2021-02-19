@@ -28,6 +28,7 @@
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/XPProvider.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/listeners/PortalListeners.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/menu/Menu.java
+/home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/MoneySync.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/listeners/SpawnListeners.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/LevelUtils.java
 /home/iban/IdeaProjects/Plugins/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/menu/PaginatedMenu.java

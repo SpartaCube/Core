@@ -38,6 +38,7 @@ public final class SurvivalCorePlugin extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
 	}
 	
 	@Override

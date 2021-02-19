@@ -6,7 +6,6 @@ import fr.iban.bungeecore.commands.StaffChatToggle;
 import fr.iban.bungeecore.utils.HexColor;
 import fr.iban.common.data.AccountProvider;
 import fr.iban.spartacube.data.Account;
-import jodd.util.StringUtil;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -56,7 +55,7 @@ public class ChatManager {
 			} 
 		}
 
-		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
+		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " + getSuffix(player) + getPrefix(player) + " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
 	}
 
 	public void sendAnnonce(UUID uuid, String annonce) {
@@ -94,7 +93,7 @@ public class ChatManager {
 		ProxyServer.getInstance().getPlayers().forEach( p -> {
 			if(p.hasPermission("spartacube.staffchat")) { 
 				if (!StaffChatToggle.sc.contains(p)) {
-					p.sendMessage(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "" , "§8[§3§lStaff§8] " + "§l" + getPrefix(sender) + "§l" + sender.getName() + " §8➤ " + getSuffix(sender) + message))));
+					p.sendMessage(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "" , "§8[§3§lStaff§8] " + "§l" + getSuffix(sender) + getPrefix(sender) + "§l" + sender.getName() + " §8➤ " + getSuffix(sender) +"§l" + message))));
 				}
 			}
 		});
