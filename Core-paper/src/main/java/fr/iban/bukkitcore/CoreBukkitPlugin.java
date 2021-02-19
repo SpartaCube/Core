@@ -13,7 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
 import fr.iban.bukkitcore.commands.AnnonceCMD;
-import fr.iban.bukkitcore.commands.PacketLogCMD;
 import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
 import fr.iban.bukkitcore.commands.SurvieCMD;
@@ -37,7 +36,6 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 	
 	private static CoreBukkitPlugin instance;
 	private String serverName;
-	private boolean packetlogging = false;
 	private Map<UUID, TextCallback> textInputs;
 	
 	private Economy econ = null;
@@ -68,7 +66,6 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         getCommand("annonce").setExecutor(new AnnonceCMD(this));
         getCommand("survie").setExecutor(new SurvieCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
-        getCommand("packetlog").setExecutor(new PacketLogCMD(this));
         setupEconomy();
         
         PluginMessageHelper.registerChannels(this);
@@ -83,36 +80,12 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         		break;
         	}
         }
-        
-//        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this,
-//                ListenerPriority.NORMAL) {
-//            @Override
-//            public void onPacketReceiving(PacketEvent event) {
-//            	if(isPacketlogging()) {
-//            		System.out.println(event.getPacketType().name());
-//            		for (Player player : Bukkit.getOnlinePlayers()) {
-//						if(player.hasPermission("spartacube.packetlog")) {
-//							player.sendMessage(event.getPacketType().getSender().name() + " -> " + event.getPacketType().name());
-//						}
-//					}
-//            	}
-//            }
-//        });
-        
-//        new BukkitRunnable() {
-//			
-//			@Override
-//			public void run() {
-//				RedisAccess.getInstance().getRedissonClient().getTopic("test").publish("blblbl");
-//				Bukkit.broadcastMessage("pub");
-//			}
-//		}.runTaskTimer(this, 10, 1);
     }
 
     @Override
     public void onDisable() {
         RedisAccess.close();
-        DbAccess.closePool();;
+        DbAccess.closePool();
     }
     
 	private void registerListeners(Listener... listeners) {
@@ -151,14 +124,6 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 
 	public void setServerName(String serverName) {
 		this.serverName = serverName;
-	}
-
-	public boolean isPacketlogging() {
-		return packetlogging;
-	}
-
-	public void setPacketlogging(boolean packetlogging) {
-		this.packetlogging = packetlogging;
 	}
 
 	public Map<UUID, TextCallback> getTextInputs() {

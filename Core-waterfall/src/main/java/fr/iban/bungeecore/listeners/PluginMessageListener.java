@@ -13,7 +13,6 @@ import net.md_5.bungee.event.EventHandler;
 
 public class PluginMessageListener implements Listener {
 	
-	private static final String RANKUP_CHANNEL = "survie:rankup";
 	
 	@EventHandler
 	public void onPluginMessage(PluginMessageEvent e) {
@@ -39,16 +38,14 @@ public class PluginMessageListener implements Listener {
 					CoreBungeePlugin.getInstance().getChatManager().sendAnnonce(uuid, message);
 				}
 			}
-		}else if(e.getTag().equals(RANKUP_CHANNEL)) {
+		}else if(e.getTag().equals("survie:rankup")) {
 			ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
 			String sub = in.readUTF();
 			
-			if(sub.equals("Rankup")) {
-				if(e.getReceiver() instanceof ProxiedPlayer) {
+			if(sub.equals("Rankup") && e.getReceiver() instanceof ProxiedPlayer) {
 					UUID uuid = UUID.fromString(in.readUTF());
 					String grade = in.readUTF();
 					CoreBungeePlugin.getInstance().getChatManager().sendRankup(uuid, grade);
-				}
 			}
 		}
 	}

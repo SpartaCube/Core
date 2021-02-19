@@ -28,18 +28,18 @@ public class ChatManager {
 		Account account = new AccountProvider(player.getUniqueId()).getAccount();
 		String msg = message;
 
-		
+
 		if(player.hasPermission("spartacube.colors")) {
 			msg = translateColors(HexColor.translateHexColorCodes("#", "", msg));
 		}
-		
+
 
 
 		if(message.startsWith("$") && player.hasPermission("spartacube.staffchat")) {
 			sendStaffMessage(player, msg.substring(1));
 			return;
 		}
-		
+
 
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
 			return;
@@ -49,13 +49,13 @@ public class ChatManager {
 			String player1 = p.getName();
 			String player2 = "§6" + "@" + player1 + "§r";
 			String actionbar = "§6" + player.getName() + " vous a mentionné dans le tchat";
-			
+
 			if (message.toLowerCase().contains(player1.toLowerCase())) {
 				msg = msg.replace(player1, player2);
 				p.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(actionbar));
 			} 
 		}
-		
+
 		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " +getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
 	}
 
@@ -69,13 +69,13 @@ public class ChatManager {
 		}
 		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #7bc8fe§l" + msg))));
 	}
-	
+
 	public void sendRankup(UUID uuid, String group) {
 		ProxyServer server = ProxyServer.getInstance();
 		ProxiedPlayer player = server.getPlayer(uuid);
-		
-	    	ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.FLAT_PINK.getColor() + player.getName() + " a été promu " + group + "!"));
-	    
+
+		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(HexColor.FLAT_PINK.getColor() + player.getName() + " a été promu " + group + "!"));
+
 	}
 
 	public boolean isMuted() {

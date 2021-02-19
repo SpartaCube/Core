@@ -1,90 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>fr.iban.spartacube</groupId>
-		<artifactId>Core</artifactId>
-		<version>1.0</version>
-	</parent>
+    <groupId>fr.iban.spartacube</groupId>
+    <artifactId>Core</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
 
-	<artifactId>Core-paper</artifactId>
-	<packaging>jar</packaging>
+    <properties>
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<name>Core Paper</name>
+    <build>
+      <defaultGoal>clean package</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.2.4</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-			</plugin>
-		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
-
-	<repositories>
-		<repository>
-			<id>papermc-repo</id>
-			<url>https://papermc.io/repo/repository/maven-public/</url>
-		</repository>
-		<repository>
-			<id>sonatype</id>
-			<url>https://oss.sonatype.org/content/groups/public/</url>
-		</repository>
-		<repository>
-			<id>jitpack</id>
-			<url>https://jitpack.io/</url>
-		</repository>
-		<!-- HeadDatabase-API -->
-		<repository>
-			<id>HeadDatabase-API</id>
-			<url>https://mvn.intellectualsites.com/content/repositories/thirdparty/</url>
-		</repository>
-	</repositories>
-
-	<dependencies>
-		<dependency>
-			<groupId>com.destroystokyo.paper</groupId>
-			<artifactId>paper-api</artifactId>
-			<version>1.16.4-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>fr.iban.spartacube</groupId>
-			<artifactId>Core-common</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.dmulloy2</groupId>
-			<artifactId>ProtocolLib</artifactId>
-			<version>4.5.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.MilkBowl</groupId>
-			<artifactId>VaultAPI</artifactId>
-			<version>1.7</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- HeadDatabase-API -->
-		<dependency>
-			<groupId>me.arcaniax</groupId>
-			<artifactId>HeadDatabase-API</artifactId>
-			<version>1.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+    <modules>
+        <module>Core-common</module>
+        <module>Core-paper</module>
+        <module>Core-waterfall</module>
+        <module>SurvivalCore</module>
+    </modules>
 </project>

@@ -90,13 +90,7 @@ public class LevelUtils {
 		if(!player.hasPermission("group."+group.toLowerCase())) {
 			player.sendMessage(HexColor.FLAT_BLUE_GREEN .getColor()+ "- Promotion au grade " + group);
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " group add "+group);
-			new BukkitRunnable() {
-				
-				@Override
-				public void run() {
-					PluginMessageHelper.sendRankUp(player, group);			
-				}
-			}.runTaskLater(SurvivalCorePlugin.getInstance(), 2L);
+			PluginMessageHelper.sendRankUp(player, group);			
 		}
 	}
 	
