@@ -103,8 +103,6 @@ public class EntityDeathListener implements Listener {
                         Material weapon = killer.getInventory().getItemInMainHand().getType();
                         if (weapon == Material.AIR) {
                             message += "s'est fait boxer par " + killer.getName() + " !";
-                        } else if (killer.getInventory().getItemInMainHand().getItemMeta().hasLore()) {
-                            message += "s'est fait assassiner par " + killer.getName() + " en utilisant §9" + killer.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                         } else {
                         	message += "s'est fait assassiner par " + killer.getName() + " en utilisant un/une §9" + weapon.toString().replace("_", " ") + "§r !";
                         }
