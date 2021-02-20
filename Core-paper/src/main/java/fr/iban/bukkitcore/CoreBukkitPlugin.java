@@ -13,6 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
 import fr.iban.bukkitcore.commands.AnnonceCMD;
+import fr.iban.bukkitcore.commands.FeedCMD;
+import fr.iban.bukkitcore.commands.RepairCMD;
 import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
 import fr.iban.bukkitcore.commands.SurvieCMD;
@@ -64,6 +66,8 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         getCommand("annonce").setExecutor(new AnnonceCMD(this));
         getCommand("survie").setExecutor(new SurvieCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
+        getCommand("feed").setExecutor(new FeedCMD(this));
+        getCommand("repair").setExecutor(new RepairCMD(this));
         setupEconomy();
         
         PluginMessageHelper.registerChannels(this);
