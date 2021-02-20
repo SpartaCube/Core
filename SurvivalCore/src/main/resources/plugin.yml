@@ -5,7 +5,7 @@ main: fr.iban.survivalcore.SurvivalCorePlugin
 authors: [Iban]
 description: Core du projet SpartaCube
 softdepend: [dynmap]
-depend: [Vault, VaultEvents, LuckPerms, Essentials, PlaceholderAPI, Core]
+depend: [Vault, LuckPerms, Essentials, PlaceholderAPI, Core]
 
 commands:
   site:
@@ -23,5 +23,6 @@ commands:
   addhomes:
   pvp:
   grades:
+  boost:
   dolphin:
     aliases: [dophin]

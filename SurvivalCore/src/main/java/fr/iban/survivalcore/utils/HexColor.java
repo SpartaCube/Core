@@ -21,6 +21,11 @@ public enum HexColor {
 	LIGHT_RED("#ff5353"),
 	FLAT_GREEN("#00b894"),
 	FLAT_LIGHT_GREEN("#55efc4"),
+	GOOD_BLUE("#96d4fb"),
+	PINK("#ffa8a8"),
+	GOLD2("#f6ab49"),
+	GREEN("#c4ffaa"),
+	EXTRA_BLUE("#789cff"),
 	FLAT_BLUE2("#3742fa");
     
     private String hex;
