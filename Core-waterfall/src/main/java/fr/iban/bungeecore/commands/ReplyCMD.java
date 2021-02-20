@@ -27,10 +27,10 @@ public class ReplyCMD extends Command implements TabExecutor {
 	    if (args.length > 0)
 	      if (sender instanceof ProxiedPlayer) {
 	        ProxiedPlayer player = (ProxiedPlayer)sender;
-	        if (CoreBungeePlugin.r.containsKey(player)) {
-	          ProxiedPlayer target = CoreBungeePlugin.r.get(player);
+	        if (r.containsKey(player)) {
+	          ProxiedPlayer target = r.get(player);
 	          if (target == null) {
-	            player.sendMessage(TextComponent.fromLegacyText("§c" + ((ProxiedPlayer)CoreBungeePlugin.r.get(player)).getName() + " est hors-ligne!" + ChatColor.RESET));
+	            player.sendMessage(TextComponent.fromLegacyText("§c" + ((ProxiedPlayer)r.get(player)).getName() + " est hors-ligne!" + ChatColor.RESET));
 	            return;
 	          } 
 	          StringBuilder sb = new StringBuilder("");

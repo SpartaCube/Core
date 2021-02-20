@@ -1,0 +1,4 @@
+name: Core
+version: 1.0
+main: fr.iban.bungeecore.CoreBungeePlugin
+author: Iban_

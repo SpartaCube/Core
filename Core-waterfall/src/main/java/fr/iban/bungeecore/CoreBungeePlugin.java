@@ -30,6 +30,8 @@ import fr.iban.bungeecore.runnables.SaveAccounts;
 import fr.iban.bungeecore.teleport.DeathLocationListener;
 import fr.iban.bungeecore.teleport.TeleportManager;
 import fr.iban.bungeecore.utils.AnnoncesManager;
+import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.GlobalBoosts;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
 import fr.iban.common.data.sql.DbAccess;
@@ -45,8 +47,6 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 public final class CoreBungeePlugin extends Plugin {
-	
-    public static HashMap<ProxiedPlayer, ProxiedPlayer> r = new HashMap<>();
     
 	private static final String RANKUP_CHANNEL = "survie:rankup";
 
@@ -55,11 +55,11 @@ public final class CoreBungeePlugin extends Plugin {
 	private AnnoncesManager announceManager;
 	private ChatManager chatManager;
 	private TeleportManager teleportManager;
+	private GlobalBoosts gb;
 
 	@Override
 	public void onEnable() {
 		instance = this;
-		
 		saveDefaultConfig();
 		loadConfig();
 		
@@ -70,10 +70,12 @@ public final class CoreBungeePlugin extends Plugin {
 		announceManager = new AnnoncesManager();
 		chatManager = new ChatManager();
 		teleportManager = new TeleportManager(this);
+		gb = new GlobalBoosts();
 
 		getProxy().registerChannel("proxy:chat");
 		getProxy().registerChannel(RANKUP_CHANNEL);
 		getProxy().registerChannel("proxy:annonce");
+		getProxy().registerChannel("proxy:send");
 		
 		registerEvents(
 				new ProxyJoinQuitListener(),
@@ -102,6 +104,8 @@ public final class CoreBungeePlugin extends Plugin {
 
 		ProxyServer.getInstance().getScheduler().schedule(this, new SaveAccounts(), 0, 10, TimeUnit.MINUTES);
 		
+		gb.getGlobalBoostsFromDB();
+		
 		RedisAccess.getInstance().getRedissonClient().getTopic("DeathLocation").addListener(new DeathLocationListener(this));
 //		RedisAccess.getInstance().getRedissonClient().getTopic("test").addListener(new MessageListener<Object>() {
 //
@@ -122,6 +126,7 @@ public final class CoreBungeePlugin extends Plugin {
 		saveConfig();
 		getProxy().unregisterChannel("proxy:chat");
 		getProxy().unregisterChannel("proxy:annonce");
+		getProxy().unregisterChannel("proxy:send");
 		getProxy().unregisterChannel(RANKUP_CHANNEL);
 	}
 

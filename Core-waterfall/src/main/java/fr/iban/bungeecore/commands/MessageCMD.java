@@ -46,15 +46,15 @@ public class MessageCMD extends Command implements TabExecutor {
 	            } else {
 	              player.sendMessage(TextComponent.fromLegacyText("§c" + target.getName() + " a désactivé ses messages"));
 	            }  	
-	          if (!CoreBungeePlugin.r.containsKey(player)) {
-	        	  CoreBungeePlugin.r.put(player, target);
+	          if (!ReplyCMD.r.containsKey(player)) {
+	        	  ReplyCMD.r.put(player, target);
 	          } else {
-	        	  CoreBungeePlugin.r.replace(player, target);
+	        	  ReplyCMD.r.replace(player, target);
 	          } 
-	          if (!CoreBungeePlugin.r.containsKey(target)) {
-	        	  CoreBungeePlugin.r.put(target, player);
+	          if (!ReplyCMD.r.containsKey(target)) {
+	        	  ReplyCMD.r.put(target, player);
 	          } else {
-	        	  CoreBungeePlugin.r.replace(target, player);
+	        	  ReplyCMD.r.replace(target, player);
 	          } 
 	        } else {
 	          sender.sendMessage(TextComponent.fromLegacyText("§cVeuillez entrez un message." + ChatColor.RESET));
