@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import fr.iban.bungeecore.CoreBungeePlugin;
+import fr.iban.bungeecore.commands.ReplyCMD;
 import fr.iban.bungeecore.utils.ChatUtils;
 import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.redis.RedisAccess;
@@ -73,12 +74,12 @@ public class ProxyJoinQuitListener implements Listener {
 	@EventHandler
 	public void onQuit(PlayerDisconnectEvent e) {
 		ProxiedPlayer p = e.getPlayer();
-		if (CoreBungeePlugin.r.containsKey(p)) {
-			ProxiedPlayer target = CoreBungeePlugin.r.get(p);
+		if (ReplyCMD.r.containsKey(p)) {
+			ProxiedPlayer target = ReplyCMD.r.get(p);
 			if (target != null)
-				if (CoreBungeePlugin.r.get(target) == p)
-					CoreBungeePlugin.r.remove(target);  
-			CoreBungeePlugin.r.remove(p);
+				if (ReplyCMD.r.get(target) == p)
+					ReplyCMD.r.remove(target);  
+			ReplyCMD.r.remove(p);
 		} 
 	}
 
