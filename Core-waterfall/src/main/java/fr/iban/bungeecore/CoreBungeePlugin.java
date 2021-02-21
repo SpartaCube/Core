@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import org.redisson.api.RedissonClient;
 
 import fr.iban.bungeecore.chat.ChatManager;
 import fr.iban.bungeecore.commands.AnnounceCMD;
@@ -27,6 +31,7 @@ import fr.iban.bungeecore.listeners.ProxyJoinQuitListener;
 import fr.iban.bungeecore.listeners.ProxyPingListener;
 import fr.iban.bungeecore.runnables.SaveAccounts;
 import fr.iban.bungeecore.teleport.DeathLocationListener;
+import fr.iban.bungeecore.teleport.EventAnnounceListener;
 import fr.iban.bungeecore.teleport.TeleportManager;
 import fr.iban.bungeecore.utils.AnnoncesManager;
 import fr.iban.common.data.GlobalBoosts;
@@ -35,6 +40,7 @@ import fr.iban.common.data.redis.RedisCredentials;
 import fr.iban.common.data.sql.DbAccess;
 import fr.iban.common.data.sql.DbCredentials;
 import fr.iban.common.data.sql.DbTables;
+import fr.iban.common.teleport.SLocation;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
@@ -52,12 +58,15 @@ public final class CoreBungeePlugin extends Plugin {
 	private AnnoncesManager announceManager;
 	private ChatManager chatManager;
 	private TeleportManager teleportManager;
+	
+	private Map<String, SLocation> currentEvents;
 
 	@Override
 	public void onEnable() {
 		instance = this;
 		saveDefaultConfig();
 		loadConfig();
+		currentEvents = new HashMap<>();
 		
 		RedisAccess.init(new RedisCredentials(configuration.getString("redis.host"), configuration.getString("redis.password"), configuration.getInt("redis.port"), configuration.getString("redis.clientName")));
     	DbAccess.initPool(new DbCredentials(configuration.getString("database.host"), configuration.getString("database.user"), configuration.getString("database.password"), configuration.getString("database.dbname"), configuration.getInt("database.port")));
@@ -100,7 +109,10 @@ public final class CoreBungeePlugin extends Plugin {
 
 		ProxyServer.getInstance().getScheduler().schedule(this, new SaveAccounts(), 0, 10, TimeUnit.MINUTES);
 		
-		RedisAccess.getInstance().getRedissonClient().getTopic("DeathLocation").addListener(new DeathLocationListener(this));
+		RedissonClient redisClient = RedisAccess.getInstance().getRedissonClient();
+		redisClient.getTopic("DeathLocation").addListener(new DeathLocationListener(this));
+        redisClient.getTopic("EventAnnounce").addListener(new EventAnnounceListener(this));
+
 	}
 
 	@Override
@@ -177,5 +189,9 @@ public final class CoreBungeePlugin extends Plugin {
 
 	public TeleportManager getTeleportManager() {
 		return teleportManager;
+	}
+	
+	public Map<String, SLocation> getCurrentEvents() {
+		return currentEvents;
 	}
 }

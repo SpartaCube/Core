@@ -35,8 +35,9 @@ import fr.iban.common.data.sql.DbCredentials;
 import net.milkbowl.vault.economy.Economy;
 
 public final class CoreBukkitPlugin extends JavaPlugin {
-	
+
 	private static CoreBukkitPlugin instance;
+	private RedissonClient redisClient;
 	private String serverName;
 	private Map<UUID, TextCallback> textInputs;
 	
@@ -72,7 +73,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         
         PluginMessageHelper.registerChannels(this);
         
-    	RedissonClient redisClient = RedisAccess.getInstance().getRedissonClient();
+    	redisClient = RedisAccess.getInstance().getRedissonClient();
         redisClient.getTopic("TeleportToPlayer").addListener(new TeleportToPlayerListener());
         redisClient.getTopic("TeleportToLocation").addListener(new TeleportToLocationListener());
         
@@ -98,6 +99,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 			pm.registerEvents(listener, this);
 		}
 
+	}
+	
+	public RedissonClient getRedisClient() {
+		return redisClient;
 	}
 	
 	private boolean setupEconomy() {

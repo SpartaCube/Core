@@ -1,6 +1,12 @@
 package fr.iban.survivalcore.utils.papi;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.entity.Player;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import fr.iban.common.data.AccountProvider;
 import fr.iban.spartacube.data.Account;
@@ -85,7 +91,7 @@ public class SpartaCubePlaceHolder extends PlaceholderExpansion {
     public String getVersion(){
         return plugin.getDescription().getVersion();
     }
-
+    
     /**
      * This is the method called when a placeholder with our identifier 
      * is found and needs a value.
@@ -108,21 +114,37 @@ public class SpartaCubePlaceHolder extends PlaceholderExpansion {
 
         // %someplugin_placeholder1%
         if(identifier.equals("niveau")){
-        	AccountProvider ac = new AccountProvider(player.getUniqueId());
-            return LevelUtils.getLevelProgressBar(ac.getAccount(), 20);
+        	return getCachedLevelBar(player);
         }
         
         if(identifier.equals("boost")){
-        	AccountProvider ap = new AccountProvider(player.getUniqueId());
-            Account account = ap.getAccount();
-        	if(XPProvider.getTotalBoost(account, ap) + XPProvider.getTotalGlobalBoost() == 0) {
-        		return "Aucun boost";
-        	}
-            return "+" + (XPProvider.getTotalBoost(account, ap) + XPProvider.getTotalGlobalBoost()) + " %";
+        	return getCachedBoosts(player);
         }
- 
-        // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%) 
-        // was provided
+
         return null;
     }
+    
+	private Cache<UUID, String> barCache = Caffeine.newBuilder()
+			.refreshAfterWrite(5, TimeUnit.SECONDS)
+			.build(uuid -> LevelUtils.getLevelProgressBar(new AccountProvider(uuid).getAccount(), 20));
+	
+	private Cache<UUID, String> boostCache = Caffeine.newBuilder()
+			.expireAfterWrite(5, TimeUnit.SECONDS)
+			.build(uuid -> getBoosts(uuid));
+
+	private String getCachedLevelBar(Player player) {
+		return barCache.get(player.getUniqueId(), bar -> LevelUtils.getLevelProgressBar(new AccountProvider(player.getUniqueId()).getAccount(), 20));
+	}
+
+	private String getBoosts(UUID uuid) {
+    	AccountProvider ap = new AccountProvider(uuid);
+        Account account = ap.getAccount();
+        int boost = XPProvider.getTotalBoost(account, ap) + XPProvider.getTotalGlobalBoost();
+    	return boost == 0 ? "Aucun boost" : "+" + boost + "%";
+	}
+	
+	private String getCachedBoosts(Player player) {
+		return boostCache.get(player.getUniqueId(), bar -> getBoosts(player.getUniqueId()));
+	}
+	
 }

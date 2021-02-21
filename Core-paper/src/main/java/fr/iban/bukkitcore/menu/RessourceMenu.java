@@ -7,7 +7,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import fr.iban.bukkitcore.CoreBukkitPlugin;
 import fr.iban.bukkitcore.utils.ItemBuilder;
-import fr.iban.bukkitcore.utils.PluginMessageHelper;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.teleport.PlayerRTP;
 

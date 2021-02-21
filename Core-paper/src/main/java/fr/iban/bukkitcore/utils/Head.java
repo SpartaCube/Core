@@ -15,6 +15,7 @@ public enum Head {
 	OAK_RIGHT("7826"),
 	OAK_LEFT("7827"),
 	OAK_PLUS("2336"),
+	OAK_MINUS("1786"),
 	GLOBE("2981"),
 	FIREBALL("6385"),
 	TNTCREEP("16044"),

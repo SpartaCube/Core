@@ -6,7 +6,6 @@ import fr.iban.bungeecore.commands.StaffChatToggle;
 import fr.iban.bungeecore.utils.HexColor;
 import fr.iban.common.data.AccountProvider;
 import fr.iban.spartacube.data.Account;
-import jodd.util.StringUtil;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -67,6 +66,7 @@ public class ChatManager {
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
 			return;
 		}
+		
 		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #7bc8fe§l" + msg))));
 	}
 	
