@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import fr.iban.bungeecore.CoreBungeePlugin;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -14,7 +13,7 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class ReplyCMD extends Command implements TabExecutor {
-	
+
 	public static HashMap<ProxiedPlayer, ProxiedPlayer> r = new HashMap<>();
 
 	public ReplyCMD(String name, String permission, String name2) {
@@ -65,6 +64,7 @@ public class ReplyCMD extends Command implements TabExecutor {
 						playernames.add(p.getName());
 				}
 			}
-			return playernames;
 		}
+		return playernames;
 	}
+}

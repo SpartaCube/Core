@@ -1,8 +1,9 @@
 package fr.iban.bungeecore.commands;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import fr.iban.bungeecore.CoreBungeePlugin;
+
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -16,7 +17,7 @@ public class MessageCMD extends Command implements TabExecutor {
 	public MessageCMD(String name, String permission, String name2, String name3, String name4, String name5, String name6) {
 		super(name, permission, name2, name3, name4, name5, name6);
 	}
-	 
+
 	public void execute(CommandSender sender, String[] args) {
 	    if (args.length == 0)
 	        sender.sendMessage(TextComponent.fromLegacyText("§e/msg [Joueur] [Message]" + ChatColor.RESET));  
@@ -62,6 +63,7 @@ public class MessageCMD extends Command implements TabExecutor {
 	      } 
 	    } 
 	  
+
 	@Override
 	public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
 		List<String> playernames = new ArrayList<>();
