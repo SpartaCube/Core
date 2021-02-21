@@ -77,7 +77,7 @@ public class ProxyJoinQuitListener implements Listener {
 	@EventHandler
 	public void onQuit(PlayerDisconnectEvent e) {
 		ProxiedPlayer p = e.getPlayer();
-		HashMap<ProxiedPlayer, ProxiedPlayer> replies = ReplyCMD.r;
+		HashMap<ProxiedPlayer, ProxiedPlayer> replies = ReplyCMD.getReplies();
 		if (replies.containsKey(p)) {
 			ProxiedPlayer target = replies.get(p);
 			if (target != null && replies.get(target) == p)

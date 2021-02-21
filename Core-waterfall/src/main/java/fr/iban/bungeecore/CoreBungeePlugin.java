@@ -29,7 +29,6 @@ import fr.iban.bungeecore.runnables.SaveAccounts;
 import fr.iban.bungeecore.teleport.DeathLocationListener;
 import fr.iban.bungeecore.teleport.TeleportManager;
 import fr.iban.bungeecore.utils.AnnoncesManager;
-import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.GlobalBoosts;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
@@ -53,7 +52,7 @@ public final class CoreBungeePlugin extends Plugin {
 	private AnnoncesManager announceManager;
 	private ChatManager chatManager;
 	private TeleportManager teleportManager;
-	private GlobalBoosts gb;
+	private GlobalBoosts globalBoosts;
 
 	@Override
 	public void onEnable() {
@@ -68,7 +67,8 @@ public final class CoreBungeePlugin extends Plugin {
 		announceManager = new AnnoncesManager();
 		chatManager = new ChatManager();
 		teleportManager = new TeleportManager(this);
-		gb = new GlobalBoosts();
+		globalBoosts = new GlobalBoosts();
+		globalBoosts.getGlobalBoostsFromDB();
 
 		getProxy().registerChannel("proxy:chat");
 		getProxy().registerChannel(RANKUP_CHANNEL);
@@ -100,8 +100,6 @@ public final class CoreBungeePlugin extends Plugin {
 				);
 
 		ProxyServer.getInstance().getScheduler().schedule(this, new SaveAccounts(), 0, 10, TimeUnit.MINUTES);
-		
-		gb.getGlobalBoostsFromDB();
 		
 		RedisAccess.getInstance().getRedissonClient().getTopic("DeathLocation").addListener(new DeathLocationListener(this));
 	}
