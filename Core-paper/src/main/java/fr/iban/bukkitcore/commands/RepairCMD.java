@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -41,7 +42,7 @@ public class RepairCMD implements CommandExecutor {
 		    	  if (loresraw.contains(";")) {
 		    		 lores = loresraw.split(";"); 
 		    	  }
-		          String norepair = ChatColor.RED + "Erreur: " + ChatColor.DARK_RED + "Cette item n'est pas réparable";
+		          String norepair = ChatColor.RED + "Erreur: " + ChatColor.DARK_RED + "Cet item n'est pas réparable";
 		          if (args.length == 0 || (args.length >= 1 && args[0].equalsIgnoreCase("hand"))) {
 		            Material material = m.getItemInHand().getType();
 		            if (material.isBlock() || material.getMaxDurability() < 1 || m.getItemInHand().getDurability() == 0) {
