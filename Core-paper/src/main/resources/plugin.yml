@@ -9,4 +9,9 @@ commands:
   serveur:
   survie:
   ressource:
+  packetlog:
   annonce:
+  feed:
+     aliases: [eat, eeat, efeed]
+  repair:
+     aliases: [fix, efix, erepair]

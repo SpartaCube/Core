@@ -53,7 +53,7 @@ public class RessourceMenu extends Menu {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rtp player " + player.getName() + " " + worldname);
 		}else {
 			RedisAccess.getInstance().getRedissonClient().getTopic("PlayerRTP").publish(new PlayerRTP(player.getUniqueId(), worldname));
-			PluginMessageHelper.sendPlayerToServer(player, "ressources");
+			Bukkit.dispatchCommand(player, "queue Ressources");
 		}
 	}
 

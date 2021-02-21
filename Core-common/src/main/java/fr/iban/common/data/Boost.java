@@ -6,6 +6,8 @@ public class Boost {
 	private int value;
 	private long end;
 	
+	public Boost() {}
+	
 	public Boost(int id, int value, long end) {
 		this.id = id;
 		this.value = value;

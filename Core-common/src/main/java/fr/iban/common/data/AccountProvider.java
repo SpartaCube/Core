@@ -170,6 +170,35 @@ public class AccountProvider {
 			ps.close();
 		}
 	}
+	
+	public void deleteBoostFromDB(Integer id, Long end, Integer value) {
+		DataSource ds = DbAccess.getDataSource();
+		final String DELETE_SQL = "DELETE FROM sc_boosts WHERE id = ? AND end = ? AND value = ?";
+			try (Connection connection = ds.getConnection()) {
+				try(PreparedStatement ps = connection.prepareStatement(DELETE_SQL)){
+					ps.setInt(1, id);
+					ps.setLong(2, end);
+					ps.setInt(3, value);
+					ps.executeUpdate();
+				}
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public void removeBoostFromDB(UUID uuid, Integer id) {
+		DataSource ds = DbAccess.getDataSource();
+		final String DELETE_SQL = "DELETE FROM sc_boosts WHERE id = ? AND owner = ?";
+		try (Connection connection = ds.getConnection()) {
+			try(PreparedStatement ps = connection.prepareStatement(DELETE_SQL)){
+				ps.setInt(1, id);
+				ps.setString(2, uuid.toString());
+				ps.executeUpdate();
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public List<Boost> getBoostsFromDB(Connection connection) throws SQLException{
 		List<Boost> boosts = new ArrayList<>();

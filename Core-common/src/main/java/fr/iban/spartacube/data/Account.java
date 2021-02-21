@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.Boost;
 
 public class Account {
@@ -135,6 +136,26 @@ public class Account {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
+	
+	public int getLastId() {
+		int valeur = 0;
+		Iterator<Boost> it = getBoosts().iterator();
+		while(it.hasNext()){
+		     Boost boost = it.next();
+		     valeur = boost.getId();
+		}
+		return valeur;
+	}
+	
+	public long getLastEnd() {
+		long end = 0;
+		Iterator<Boost> it = getBoosts().iterator();
+		while(it.hasNext()){
+		     Boost boost = it.next();
+		     end = boost.getEnd();
+		}
+		return end;
+	}
 
 	public List<Boost> getBoosts() {
 		if(boosts == null) {
@@ -145,20 +166,5 @@ public class Account {
 	
 	public void setBoosts(List<Boost> boosts) {
 		this.boosts = boosts;
-	}
-	
-	public int getTotalBoost() {
-		int somme = 0;
-		Iterator<Boost> it = boosts.iterator();
-		while(it.hasNext()) {
-			Boost boost = it.next();
-			if(boost.getEnd() > System.currentTimeMillis()) {
-				somme += boost.getValue();
-			}else {
-				//TODO remove from db
-				it.remove();
-			}
-		}
-		return somme > 100 ? 100 : somme;
 	}
 }

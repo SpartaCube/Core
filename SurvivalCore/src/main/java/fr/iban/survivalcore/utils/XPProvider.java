@@ -1,16 +1,23 @@
 package fr.iban.survivalcore.utils;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Boost;
+import fr.iban.common.data.GlobalBoosts;
 import fr.iban.spartacube.data.Account;
+import fr.iban.survivalcore.SurvivalCorePlugin;
 
 public class XPProvider {
+	
+	private static GlobalBoosts gb = new GlobalBoosts();;
 
 	private static Map<Player, Map<Long, Integer>> xpLogs = new ConcurrentHashMap<>();
 
@@ -27,7 +34,7 @@ public class XPProvider {
 			getXPLogs(player).put(System.currentTimeMillis(), amount);
 
 			short levelbefore = account.getLevel();
-			int multiplieur = 1+(account.getTotalBoost()/100);
+			int multiplieur = 1+((getTotalBoost(account, ap) + XPProvider.getTotalGlobalBoost()) /100);
 			account.addExp(amount*multiplieur > 12*multiplieur ? 12*multiplieur : amount*multiplieur);
 			short levelafter = account.getLevel();
 
@@ -38,6 +45,46 @@ public class XPProvider {
 
 			ap.sendAccountToRedis(account);
 		});
+	}
+	
+	public static int getTotalBoost(Account account, AccountProvider ap) {
+		int somme = 0;
+		Iterator<Boost> it = account.getBoosts().iterator();
+		while(it.hasNext()) {
+			Boost boost = it.next();
+			if(boost.getEnd() > System.currentTimeMillis()) {
+				somme += boost.getValue();
+			}else {
+            	Bukkit.getScheduler().runTaskAsynchronously(SurvivalCorePlugin.getInstance(), new Runnable() {
+                    @Override
+                      public void run() {
+                    	ap.deleteBoostFromDB(boost.getId(), boost.getEnd(), boost.getValue());
+                    }
+                });
+				it.remove();
+			}
+		}
+		return somme > 100 ? 100 : somme;
+	}
+	
+	public static int getTotalGlobalBoost() {
+		int somme = 0;
+		Iterator<Boost> it = gb.getBoosts().iterator();
+		while(it.hasNext()) {
+			Boost boost = it.next();
+			if(boost.getEnd() > System.currentTimeMillis()) {
+				somme += boost.getValue();
+			}else {
+            	Bukkit.getScheduler().runTaskAsynchronously(SurvivalCorePlugin.getInstance(), new Runnable() {
+                    @Override
+                      public void run() {
+                    	gb.deleteGlobalBoostFromDB(boost.getId(), boost.getEnd(), boost.getValue());
+                    }
+                });
+				it.remove();
+			}
+		}
+		return somme > 100 ? 100 : somme;
 	}
 
 	private static Map<Long, Integer> getXPLogs(Player player){

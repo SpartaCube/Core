@@ -3,8 +3,10 @@ package fr.iban.survivalcore.utils.papi;
 import org.bukkit.entity.Player;
 
 import fr.iban.common.data.AccountProvider;
+import fr.iban.spartacube.data.Account;
 import fr.iban.survivalcore.SurvivalCorePlugin;
 import fr.iban.survivalcore.utils.LevelUtils;
+import fr.iban.survivalcore.utils.XPProvider;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class SpartaCubePlaceHolder extends PlaceholderExpansion {
@@ -108,6 +110,15 @@ public class SpartaCubePlaceHolder extends PlaceholderExpansion {
         if(identifier.equals("niveau")){
         	AccountProvider ac = new AccountProvider(player.getUniqueId());
             return LevelUtils.getLevelProgressBar(ac.getAccount(), 20);
+        }
+        
+        if(identifier.equals("boost")){
+        	AccountProvider ap = new AccountProvider(player.getUniqueId());
+            Account account = ap.getAccount();
+        	if(XPProvider.getTotalBoost(account, ap) + XPProvider.getTotalGlobalBoost() == 0) {
+        		return "Aucun boost";
+        	}
+            return "+" + (XPProvider.getTotalBoost(account, ap) + XPProvider.getTotalGlobalBoost()) + " %";
         }
  
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%) 

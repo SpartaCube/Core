@@ -4,6 +4,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
 import fr.iban.survivalcore.commands.ActionBarCMD;
+import fr.iban.survivalcore.commands.BoostCMD;
 import fr.iban.survivalcore.commands.DolphinCMD;
 import fr.iban.survivalcore.commands.HomesManageCMD;
 import fr.iban.survivalcore.commands.LevelsCMD;
@@ -55,6 +56,7 @@ public class Registrar {
 		main.getCommand("addhomes").setExecutor(new HomesManageCMD());
 		main.getCommand("grades").setExecutor(new SimpleCommands());
 		main.getCommand("pvp").setExecutor(new SimpleCommands());
+		main.getCommand("boost").setExecutor(new BoostCMD());
 		main.getCommand("dolphin").setExecutor(new DolphinCMD());
 	}
 
@@ -64,4 +66,3 @@ public class Registrar {
 	}
 
 }
-
