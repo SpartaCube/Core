@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import fr.iban.bungeecore.chat.ChatManager;
@@ -36,7 +35,6 @@ import fr.iban.common.data.sql.DbAccess;
 import fr.iban.common.data.sql.DbCredentials;
 import fr.iban.common.data.sql.DbTables;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -45,9 +43,7 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 public final class CoreBungeePlugin extends Plugin {
-	
-    public static HashMap<ProxiedPlayer, ProxiedPlayer> r = new HashMap<>();
-    
+	    
 	private static final String RANKUP_CHANNEL = "survie:rankup";
 
 	private static CoreBungeePlugin instance;
@@ -79,7 +75,6 @@ public final class CoreBungeePlugin extends Plugin {
 				new ProxyJoinQuitListener(),
 				new ProxyPingListener(),
 				new PluginMessageListener()
-				//new TabCompleteListener()
 				);
 
 		registerCommands(
@@ -103,15 +98,6 @@ public final class CoreBungeePlugin extends Plugin {
 		ProxyServer.getInstance().getScheduler().schedule(this, new SaveAccounts(), 0, 10, TimeUnit.MINUTES);
 		
 		RedisAccess.getInstance().getRedissonClient().getTopic("DeathLocation").addListener(new DeathLocationListener(this));
-//		RedisAccess.getInstance().getRedissonClient().getTopic("test").addListener(new MessageListener<Object>() {
-//
-//			@Override
-//			public void onMessage(String channel, Object msg) {
-//				getProxy().broadcast("sub");
-//				getProxy().broadcast(channel);
-//				getProxy().broadcast((String)msg);
-//			}
-//		});
 	}
 
 	@Override

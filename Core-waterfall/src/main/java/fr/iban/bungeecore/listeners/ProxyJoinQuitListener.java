@@ -1,12 +1,14 @@
 package fr.iban.bungeecore.listeners;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 import fr.iban.bungeecore.CoreBungeePlugin;
+import fr.iban.bungeecore.commands.ReplyCMD;
 import fr.iban.bungeecore.utils.ChatUtils;
 import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.redis.RedisAccess;
@@ -52,9 +54,11 @@ public class ProxyJoinQuitListener implements Listener {
 			accountProvider.sendAccountToRedis(account);
 
 			if(accountProvider.hasPlayedBefore()) {
-				TextComponent message = new TextComponent(new StringBuilder().append("§8[§a+§8] §8").append(String.format(ArrayUtils.getRandomFromArray(joinMessages), player.getName())).toString());
-				message.setHoverEvent(ChatUtils.getShowTextHoverEvent(ChatColor.GRAY+"Vu pour la dernière fois " + getLastSeen(account.getLastSeen())));
-				ProxyServer.getInstance().broadcast(message);
+				if((System.currentTimeMillis() - account.getLastSeen()) > 60000) {
+					TextComponent message = new TextComponent(new StringBuilder().append("§8[§a+§8] §8").append(String.format(ArrayUtils.getRandomFromArray(joinMessages), player.getName())).toString());
+					message.setHoverEvent(ChatUtils.getShowTextHoverEvent(ChatColor.GRAY+"Vu pour la dernière fois " + getLastSeen(account.getLastSeen())));
+					ProxyServer.getInstance().broadcast(message);
+				}
 			}else {
 				ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§8≫ §7" + player.getName() + " s'est connecté pour la première fois !" ));
 			}
@@ -73,13 +77,13 @@ public class ProxyJoinQuitListener implements Listener {
 	@EventHandler
 	public void onQuit(PlayerDisconnectEvent e) {
 		ProxiedPlayer p = e.getPlayer();
-		if (CoreBungeePlugin.r.containsKey(p)) {
-			ProxiedPlayer target = CoreBungeePlugin.r.get(p);
-			if (target != null)
-				if (CoreBungeePlugin.r.get(target) == p)
-					CoreBungeePlugin.r.remove(target);  
-			CoreBungeePlugin.r.remove(p);
-		} 
+		HashMap<ProxiedPlayer, ProxiedPlayer> replies = ReplyCMD.r;
+		if (replies.containsKey(p)) {
+			ProxiedPlayer target = replies.get(p);
+			if (target != null && replies.get(target) == p)
+					replies.remove(target);  
+			replies.remove(p);
+		}
 	}
 
 	@EventHandler(priority = 64)
@@ -97,12 +101,16 @@ public class ProxyJoinQuitListener implements Listener {
 		ProxyServer.getInstance().getScheduler().runAsync(CoreBungeePlugin.getInstance(), () -> {
 			AccountProvider accountProvider = new AccountProvider(player.getUniqueId());
 			Account account = accountProvider.getAccount();
+			
+			if((System.currentTimeMillis() - account.getLastSeen()) > 60000) {
+				ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§8[§c-§8] §8" + String.format(ArrayUtils.getRandomFromArray(quitMessages), player.getName())));
+			}
+			
 			account.setLastSeen(System.currentTimeMillis());
 			accountProvider.sendAccountToDB(account);
 			accountProvider.removeAccountFromRedis();
 			RedisAccess.getInstance().getRedissonClient().getMap("PendingTeleports").fastRemove(player.getUniqueId());
 		});
-		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§8[§c-§8] §8" + String.format(ArrayUtils.getRandomFromArray(quitMessages), player.getName())));
 	}
 
 	private String getLastSeen(long time){
