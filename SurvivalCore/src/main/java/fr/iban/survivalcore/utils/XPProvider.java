@@ -17,7 +17,9 @@ import fr.iban.survivalcore.SurvivalCorePlugin;
 
 public class XPProvider {
 	
-	private static GlobalBoosts gb = new GlobalBoosts();;
+	private XPProvider() {}
+	
+	private static GlobalBoosts globalBoosts = new GlobalBoosts();;
 
 	private static Map<Player, Map<Long, Integer>> xpLogs = new ConcurrentHashMap<>();
 
@@ -30,11 +32,11 @@ public class XPProvider {
 				return;
 			}
 			
-			//On log l'xp ajouté
+			//On log l'xp ajouter
 			getXPLogs(player).put(System.currentTimeMillis(), amount);
 
 			short levelbefore = account.getLevel();
-			int multiplieur = 1+((getTotalBoost(account, ap) + XPProvider.getTotalGlobalBoost()) /100);
+			int multiplieur = 1+((getTotalBoost(account, ap) + getTotalGlobalBoost()) /100);
 			account.addExp(amount*multiplieur > 12*multiplieur ? 12*multiplieur : amount*multiplieur);
 			short levelafter = account.getLevel();
 
@@ -55,12 +57,7 @@ public class XPProvider {
 			if(boost.getEnd() > System.currentTimeMillis()) {
 				somme += boost.getValue();
 			}else {
-            	Bukkit.getScheduler().runTaskAsynchronously(SurvivalCorePlugin.getInstance(), new Runnable() {
-                    @Override
-                      public void run() {
-                    	ap.deleteBoostFromDB(boost.getId(), boost.getEnd(), boost.getValue());
-                    }
-                });
+            	Bukkit.getScheduler().runTaskAsynchronously(SurvivalCorePlugin.getInstance(), () -> ap.deleteBoostFromDB(boost.getId(), boost.getEnd(), boost.getValue()));
 				it.remove();
 			}
 		}
@@ -69,18 +66,13 @@ public class XPProvider {
 	
 	public static int getTotalGlobalBoost() {
 		int somme = 0;
-		Iterator<Boost> it = gb.getBoosts().iterator();
+		Iterator<Boost> it = globalBoosts.getBoosts().iterator();
 		while(it.hasNext()) {
 			Boost boost = it.next();
 			if(boost.getEnd() > System.currentTimeMillis()) {
 				somme += boost.getValue();
 			}else {
-            	Bukkit.getScheduler().runTaskAsynchronously(SurvivalCorePlugin.getInstance(), new Runnable() {
-                    @Override
-                      public void run() {
-                    	gb.deleteGlobalBoostFromDB(boost.getId(), boost.getEnd(), boost.getValue());
-                    }
-                });
+            	Bukkit.getScheduler().runTaskAsynchronously(SurvivalCorePlugin.getInstance(), () -> globalBoosts.deleteGlobalBoostFromDB(boost.getId(), boost.getEnd(), boost.getValue()));
 				it.remove();
 			}
 		}

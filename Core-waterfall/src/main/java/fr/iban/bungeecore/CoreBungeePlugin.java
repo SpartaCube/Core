@@ -52,7 +52,6 @@ public final class CoreBungeePlugin extends Plugin {
 	private AnnoncesManager announceManager;
 	private ChatManager chatManager;
 	private TeleportManager teleportManager;
-	private GlobalBoosts globalBoosts;
 
 	@Override
 	public void onEnable() {
@@ -67,7 +66,7 @@ public final class CoreBungeePlugin extends Plugin {
 		announceManager = new AnnoncesManager();
 		chatManager = new ChatManager();
 		teleportManager = new TeleportManager(this);
-		globalBoosts = new GlobalBoosts();
+		GlobalBoosts globalBoosts = new GlobalBoosts();
 		globalBoosts.getGlobalBoostsFromDB();
 
 		getProxy().registerChannel("proxy:chat");
