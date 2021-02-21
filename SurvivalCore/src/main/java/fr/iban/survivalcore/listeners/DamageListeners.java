@@ -1,7 +1,10 @@
 package fr.iban.survivalcore.listeners;
 
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,10 +43,25 @@ public class DamageListeners implements Listener {
 				if(arrow.getShooter() instanceof Player) {
 					player = (Player)arrow.getShooter();
 				}
+			}if(event.getDamager() instanceof SpectralArrow) {
+				SpectralArrow arrow = (SpectralArrow) event.getDamager();
+				if(arrow.getShooter() instanceof Player) {
+					player = (Player)arrow.getShooter();
+				}
 			}else if(event.getDamager() instanceof Trident) {
 				Trident trident = (Trident)event.getDamager();
 				if(trident.getShooter() instanceof Player) {
 					player = (Player)trident.getShooter();
+				}
+			}else if(event.getDamager() instanceof Firework) {
+				Firework firework = (Firework)event.getDamager();
+				if(firework.getShooter() instanceof Player) {
+					player = (Player)firework.getShooter();
+				}
+			}else if(event.getDamager() instanceof EnderPearl) {
+				EnderPearl enderpearl = (EnderPearl)event.getDamager();
+				if(enderpearl.getShooter() instanceof Player) {
+					player = (Player)enderpearl.getShooter();
 				}
 			}
 		}

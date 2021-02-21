@@ -89,12 +89,12 @@ public class LevelUtils {
 	private static void promoteAndBroadcast(Player player, String group) {
 		if(!player.hasPermission("group."+group.toLowerCase())) {
 			player.sendMessage(HexColor.FLAT_BLUE_GREEN .getColor()+ "- Promotion au grade " + group);
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " group add "+group);
 			new BukkitRunnable() {
 				
 				@Override
 				public void run() {
-					PluginMessageHelper.sendRankUp(player, group);			
+					PluginMessageHelper.sendRankUp(player, group);		
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " group add "+group);
 				}
 			}.runTaskLater(SurvivalCorePlugin.getInstance(), 2L);
 		}
@@ -131,7 +131,12 @@ public class LevelUtils {
 		case 100:
 			group = "Titan";
 			promoteAndBroadcast(player, group);
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawners give " + player.getName() + " IRON_GOLEM 1");
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawners give " + player.getName() + " IRON_GOLEM 1");
+				}
+			}.runTaskLater(SurvivalCorePlugin.getInstance(), 2L);
 			break;
 		case 120:
 			group = "Colosse";
@@ -141,13 +146,4 @@ public class LevelUtils {
 			break;
 		}
 	}
-
-	//	private static void giveEmeralds(Player player, int amount) {
-	//		ItemStack it = new ItemStack(Material.EMERALD, (amount <= 64 ? amount : 64));
-	//		if(player.getInventory().firstEmpty() != -1) {
-	//			player.getInventory().addItem(it);
-	//		}else {
-	//			player.getWorld().dropItem(player.getLocation(), it);
-	//		}
-	//	}
 }

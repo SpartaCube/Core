@@ -7,11 +7,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.Boost;
 
 public class Account {
-
 
 
 	/*
