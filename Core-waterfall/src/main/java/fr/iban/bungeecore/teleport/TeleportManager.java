@@ -49,6 +49,11 @@ public class TeleportManager {
 	}
 	
 	public void delayedTeleport(ProxiedPlayer player, SLocation location, int delay) {
+		if(player.hasPermission("spartacube.tp.instant")) {
+			teleport(player, location);
+			return;
+		}
+		
 		player.sendMessage(TextComponent.fromLegacyText("§aTéléportation dans " + delay + " secondes. §cNe bougez pas !"));
 		if(isTeleportWaiting(player)) {
 			player.sendMessage(TextComponent.fromLegacyText("§cUne seule téléportation à la fois !"));

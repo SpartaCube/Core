@@ -14,7 +14,6 @@ public final class SurvivalCorePlugin extends JavaPlugin {
 	/*
 	 * Classe principale du plugin.
 	 */
-
 	private static SurvivalCorePlugin instance;
 		
 	public static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
@@ -44,7 +43,6 @@ public final class SurvivalCorePlugin extends JavaPlugin {
 	@Override
 	public void onDisable() {
 	}
-
 
 	public static SurvivalCorePlugin getInstance() {
 		return instance;

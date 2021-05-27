@@ -4,15 +4,14 @@ api-version: 1.16
 main: fr.iban.survivalcore.SurvivalCorePlugin
 authors: [Iban]
 description: Core du projet SpartaCube
-softdepend: [dynmap]
+softdepend: [dynmap, Lands]
 depend: [Vault, LuckPerms, Essentials, PlaceholderAPI, Core]
 
 commands:
   site:
   discord:
   vote:
-  dynmap:
-    aliases: [map]
+  map:
   abbc:
   tutoriel:
     aliases: [tuto]
@@ -24,5 +23,9 @@ commands:
   pvp:
   grades:
   boost:
+  feed:
+  givepioche:
   dolphin:
     aliases: [dophin]
+  classement:
+    aliases: [toplevels]

@@ -19,7 +19,7 @@ public class XPProvider {
 	
 	private XPProvider() {}
 	
-	private static GlobalBoosts globalBoosts = new GlobalBoosts();;
+	private static GlobalBoosts globalBoosts = new GlobalBoosts();
 
 	private static Map<Player, Map<Long, Integer>> xpLogs = new ConcurrentHashMap<>();
 
@@ -28,16 +28,19 @@ public class XPProvider {
 			AccountProvider ap = new AccountProvider(player.getUniqueId());
 			Account account = ap.getAccount();
 			
-			if(applynerf && checkLast(player, 6) > 12) {
+			int boost = 1+ (getTotalBoost(account, ap)/100) + (getTotalGlobalBoost()/100);
+			
+			if(applynerf && checkLast(player, 6) > 12*boost) {
 				return;
 			}
 			
+			int toAdd = amount*boost > 12*boost ? 12*boost : amount*boost;
+			
 			//On log l'xp ajouter
-			getXPLogs(player).put(System.currentTimeMillis(), amount);
+			getXPLogs(player).put(System.currentTimeMillis(), toAdd);
 
 			short levelbefore = account.getLevel();
-			int multiplieur = 1+((getTotalBoost(account, ap) + getTotalGlobalBoost()) /100);
-			account.addExp(amount*multiplieur > 12*multiplieur ? 12*multiplieur : amount*multiplieur);
+			account.addExp(toAdd);
 			short levelafter = account.getLevel();
 
 			player.sendActionBar(LevelUtils.getLevelProgressBar(account, 20));

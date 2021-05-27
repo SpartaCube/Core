@@ -19,7 +19,6 @@ public class PluginMessageListener implements Listener {
 		if(e.getTag().equals("proxy:chat")) {
 			ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
 			String sub = in.readUTF();
-			
 			if(sub.equals("Global")) {
 				if(e.getReceiver() instanceof ProxiedPlayer) {
 					UUID uuid = UUID.fromString(in.readUTF());
@@ -30,7 +29,6 @@ public class PluginMessageListener implements Listener {
 		}else if(e.getTag().equals("proxy:annonce")) {
 			ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
 			String sub = in.readUTF();
-			
 			if(sub.equals("Annonce")) {
 				if(e.getReceiver() instanceof ProxiedPlayer) {
 					UUID uuid = UUID.fromString(in.readUTF());
@@ -41,17 +39,12 @@ public class PluginMessageListener implements Listener {
 		}else if(e.getTag().equals("survie:rankup")) {
 			ByteArrayDataInput in = ByteStreams.newDataInput(e.getData());
 			String sub = in.readUTF();
-			
 			if(sub.equals("Rankup") && e.getReceiver() instanceof ProxiedPlayer) {
 					UUID uuid = UUID.fromString(in.readUTF());
 					String grade = in.readUTF();
 					CoreBungeePlugin.getInstance().getChatManager().sendRankup(uuid, grade);
 			}
 		}
-	}
-	
-	@EventHandler
-	public void onPluginAnnonce(PluginMessageEvent e) {
 	}
 
 }

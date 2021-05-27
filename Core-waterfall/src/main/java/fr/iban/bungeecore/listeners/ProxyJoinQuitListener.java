@@ -81,7 +81,7 @@ public class ProxyJoinQuitListener implements Listener {
 		if (replies.containsKey(p)) {
 			ProxiedPlayer target = replies.get(p);
 			if (target != null && replies.get(target) == p)
-					replies.remove(target);  
+				replies.remove(target);  
 			replies.remove(p);
 		}
 	}
@@ -101,11 +101,11 @@ public class ProxyJoinQuitListener implements Listener {
 		ProxyServer.getInstance().getScheduler().runAsync(CoreBungeePlugin.getInstance(), () -> {
 			AccountProvider accountProvider = new AccountProvider(player.getUniqueId());
 			Account account = accountProvider.getAccount();
-			
+
 			if((System.currentTimeMillis() - account.getLastSeen()) > 60000) {
 				ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§8[§c-§8] §8" + String.format(ArrayUtils.getRandomFromArray(quitMessages), player.getName())));
 			}
-			
+
 			account.setLastSeen(System.currentTimeMillis());
 			accountProvider.sendAccountToDB(account);
 			accountProvider.removeAccountFromRedis();

@@ -27,7 +27,6 @@ public class PlayerMoveListener implements Listener {
 
 		if (x == 0 && y == 0 && z == 0) return;
 
-
 		CompletableFuture.runAsync(() -> {
 			if(isTeleportWaiting(player)) {
 				redis.getMap("PendingTeleports").fastPut(player.getUniqueId(), Boolean.FALSE);

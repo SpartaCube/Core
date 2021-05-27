@@ -32,9 +32,8 @@ public class SimpleCommands implements CommandExecutor {
 			case "vote":
 				player.sendMessage(HexColor.FLAT_GREEN.getColor() + "≫ " + HexColor.FLAT_LIGHT_GREEN.getColor() + "Lien pour voter : https://spartacube.fr/vote");
 				break;
-			case "dynmap":
 			case "map":
-				player.sendMessage(HexColor.FLAT_GREEN.getColor() + "≫ " + HexColor.FLAT_LIGHT_GREEN.getColor() + "Dynmap : http://dynmap.spartacube.fr/");
+				player.sendMessage(HexColor.FLAT_GREEN.getColor() + "≫ " + HexColor.FLAT_LIGHT_GREEN.getColor() + "Map du serveur : http://map.spartacube.fr/");
 				break;
 			case "grades":
 				player.sendMessage(HexColor.FLAT_GREEN.getColor() + "≫ " + HexColor.FLAT_LIGHT_GREEN.getColor() + "Informations sur les grades : https://spartacube.fr/grades");
@@ -57,7 +56,7 @@ public class SimpleCommands implements CommandExecutor {
 						player.sendMessage("§cPVP desactivé.");
 					}
 					ap.sendAccountToRedis(account);
-				}else if(args.length == 1) {
+				}else if(args.length == 1 && sender.hasPermission("spartacube.pvp.others")) {
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target != null) {
 						AccountProvider ap = new AccountProvider(target.getUniqueId());

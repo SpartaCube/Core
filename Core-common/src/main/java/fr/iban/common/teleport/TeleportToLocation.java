@@ -6,12 +6,19 @@ public class TeleportToLocation {
 	
 	private UUID uuid;
 	private SLocation location;
+	private int delay = 0;
 	
 	public TeleportToLocation() {}
 	
 	public TeleportToLocation(UUID uuid, SLocation location) {
 		this.uuid = uuid;
 		this.location = location;
+	}
+	
+	public TeleportToLocation(UUID uuid, SLocation location, int delay) {
+		this(uuid, location);
+		this.delay = delay;
+		
 	}
 
 	public UUID getUuid() {
@@ -28,5 +35,13 @@ public class TeleportToLocation {
 
 	public void setLocation(SLocation location) {
 		this.location = location;
+	}
+	
+	public int getDelay() {
+		return delay;
+	}
+	
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
 }

@@ -32,7 +32,8 @@ public class ProxyPingListener implements Listener {
     	    "On a trouvé le chemin qui ne mène pas à Rome.",
     	    "Quand on lui dit qu'il est gros, Obélix ferme sa gueule.",
     	    "On a planté la Lune sous le drapeau américain.",
-    	    "On ne croit pas en Dieu, Dieu croit en nous."
+    	    "On ne croit pas en Dieu, Dieu croit en nous.",
+    	    "On est timbré et fier de lettre."
         };
 	
 	@EventHandler

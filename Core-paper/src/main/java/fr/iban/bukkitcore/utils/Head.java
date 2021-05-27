@@ -20,7 +20,8 @@ public enum Head {
 	FIREBALL("6385"),
 	TNTCREEP("16044"),
 	OAK_L("175"),
-	OAK_INFO("20774")
+	OAK_INFO("20774"),
+	BAG("30016")
 	;
 	
 	private static HeadDatabaseAPI api;

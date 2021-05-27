@@ -37,6 +37,5 @@ public class ChatCMD extends Command {
 		}
 	}
 	
-	
 
 }

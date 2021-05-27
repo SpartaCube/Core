@@ -12,8 +12,10 @@ import org.redisson.api.RedissonClient;
 
 import fr.iban.bungeecore.chat.ChatManager;
 import fr.iban.bungeecore.commands.AnnounceCMD;
+import fr.iban.bungeecore.commands.AnnounceEventCMD;
 import fr.iban.bungeecore.commands.BackCMD;
 import fr.iban.bungeecore.commands.ChatCMD;
+import fr.iban.bungeecore.commands.JoinEventCMD;
 import fr.iban.bungeecore.commands.MessageCMD;
 import fr.iban.bungeecore.commands.MsgToggleCMD;
 import fr.iban.bungeecore.commands.ReplyCMD;
@@ -33,6 +35,7 @@ import fr.iban.bungeecore.runnables.SaveAccounts;
 import fr.iban.bungeecore.teleport.DeathLocationListener;
 import fr.iban.bungeecore.teleport.EventAnnounceListener;
 import fr.iban.bungeecore.teleport.TeleportManager;
+import fr.iban.bungeecore.teleport.TpToSLocListener;
 import fr.iban.bungeecore.utils.AnnoncesManager;
 import fr.iban.common.data.GlobalBoosts;
 import fr.iban.common.data.redis.RedisAccess;
@@ -104,7 +107,9 @@ public final class CoreBungeePlugin extends Plugin {
 				new TpahereCMD("tpahere", "spartacube.tpa", teleportManager),
 				new TpnoCMD("tpno", "spartacube.tpa", "tpdeny", teleportManager),
 				new TpyesCMD("tpyes", "spartacube.tpa", "tpaccept", teleportManager),
-				new BackCMD("back", "spartacube.back.death", teleportManager)
+				new BackCMD("back", "spartacube.back.death", teleportManager),
+				new JoinEventCMD("joinevent", this),
+				new AnnounceEventCMD("announceevent", this)
 				);
 
 		ProxyServer.getInstance().getScheduler().schedule(this, new SaveAccounts(), 0, 10, TimeUnit.MINUTES);
@@ -112,6 +117,7 @@ public final class CoreBungeePlugin extends Plugin {
 		RedissonClient redisClient = RedisAccess.getInstance().getRedissonClient();
 		redisClient.getTopic("DeathLocation").addListener(new DeathLocationListener(this));
         redisClient.getTopic("EventAnnounce").addListener(new EventAnnounceListener(this));
+        redisClient.getTopic("TeleportToSLoc").addListener(new TpToSLocListener(this));
 
 	}
 

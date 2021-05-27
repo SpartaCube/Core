@@ -9,12 +9,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import fr.iban.survivalcore.utils.HexColor;
-import fr.iban.survivalcore.utils.ChatUtils;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-
 public class EntityDeathListener implements Listener {
 	
 	@EventHandler
@@ -104,7 +98,7 @@ public class EntityDeathListener implements Listener {
                         if (weapon == Material.AIR) {
                             message += "s'est fait boxer par " + killer.getName() + " !";
                         } else {
-                        	message += "s'est fait assassiner par " + killer.getName() + " en utilisant un/une §9" + weapon.toString().replace("_", " ") + "§r !";
+                        	message += "s'est fait assassiner par " + killer.getName() + " !";
                         }
                     } else if (entity.getDamager() instanceof Creature)
                         message += "s'est fait tuer par un " + entity.getDamager().getType().toString().toLowerCase().replace("_", " ") + " !";

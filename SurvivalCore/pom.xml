@@ -76,6 +76,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>fr.iban</groupId>
+			<artifactId>Lands</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.ocpsoft.prettytime</groupId>
 			<artifactId>prettytime</artifactId>
 			<version>4.0.1.Final</version>

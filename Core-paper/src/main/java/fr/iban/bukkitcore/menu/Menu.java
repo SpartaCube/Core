@@ -146,6 +146,16 @@ public abstract class Menu implements InventoryHolder {
 	protected boolean displayNameEquals(ItemStack item, String toCompare) {
 		return item.getItemMeta().getDisplayName().equals(toCompare);
 	}
+	
+	/**
+	 * 
+	 * @param x - colonne (1 à 9)
+	 * @param y - ligne (1 à nb de lignes)
+	 * @param it - item à mettre
+	 */
+	protected void setItem(int x, int y, ItemStack it) {
+		inventory.setItem((x-1)*9 + x-1, it);
+	}
 
 }
 

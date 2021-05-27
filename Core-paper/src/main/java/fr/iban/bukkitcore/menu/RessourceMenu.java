@@ -37,8 +37,8 @@ public class RessourceMenu extends Menu {
 	@Override
 	public void setMenuItems() {
 		inventory.setItem(2, new ItemBuilder(Material.GRASS_BLOCK).setName("§2§lNormal").setLore("§aCliquez pour rejoindre le monde ressource normal.").build());
-		inventory.setItem(4, new ItemBuilder(Material.NETHERRACK).setName("§4§lNether").setLore("§aCliquez pour rejoindre le monde ressource ender.").build());
-		inventory.setItem(6, new ItemBuilder(Material.END_STONE).setName("§5§lEnder").setLore("§aCliquez pour rejoindre le monde ressource nether.").build());
+		inventory.setItem(4, new ItemBuilder(Material.NETHERRACK).setName("§4§lNether").setLore("§aCliquez pour rejoindre le monde ressource nether.").build());
+		inventory.setItem(6, new ItemBuilder(Material.END_STONE).setName("§5§lEnder").setLore("§aCliquez pour rejoindre le monde ressource ender.").build());
 
 		for(int i = 0 ; i < inventory.getSize() ; i++) {
 			if(inventory.getItem(i) == null)

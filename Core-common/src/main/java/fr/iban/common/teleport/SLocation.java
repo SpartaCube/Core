@@ -101,5 +101,10 @@ public class SLocation {
 		String[] split = slocation.split(":");
 		return new SLocation(split[0], split[1], Double.parseDouble(split[2]), Double.parseDouble(split[3]), Double.parseDouble(split[4]), Float.parseFloat(split[5]), Float.parseFloat(split[6]));
 	}
+	
+	@Override
+	public String toString() {
+		return server + " - " + world + " - " + x + " - " + y + " - " + z;
+	}
 
 }

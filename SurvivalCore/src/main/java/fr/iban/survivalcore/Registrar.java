@@ -6,13 +6,18 @@ import org.bukkit.plugin.PluginManager;
 import fr.iban.survivalcore.commands.ActionBarCMD;
 import fr.iban.survivalcore.commands.BoostCMD;
 import fr.iban.survivalcore.commands.DolphinCMD;
+import fr.iban.survivalcore.commands.FeedCMD;
+import fr.iban.survivalcore.commands.GivePickaxeCMD;
 import fr.iban.survivalcore.commands.HomesManageCMD;
 import fr.iban.survivalcore.commands.LevelsCMD;
 import fr.iban.survivalcore.commands.SimpleCommands;
+import fr.iban.survivalcore.commands.TopLevelsCMD;
 import fr.iban.survivalcore.listeners.CommandListener;
 import fr.iban.survivalcore.listeners.DamageListeners;
 import fr.iban.survivalcore.listeners.EntityDeathListener;
+import fr.iban.survivalcore.listeners.InteractListeners;
 import fr.iban.survivalcore.listeners.InventoryListener;
+import fr.iban.survivalcore.listeners.PlaceBreakListeners;
 import fr.iban.survivalcore.listeners.PlayerExpChangeListener;
 import fr.iban.survivalcore.listeners.PlayerFishListener;
 import fr.iban.survivalcore.listeners.PortalListeners;
@@ -41,13 +46,16 @@ public class Registrar {
 		registerEvent(new VillagerEvents());
 		registerEvent(new RaidTriggerListener());
 		registerEvent(new PortalListeners());
+		registerEvent(new PlaceBreakListeners());
+		registerEvent(new InteractListeners());
+
 		
 		new SpartaCubePlaceHolder(main).register();
 		
 		main.getCommand("site").setExecutor(new SimpleCommands());
 		main.getCommand("discord").setExecutor(new SimpleCommands());
 		main.getCommand("vote").setExecutor(new SimpleCommands());
-		main.getCommand("dynmap").setExecutor(new SimpleCommands());
+		main.getCommand("map").setExecutor(new SimpleCommands());
 		main.getCommand("boutique").setExecutor(new SimpleCommands());
 		main.getCommand("tutoriel").setExecutor(new SimpleCommands());
 		main.getCommand("stoptuto").setExecutor(new SimpleCommands());
@@ -58,6 +66,10 @@ public class Registrar {
 		main.getCommand("pvp").setExecutor(new SimpleCommands());
 		main.getCommand("boost").setExecutor(new BoostCMD());
 		main.getCommand("dolphin").setExecutor(new DolphinCMD());
+		main.getCommand("feed").setExecutor(new FeedCMD());
+		main.getCommand("classement").setExecutor(new TopLevelsCMD());
+		main.getCommand("givepioche").setExecutor(new GivePickaxeCMD());
+
 	}
 
 	private void registerEvent(Listener listener) {

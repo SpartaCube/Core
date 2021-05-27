@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
 import fr.iban.bukkitcore.commands.AnnonceCMD;
-import fr.iban.bukkitcore.commands.FeedCMD;
+import fr.iban.bukkitcore.commands.RecompensesCMD;
 import fr.iban.bukkitcore.commands.RepairCMD;
 import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
@@ -24,6 +24,8 @@ import fr.iban.bukkitcore.listeners.HeadDatabaseListener;
 import fr.iban.bukkitcore.listeners.InventoryListener;
 import fr.iban.bukkitcore.listeners.JoinQuitListeners;
 import fr.iban.bukkitcore.listeners.PlayerMoveListener;
+import fr.iban.bukkitcore.rewards.RewardsDAO;
+import fr.iban.bukkitcore.teleport.TeleportManager;
 import fr.iban.bukkitcore.teleport.TeleportToLocationListener;
 import fr.iban.bukkitcore.teleport.TeleportToPlayerListener;
 import fr.iban.bukkitcore.utils.PluginMessageHelper;
@@ -37,8 +39,9 @@ import net.milkbowl.vault.economy.Economy;
 public final class CoreBukkitPlugin extends JavaPlugin {
 
 	private static CoreBukkitPlugin instance;
+	private TeleportManager teleportManager;
 	private RedissonClient redisClient;
-	private String serverName;
+	private String serverName = "null";
 	private Map<UUID, TextCallback> textInputs;
 	
 	private Economy econ = null;
@@ -50,8 +53,11 @@ public final class CoreBukkitPlugin extends JavaPlugin {
     	
     	DbAccess.initPool(new DbCredentials(getConfig().getString("database.host"), getConfig().getString("database.user"), getConfig().getString("database.password"), getConfig().getString("database.dbname"), getConfig().getInt("database.port")));
         RedisAccess.init(new RedisCredentials(getConfig().getString("redis.host"), getConfig().getString("redis.password"), getConfig().getInt("redis.port"), getConfig().getString("redis.clientName")));
+        RewardsDAO.createTables();
         
         textInputs = new HashMap<>();
+        
+        this.teleportManager = new TeleportManager(this);
         
         registerListeners(
         		new HeadDatabaseListener(),
@@ -67,8 +73,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         getCommand("annonce").setExecutor(new AnnonceCMD(this));
         getCommand("survie").setExecutor(new SurvieCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
-        getCommand("feed").setExecutor(new FeedCMD(this));
         getCommand("repair").setExecutor(new RepairCMD(this));
+        getCommand("recompenses").setExecutor(new RecompensesCMD());
+        getCommand("recompenses").setTabCompleter(new RecompensesCMD());
+
         setupEconomy();
         
         PluginMessageHelper.registerChannels(this);
@@ -135,6 +143,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 
 	public Map<UUID, TextCallback> getTextInputs() {
 		return textInputs;
+	}
+	
+	public TeleportManager getTeleportManager() {
+		return teleportManager;
 	}
 
 }

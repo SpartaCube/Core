@@ -3,7 +3,7 @@ version: ${project.version}
 main: fr.iban.bukkitcore.CoreBukkitPlugin
 api-version: 1.16
 authors: [ Iban ]
-depend: [ProtocolLib, Vault]
+depend: [Vault]
 
 commands:
   serveur:
@@ -11,7 +11,6 @@ commands:
   ressource:
   packetlog:
   annonce:
-  feed:
-     aliases: [eat, eeat, efeed]
+  recompenses:
   repair:
      aliases: [fix, efix, erepair]

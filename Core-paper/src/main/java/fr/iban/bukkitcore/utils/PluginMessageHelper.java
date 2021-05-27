@@ -29,7 +29,7 @@ public class PluginMessageHelper {
 		
 		final ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
 		final String sub = in.readUTF();
-		
+
         if(sub.equals("GetServer")){
             String name = in.readUTF();
             CoreBukkitPlugin.getInstance().setServerName(name);

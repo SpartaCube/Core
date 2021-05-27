@@ -6,11 +6,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.base.Strings;
 
+import fr.iban.bukkitcore.CoreBukkitPlugin;
+import fr.iban.bukkitcore.rewards.RewardsDAO;
 import fr.iban.spartacube.data.Account;
 import fr.iban.survivalcore.SurvivalCorePlugin;
 import net.md_5.bungee.api.ChatColor;
 
 public class LevelUtils {
+	
+//	public static void main(String[] args) {
+//		System.out.println(getLevel(917000));
+//		System.out.println(getLevel(243497));
+//	}
 	
 	private LevelUtils() {}
 
@@ -68,7 +75,11 @@ public class LevelUtils {
 		player.sendMessage(HexColor.FLAT_BLUE_GREEN .getColor()+ "- Un claim supplémentaire");
 		int togive = 100+level*10;
 		player.sendMessage(HexColor.FLAT_BLUE_GREEN .getColor()+ "- "+ togive +"§e⛃§r");
-		SurvivalCorePlugin.getEconomy().depositPlayer(player, togive);
+		if(CoreBukkitPlugin.getInstance().getServerName().equals("Survie")) {
+			SurvivalCorePlugin.getEconomy().depositPlayer(player, togive);
+		}else {
+			RewardsDAO.addRewardAsync(account.getUUID().toString(), "Passage niveau " + level + " : " + togive + "§e⛃§r", "Survie", "eco give {player} " + togive);
+		}
 		if(level%10==0) {
 			new BukkitRunnable() {
 				
@@ -141,6 +152,17 @@ public class LevelUtils {
 		case 120:
 			group = "Colosse";
 			promoteAndBroadcast(player, group);
+			break;
+		case 160:
+			group = "Spartiate";
+			promoteAndBroadcast(player, group);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "recompenses give " + player.getName() + " 3");
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "recompenses give " + player.getName() + " 2486");
+				}
+			}.runTaskLater(SurvivalCorePlugin.getInstance(), 2L);
 			break;
 		default:
 			break;
