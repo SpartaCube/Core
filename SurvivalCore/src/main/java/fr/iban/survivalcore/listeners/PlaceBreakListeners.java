@@ -3,9 +3,11 @@ package fr.iban.survivalcore.listeners;
 import java.util.Random;
 
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -18,10 +20,11 @@ import fr.iban.lands.LandManager;
 import fr.iban.lands.LandsPlugin;
 import fr.iban.lands.enums.Action;
 import fr.iban.lands.objects.Land;
-import fr.iban.survivalcore.pickaxe.SpecialPickaxe;
+import fr.iban.survivalcore.tools.SpecialTools;
 
 public class PlaceBreakListeners implements Listener {
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e) {
 		LandManager landManager = LandsPlugin.getInstance().getLandManager();
@@ -38,8 +41,8 @@ public class PlaceBreakListeners implements Listener {
 		if(!landManager.isWilderness(land) && !land.isBypassing(player, Action.BLOCK_BREAK)) return;
 
 		//Pioche 3x3
-		if(SpecialPickaxe.is3x3Pickaxe(itemInHand)) {
-			for(Block b : SpecialPickaxe.getSurroundingBlocks(player, block)){
+		if(SpecialTools.is3x3Shovel(itemInHand)) {
+			for(Block b : SpecialTools.getSurroundingBlocksPickaxe(player, block)){
 				Chunk c = b.getChunk();
 				Land l = landManager.getLandAt(c);
 				if(!landManager.isWilderness(l) && !l.isBypassing(player, Action.BLOCK_BREAK)) 
@@ -48,9 +51,30 @@ public class PlaceBreakListeners implements Listener {
 				b.breakNaturally(itemInHand);
 			}
 		}
+		
+		//Pelle 3x3
+		if(SpecialTools.is3x3Pickaxe(itemInHand)) {
+			for(Block b : SpecialTools.getSurroundingBlocksShovel(player, block)){
+				Chunk c = b.getChunk();
+				Land l = landManager.getLandAt(c);
+				if(!landManager.isWilderness(l) && !l.isBypassing(player, Action.BLOCK_BREAK)) 
+					continue;
+				
+				b.breakNaturally(itemInHand);
+			}
+		}
+		
+		//Hache bûcheron
+		if(SpecialTools.is3x3Pickaxe(itemInHand)) {
+		    if (!e.getBlock().getState().getType().toString().equalsIgnoreCase("LOG") && !e.getBlock().getState().getType().toString().equalsIgnoreCase("LOG_2"))
+		        return; 
+		    breakBlock(e.getBlock(), e.getPlayer());
+		}
+		
+		
 
 		//Pioche Hades
-		if(SpecialPickaxe.isCutCleanPickaxe(itemInHand)) {
+		if(SpecialTools.isCutCleanPickaxe(itemInHand)) {
 			switch (block.getType()) {
 			case GOLD_ORE:
 				drop(e, Material.GOLD_INGOT, 1, loc, true);
@@ -69,6 +93,27 @@ public class PlaceBreakListeners implements Listener {
 			}
 		}
 	}
+	
+	  private void breakBlock(Block b, Player p) {
+		    b.breakNaturally();
+		    Location above = new Location(b.getWorld(), b.getLocation().getBlockX(), (b.getLocation().getBlockY() + 1), b.getLocation().getBlockZ());
+		    Block blockAbove = above.getBlock();
+		    
+			Chunk c = b.getChunk();
+			Land l = landManager.getLandAt(c);
+			if(!landManager.isWilderness(l) && !l.isBypassing(player, Action.BLOCK_BREAK)) 
+				continue;
+			
+		    if (blockAbove.getState().getType().toString().equalsIgnoreCase("LOG") || blockAbove.getState().getType().toString().equalsIgnoreCase("LOG_2")) {
+		      breakBlock(blockAbove, p);
+		      p.getItemInHand().setDurability((short)(p.getItemInHand().getDurability() + 1));
+		      if (p.getItemInHand().getDurability() > p.getItemInHand().getType().getMaxDurability()) {
+		        p.getInventory().remove(p.getItemInHand());
+		        p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+		      } 
+		    } 
+		  }
+		  
 	
 	private void drop(BlockBreakEvent e, Material newDrop, double xp, Location loc, boolean fortuneMultiply) {
 		Player player = e.getPlayer();
