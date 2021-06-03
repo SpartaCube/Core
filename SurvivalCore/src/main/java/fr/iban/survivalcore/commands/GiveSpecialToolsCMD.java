@@ -32,6 +32,7 @@ public class GiveSpecialToolsCMD implements CommandExecutor {
 						player.sendMessage("/give pioche (hades/3x3)");
 						break;
 					}
+				 break;
 				case "pelle":
 					switch (args[1]) {
 					case "3x3":
@@ -41,6 +42,7 @@ public class GiveSpecialToolsCMD implements CommandExecutor {
 						player.sendMessage("/give pelle (3x3)");
 						break;
 					}
+				 break;
 				case "hache":
 					switch (args[1]) {
 					case "bucheron":
@@ -50,6 +52,7 @@ public class GiveSpecialToolsCMD implements CommandExecutor {
 						player.sendMessage("/give hache (bucheron)");
 						break;
 					}
+				 break;
 				default:
 					player.sendMessage("/givetools (pioche/pelle/hache) (bucheron/hades/3x3)");
 					break;
