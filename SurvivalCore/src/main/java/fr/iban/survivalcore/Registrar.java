@@ -8,6 +8,7 @@ import fr.iban.survivalcore.commands.BoostCMD;
 import fr.iban.survivalcore.commands.DolphinCMD;
 import fr.iban.survivalcore.commands.FeedCMD;
 import fr.iban.survivalcore.commands.GivePickaxeCMD;
+import fr.iban.survivalcore.commands.GiveSpecialToolsCMD;
 import fr.iban.survivalcore.commands.HomesManageCMD;
 import fr.iban.survivalcore.commands.LevelsCMD;
 import fr.iban.survivalcore.commands.SimpleCommands;
@@ -68,7 +69,7 @@ public class Registrar {
 		main.getCommand("dolphin").setExecutor(new DolphinCMD());
 		main.getCommand("feed").setExecutor(new FeedCMD());
 		main.getCommand("classement").setExecutor(new TopLevelsCMD());
-		main.getCommand("givepioche").setExecutor(new GivePickaxeCMD());
+		main.getCommand("givetools").setExecutor(new GiveSpecialToolsCMD());
 
 	}
 

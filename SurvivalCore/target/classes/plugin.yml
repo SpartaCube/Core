@@ -24,7 +24,7 @@ commands:
   grades:
   boost:
   feed:
-  givepioche:
+  givetools:
   dolphin:
     aliases: [dophin]
   classement:
