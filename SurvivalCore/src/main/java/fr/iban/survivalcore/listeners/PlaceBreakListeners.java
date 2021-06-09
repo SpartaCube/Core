@@ -1,30 +1,35 @@
 package fr.iban.survivalcore.listeners;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.iban.lands.LandManager;
 import fr.iban.lands.LandsPlugin;
 import fr.iban.lands.enums.Action;
 import fr.iban.lands.objects.Land;
+import fr.iban.survivalcore.SurvivalCorePlugin;
 import fr.iban.survivalcore.tools.SpecialTools;
 
 public class PlaceBreakListeners implements Listener {
+	
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e) {
 		LandManager landManager = LandsPlugin.getInstance().getLandManager();
@@ -32,7 +37,7 @@ public class PlaceBreakListeners implements Listener {
 		Block block = e.getBlock();
 		ItemStack itemInHand = player.getInventory().getItemInMainHand();
 		Location loc = block.getLocation();
-		
+
 		if (player.isSneaking()) return;
 
 		Chunk chunk = block.getChunk();
@@ -41,37 +46,41 @@ public class PlaceBreakListeners implements Listener {
 		if(!landManager.isWilderness(land) && !land.isBypassing(player, Action.BLOCK_BREAK)) return;
 
 		//Pioche 3x3
-		if(SpecialTools.is3x3Shovel(itemInHand)) {
+		if(SpecialTools.is3x3Pickaxe(itemInHand)) {
+			//Bukkit.broadcastMessage("pioche");
 			for(Block b : SpecialTools.getSurroundingBlocksPickaxe(player, block)){
 				Chunk c = b.getChunk();
 				Land l = landManager.getLandAt(c);
 				if(!landManager.isWilderness(l) && !l.isBypassing(player, Action.BLOCK_BREAK)) 
 					continue;
-				
+
 				b.breakNaturally(itemInHand);
 			}
 		}
-		
+
 		//Pelle 3x3
-		if(SpecialTools.is3x3Pickaxe(itemInHand)) {
+		if(SpecialTools.is3x3Shovel(itemInHand)) {
+			//Bukkit.broadcastMessage("pelle");
 			for(Block b : SpecialTools.getSurroundingBlocksShovel(player, block)){
 				Chunk c = b.getChunk();
 				Land l = landManager.getLandAt(c);
 				if(!landManager.isWilderness(l) && !l.isBypassing(player, Action.BLOCK_BREAK)) 
 					continue;
-				
+
 				b.breakNaturally(itemInHand);
 			}
 		}
-		
+
 		//Hache bûcheron
-		if(SpecialTools.is3x3Pickaxe(itemInHand)) {
-		    if (!e.getBlock().getState().getType().toString().equalsIgnoreCase("LOG") && !e.getBlock().getState().getType().toString().equalsIgnoreCase("LOG_2"))
-		        return; 
-		    breakBlock(e.getBlock(), e.getPlayer());
+		if(SpecialTools.isLumberjackAxe(itemInHand)) {
+			//Bukkit.broadcastMessage("hache");
+			if (!isLog(block.getType())) {
+				return;
+			}
+			dropTree(block, itemInHand);
 		}
-		
-		
+
+
 
 		//Pioche Hades
 		if(SpecialTools.isCutCleanPickaxe(itemInHand)) {
@@ -93,43 +102,23 @@ public class PlaceBreakListeners implements Listener {
 			}
 		}
 	}
-	
-	  private void breakBlock(Block b, Player p) {
-		    b.breakNaturally();
-		    Location above = new Location(b.getWorld(), b.getLocation().getBlockX(), (b.getLocation().getBlockY() + 1), b.getLocation().getBlockZ());
-		    Block blockAbove = above.getBlock();
-		    
-			Chunk c = b.getChunk();
-			Land l = landManager.getLandAt(c);
-			if(!landManager.isWilderness(l) && !l.isBypassing(player, Action.BLOCK_BREAK)) 
-				continue;
-			
-		    if (blockAbove.getState().getType().toString().equalsIgnoreCase("LOG") || blockAbove.getState().getType().toString().equalsIgnoreCase("LOG_2")) {
-		      breakBlock(blockAbove, p);
-		      p.getItemInHand().setDurability((short)(p.getItemInHand().getDurability() + 1));
-		      if (p.getItemInHand().getDurability() > p.getItemInHand().getType().getMaxDurability()) {
-		        p.getInventory().remove(p.getItemInHand());
-		        p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
-		      } 
-		    } 
-		  }
-		  
-	
+
+
 	private void drop(BlockBreakEvent e, Material newDrop, double xp, Location loc, boolean fortuneMultiply) {
 		Player player = e.getPlayer();
 		ItemStack toDrop = new ItemStack(newDrop);
 		int amountToDrop = 1;
 		int expToDrop = 0;
-		
+
 		//Centre du bloc : 
 		loc.add(0.5, 0.5, 0.5);
-		
+
 		if(fortuneMultiply) {
 			int fortuneLevel = player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
 			amountToDrop = getMultiplier(fortuneLevel);
 			toDrop.setAmount(amountToDrop);
 		}
-		
+
 		for (int i = 0; i < amountToDrop ; i++) {
 			if(xp >= 1) {
 				expToDrop += xp;
@@ -139,7 +128,7 @@ public class PlaceBreakListeners implements Listener {
 				}
 			}
 		}
-		
+
 		e.setDropItems(false);
 		e.setExpToDrop(expToDrop);
 		player.getWorld().dropItem(loc, toDrop);
@@ -179,5 +168,76 @@ public class PlaceBreakListeners implements Listener {
 
 		return 1;
 	}
+
+
+	private void dropTree(final Block block, final ItemStack item) {
+		List<Block> blocks = new ArrayList<>();
+		//List<Block> leaves = new ArrayList<>();
+
+		for (Block _block = block; !_block.isEmpty(); _block = _block.getRelative(BlockFace.UP)) {
+
+			for (int k = -1; k <= 1; k++) {
+				for (int j = -1; j <= 1; j++) {
+					for (int l = -1; l <= 1; l++) {
+						final Block relativeBlock = _block.getRelative(j, k, l);
+
+						if (isLog(relativeBlock.getType()))
+							blocks.add(relativeBlock);
+					}
+				}
+			}
+		}
+		
+		ItemMeta meta = item.getItemMeta();
+		Damageable itemDmg = (Damageable) meta;
+
+		int count = 0;
+		for (final Block b : blocks) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(SurvivalCorePlugin.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					b.breakNaturally(item);
+				}
+			}, ++count);
+		}
+		
+		
+		int damage = blocks.size() / (meta.getEnchantLevel(Enchantment.DURABILITY)+1);
+				
+		itemDmg.setDamage(itemDmg.getDamage() + damage);
+
+		item.setItemMeta(meta);
+	}
+
+//	private static boolean isLeaf(Material material) {
+//		switch (material) {
+//		case ACACIA_LEAVES:
+//		case BIRCH_LEAVES:
+//		case DARK_OAK_LEAVES:
+//		case JUNGLE_LEAVES:
+//		case OAK_LEAVES:
+//		case SPRUCE_LEAVES:
+//			return true;
+//		default:
+//			return false;
+//		}
+//	}
+
+	private static boolean isLog(Material material) {
+		switch (material) {
+		case ACACIA_LOG:
+		case BIRCH_LOG:
+		case DARK_OAK_LOG:
+		case JUNGLE_LOG:
+		case OAK_LOG:
+		case SPRUCE_LOG:
+		case WARPED_STEM:
+		case CRIMSON_STEM:
+			return true;
+		default:
+			return false;
+		}
+	}
+
 
 }

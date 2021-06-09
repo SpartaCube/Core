@@ -7,6 +7,7 @@
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/CoreBungeePlugin.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/teleport/TpRequest.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/AnnounceEventCMD.java
+/home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/TabCompleteCMD.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/TphereCMD.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/SudoCMD.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/StaffChatToggle.java
@@ -25,6 +26,7 @@
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/teleport/RequestType.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/AnnounceCMD.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/SocialSpyCMD.java
+/home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/listeners/CommandListener.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/teleport/TeleportManager.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/TpnoCMD.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/Core-waterfall/src/main/java/fr/iban/bungeecore/commands/TpaCMD.java

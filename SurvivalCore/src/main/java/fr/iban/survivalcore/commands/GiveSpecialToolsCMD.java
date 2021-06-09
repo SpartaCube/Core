@@ -18,7 +18,7 @@ public class GiveSpecialToolsCMD implements CommandExecutor {
 			
 			if(args.length == 0) {
 				player.sendMessage("/givetools (pioche/pelle/hache) (bucheron/hades/3x3)");
-			}else if(args.length <= 1) {
+			}else if(args.length <= 2) {
 				switch (args[0]) {
 				case "pioche":
 					switch (args[1]) {

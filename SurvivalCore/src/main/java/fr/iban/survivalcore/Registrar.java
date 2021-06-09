@@ -7,7 +7,6 @@ import fr.iban.survivalcore.commands.ActionBarCMD;
 import fr.iban.survivalcore.commands.BoostCMD;
 import fr.iban.survivalcore.commands.DolphinCMD;
 import fr.iban.survivalcore.commands.FeedCMD;
-import fr.iban.survivalcore.commands.GivePickaxeCMD;
 import fr.iban.survivalcore.commands.GiveSpecialToolsCMD;
 import fr.iban.survivalcore.commands.HomesManageCMD;
 import fr.iban.survivalcore.commands.LevelsCMD;

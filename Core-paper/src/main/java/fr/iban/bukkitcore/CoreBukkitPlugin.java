@@ -12,6 +12,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
+import fr.iban.bukkitcore.commands.AddTabCompleteCMD;
 import fr.iban.bukkitcore.commands.AnnonceCMD;
 import fr.iban.bukkitcore.commands.RecompensesCMD;
 import fr.iban.bukkitcore.commands.RepairCMD;
@@ -19,6 +20,7 @@ import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
 import fr.iban.bukkitcore.commands.SurvieCMD;
 import fr.iban.bukkitcore.listeners.AsyncChatListener;
+import fr.iban.bukkitcore.listeners.CommandsListener;
 import fr.iban.bukkitcore.listeners.DeathListener;
 import fr.iban.bukkitcore.listeners.HeadDatabaseListener;
 import fr.iban.bukkitcore.listeners.InventoryListener;
@@ -65,7 +67,8 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         		new AsyncChatListener(this),
         		new JoinQuitListeners(this),
         		new PlayerMoveListener(),
-        		new DeathListener(this)
+        		new DeathListener(this),
+        		new CommandsListener(this)
         		);
         
         getCommand("serveur").setExecutor(new ServeurCMD());
@@ -76,6 +79,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         getCommand("repair").setExecutor(new RepairCMD(this));
         getCommand("recompenses").setExecutor(new RecompensesCMD());
         getCommand("recompenses").setTabCompleter(new RecompensesCMD());
+        getCommand("addtabcomplete").setExecutor(new AddTabCompleteCMD(this));
 
         setupEconomy();
         

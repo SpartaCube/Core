@@ -12,13 +12,30 @@ database:
   password: password
 
 tabcomplete:
-  visiteur:
-    - "sethome"
-    - "home"
-  support:
-    - "mute"
-    - "tempmute" 
-  moderateur:
-    - "tempban"
-    - "vanish"
-    - "mod"
+  global:
+    - sethome
+    - delhome
+    - spawn
+    - warp
+    - warps
+    - lands
+    - land
+    - classement
+    - niveau
+    - level
+    - kit
+    - kits
+    - vote
+    - map
+    - boutique
+    - site
+    - discord
+    - repair
+    - ec
+  moderation:
+    - mod
+    - ban
+    - tempban
+    - mute
+    - tempmute
+    - kick

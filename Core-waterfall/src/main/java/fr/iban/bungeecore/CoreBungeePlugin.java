@@ -22,12 +22,14 @@ import fr.iban.bungeecore.commands.ReplyCMD;
 import fr.iban.bungeecore.commands.SocialSpyCMD;
 import fr.iban.bungeecore.commands.StaffChatToggle;
 import fr.iban.bungeecore.commands.SudoCMD;
+import fr.iban.bungeecore.commands.TabCompleteCMD;
 import fr.iban.bungeecore.commands.TpCMD;
 import fr.iban.bungeecore.commands.TpaCMD;
 import fr.iban.bungeecore.commands.TpahereCMD;
 import fr.iban.bungeecore.commands.TphereCMD;
 import fr.iban.bungeecore.commands.TpnoCMD;
 import fr.iban.bungeecore.commands.TpyesCMD;
+import fr.iban.bungeecore.listeners.CommandListener;
 import fr.iban.bungeecore.listeners.PluginMessageListener;
 import fr.iban.bungeecore.listeners.ProxyJoinQuitListener;
 import fr.iban.bungeecore.listeners.ProxyPingListener;
@@ -89,7 +91,8 @@ public final class CoreBungeePlugin extends Plugin {
 		registerEvents(
 				new ProxyJoinQuitListener(),
 				new ProxyPingListener(),
-				new PluginMessageListener()
+				new PluginMessageListener(),
+				new CommandListener(this)
 				);
 
 		registerCommands(
@@ -109,6 +112,7 @@ public final class CoreBungeePlugin extends Plugin {
 				new TpyesCMD("tpyes", "spartacube.tpa", "tpaccept", teleportManager),
 				new BackCMD("back", "spartacube.back.death", teleportManager),
 				new JoinEventCMD("joinevent", this),
+				new TabCompleteCMD("baddtabcomplete", "spartacube.addtabcomplete", this),
 				new AnnounceEventCMD("announceevent", this)
 				);
 

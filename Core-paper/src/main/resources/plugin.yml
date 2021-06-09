@@ -12,5 +12,6 @@ commands:
   packetlog:
   annonce:
   recompenses:
+  addtabcomplete:
   repair:
      aliases: [fix, efix, erepair]

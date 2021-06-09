@@ -14,8 +14,6 @@ fr/iban/survivalcore/utils/LevelsTop.class
 fr/iban/survivalcore/listeners/CommandListener.class
 fr/iban/survivalcore/commands/FeedCMD.class
 fr/iban/survivalcore/commands/SimpleCommands.class
-fr/iban/survivalcore/commands/GivePickaxeCMD.class
-fr/iban/survivalcore/pickaxe/SpecialPickaxe$1.class
 fr/iban/survivalcore/listeners/PlaceBreakListeners.class
 fr/iban/survivalcore/commands/BoostCMD.class
 fr/iban/survivalcore/utils/FileUtils.class
@@ -40,7 +38,6 @@ fr/iban/survivalcore/listeners/InteractListeners.class
 fr/iban/survivalcore/commands/HomesManageCMD.class
 fr/iban/survivalcore/utils/Time.class
 fr/iban/survivalcore/commands/BoostCMD$2.class
-fr/iban/survivalcore/pickaxe/SpecialPickaxe.class
 fr/iban/survivalcore/utils/LevelUtils$4.class
 fr/iban/survivalcore/utils/menu/Menu.class
 fr/iban/survivalcore/utils/LevelUtils$1.class
@@ -58,3 +55,4 @@ fr/iban/survivalcore/commands/BoostCMD$1.class
 fr/iban/survivalcore/utils/ArrayUtils.class
 fr/iban/survivalcore/listeners/EntityDeathListener.class
 fr/iban/survivalcore/utils/ItemBuilder.class
+fr/iban/survivalcore/tools/SpecialTools$1.class

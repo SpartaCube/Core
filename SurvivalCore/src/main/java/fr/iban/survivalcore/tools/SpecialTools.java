@@ -31,9 +31,7 @@ public class SpecialTools {
 			Material.GRASS_BLOCK, Material.DIRT, Material.SAND, Material.RED_SAND, Material.GRAVEL
 			);
 
-	public static HashMap<UUID, BlockFace> facesShovel = new HashMap<UUID, BlockFace>();
-
-	public static HashMap<UUID, BlockFace> facesPickaxe = new HashMap<UUID, BlockFace>();
+	public static HashMap<UUID, BlockFace> faces = new HashMap<UUID, BlockFace>();
 
 
 	public static ItemStack get3x3Pickaxe() {
@@ -57,17 +55,17 @@ public class SpecialTools {
 	}
 	
 	public static ItemStack get3x3Shovel() {
-		ItemStack hades = new ItemStack(Material.NETHERITE_PICKAXE);
+		ItemStack hades = new ItemStack(Material.NETHERITE_SHOVEL);
 
 		ItemMeta cus = hades.getItemMeta();
-		cus.setDisplayName("§9§lPelle du Dieu");
-		cus.setLore(Arrays.asList("§3|| §bMine du §93x3§3 ||","§c§l[ITEM LEGENDAIRE]"));
+		cus.setDisplayName("§e§lPelle du Dieu");
+		cus.setLore(Arrays.asList("§e§l-------------","§e§lCette pelle permet de","§e§lminer une zone de 3x3.","§e§l-------------","§c§l[ITEM LEGENDAIRE]"));
 		hades.setItemMeta(cus);
 		return hades;
 	}
 
 	public static ItemStack getLumberjackAxe() {
-		ItemStack hades = new ItemStack(Material.NETHERITE_PICKAXE);
+		ItemStack hades = new ItemStack(Material.NETHERITE_AXE);
 
 		ItemMeta cus = hades.getItemMeta();
 		cus.setDisplayName("§e§lHache du Bûcheron");
@@ -77,44 +75,32 @@ public class SpecialTools {
 	}
 	
 	public static boolean isLumberjackAxe(ItemStack item) {
-		if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette hache détruit entièrement")) {
-			return true;
-		}
-		return false;
+		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette hache détruit entièrement l'arbre");
 	}
 
 	public static boolean is3x3Shovel(ItemStack item) {
-		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains("§e§lPelle du Dieu")) {
-			return true;
-		}
-		return false;	
+		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pelle permet de");
 	}
 
 	public static boolean isCutCleanPickaxe(ItemStack item) {
-		if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pioche fait fondre")) {
-			return true;
-		}
-		return false;
+		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pioche fait fondre");
 	}
 
 	public static boolean is3x3Pickaxe(ItemStack item) {
-		if(item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains("§9§lMarteau du Dieu")) {
-			return true;
-		}
-		return false;	
+		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§3|| §bMine du §93x3§3 ||");
 	}
 
 
 	public static List<Block> getSurroundingBlocksShovel(Player player, Block targetBlock) {
-		return getSurroundingBlocks(facesShovel.get(player.getUniqueId()), targetBlock).stream().filter(block -> canBreakWith3x3Shovel.contains(block.getType())).collect(Collectors.toList());
+		return getSurroundingBlocks(faces.get(player.getUniqueId()), targetBlock).stream().filter(block -> canBreakWith3x3Shovel.contains(block.getType())).collect(Collectors.toList());
 	}
 	
 	public static List<Block> getSurroundingBlocksPickaxe(Player player, Block targetBlock) {
-		return getSurroundingBlocks(facesPickaxe.get(player.getUniqueId()), targetBlock).stream().filter(block -> canBreakWith3x3Pickaxe.contains(block.getType())).collect(Collectors.toList());
+		return getSurroundingBlocks(faces.get(player.getUniqueId()), targetBlock).stream().filter(block -> canBreakWith3x3Pickaxe.contains(block.getType())).collect(Collectors.toList());
 	}
 
 	private static List<Block> getSurroundingBlocks(BlockFace blockFace, Block targetBlock) {
-		ArrayList<Block> blocks = new ArrayList<Block>();
+		ArrayList<Block> blocks = new ArrayList<>();
 		World world = targetBlock.getWorld();
 
 		int x, y, z;

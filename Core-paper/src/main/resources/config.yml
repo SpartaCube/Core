@@ -11,4 +11,31 @@ database:
   dbname: dbname
   password: password
   
-lores: Mine du 3x3
+tabcomplete:
+  global:
+    - sethome
+    - delhome
+    - spawn
+    - warp
+    - warps
+    - lands
+    - land
+    - classement
+    - niveau
+    - level
+    - kit
+    - kits
+    - vote
+    - map
+    - boutique
+    - site
+    - discord
+    - repair
+    - ec
+  moderation:
+    - mod
+    - ban
+    - tempban
+    - mute
+    - tempmute
+    - kick
