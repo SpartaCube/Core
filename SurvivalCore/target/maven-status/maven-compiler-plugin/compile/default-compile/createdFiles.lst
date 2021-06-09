@@ -10,6 +10,7 @@ fr/iban/survivalcore/listeners/DamageListeners.class
 fr/iban/survivalcore/listeners/VillagerEvents.class
 fr/iban/survivalcore/commands/TopLevelsCMD.class
 fr/iban/survivalcore/Registrar.class
+fr/iban/survivalcore/listeners/PlaceBreakListeners$2.class
 fr/iban/survivalcore/utils/LevelsTop.class
 fr/iban/survivalcore/listeners/CommandListener.class
 fr/iban/survivalcore/commands/FeedCMD.class

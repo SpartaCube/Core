@@ -2,6 +2,7 @@
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/commands/LevelsCMD.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/Lag.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/listeners/SpawnListeners.java
+/home/iban/Documents/Développement/eclipse-workspace/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/commands/RepairCMD.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/HexColor.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/utils/XPProvider.java
 /home/iban/Documents/Développement/eclipse-workspace/SpartaCore/SurvivalCore/src/main/java/fr/iban/survivalcore/SurvivalCorePlugin.java
