@@ -10,6 +10,7 @@ import fr.iban.survivalcore.commands.FeedCMD;
 import fr.iban.survivalcore.commands.GiveSpecialToolsCMD;
 import fr.iban.survivalcore.commands.HomesManageCMD;
 import fr.iban.survivalcore.commands.LevelsCMD;
+import fr.iban.survivalcore.commands.RepairCMD;
 import fr.iban.survivalcore.commands.SimpleCommands;
 import fr.iban.survivalcore.commands.TopLevelsCMD;
 import fr.iban.survivalcore.listeners.CommandListener;
@@ -69,6 +70,8 @@ public class Registrar {
 		main.getCommand("feed").setExecutor(new FeedCMD());
 		main.getCommand("classement").setExecutor(new TopLevelsCMD());
 		main.getCommand("givetools").setExecutor(new GiveSpecialToolsCMD());
+        main.getCommand("repair").setExecutor(new RepairCMD());
+
 
 	}
 

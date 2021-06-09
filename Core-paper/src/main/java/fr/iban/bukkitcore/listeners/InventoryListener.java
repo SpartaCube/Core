@@ -1,52 +1,15 @@
 package fr.iban.bukkitcore.listeners;
 
 import org.bukkit.event.EventHandler;
-import java.util.List;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.InventoryHolder;
 
-import fr.iban.bukkitcore.commands.RepairCMD;
 import fr.iban.bukkitcore.menu.Menu;
 
 public class InventoryListener implements Listener {
 	
-	 private boolean blockall = true;
-	
-	  @EventHandler
-	  public void onInventoryClick(InventoryClickEvent e) {
-	    if (e.getInventory() instanceof AnvilInventory && e.getWhoClicked() instanceof Player) {
-	      Player p = (Player)e.getWhoClicked();
-	      if (e.getCurrentItem() != null)
-	        if (e.getCurrentItem().hasItemMeta()) {
-	          ItemMeta meta = e.getCurrentItem().getItemMeta();
-	          if (meta.hasLore()) {
-	            List<String> lore = meta.getLore();
-	            for (int i = 0; i < RepairCMD.lores.length; i++) {
-	              if (blockall) {
-	                if (p.hasPermission("spartacube.spartacube.repair.nolore") || p.hasPermission("spartacube.spartacube.norepair.nolore")) {
-	                  p.sendMessage(ChatColor.RED + "Error: " + ChatColor.DARK_RED + "Cet item ne peut pas être réparé.");
-	                  e.setCancelled(true);
-	                  break;
-	                } 
-	              } else if (lore.contains(RepairCMD.lores[i])) {
-	                if (p.hasPermission("spartacube.repair.nolore") || p.hasPermission("spartacube.norepair.nolore")) {
-	                  p.sendMessage(ChatColor.RED + "Erreur: " + ChatColor.DARK_RED + "Cet item ne peut pas être réparé");
-	                  e.setCancelled(true);
-	                  break;
-	                } 
-	              } 
-	            } 
-	          } 
-	        }  
-	    } 
-	  }
-
     @EventHandler
     public void onMenuClick(InventoryClickEvent e){
 

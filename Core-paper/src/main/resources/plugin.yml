@@ -13,5 +13,3 @@ commands:
   annonce:
   recompenses:
   addtabcomplete:
-  repair:
-     aliases: [fix, efix, erepair]

@@ -24,6 +24,7 @@ commands:
   grades:
   boost:
   feed:
+  repair:
   givetools:
   dolphin:
     aliases: [dophin]
