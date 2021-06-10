@@ -73,8 +73,20 @@ public final class CoreBungeePlugin extends Plugin {
 		loadConfig();
 		currentEvents = new HashMap<>();
 		
-		RedisAccess.init(new RedisCredentials(configuration.getString("redis.host"), configuration.getString("redis.password"), configuration.getInt("redis.port"), configuration.getString("redis.clientName")));
-    	DbAccess.initPool(new DbCredentials(configuration.getString("database.host"), configuration.getString("database.user"), configuration.getString("database.password"), configuration.getString("database.dbname"), configuration.getInt("database.port")));
+    	try {
+        	DbAccess.initPool(new DbCredentials(configuration.getString("database.host"), configuration.getString("database.user"), configuration.getString("database.password"), configuration.getString("database.dbname"), configuration.getInt("database.port")));
+    	}catch (Exception e) {
+    		getLogger().severe("Erreur lors de l'initialisation de la connexion sql.");
+			getProxy().stop();
+		}
+    	
+    	try {
+    		RedisAccess.init(new RedisCredentials(configuration.getString("redis.host"), configuration.getString("redis.password"), configuration.getInt("redis.port"), configuration.getString("redis.clientName")));
+    	}catch (Exception e) {
+    		getLogger().severe("Erreur lors de l'initialisation de la connexion redis.");
+			getProxy().stop();
+		}
+		
 		DbTables.createTables();
 		
 		announceManager = new AnnoncesManager();

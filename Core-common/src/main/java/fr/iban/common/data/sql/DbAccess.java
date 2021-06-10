@@ -10,7 +10,6 @@ public class DbAccess {
 	private static HikariDataSource dataSource;
 
 	public static void initPool(DbCredentials credentials) {
-
 		HikariConfig hikariConfig = new HikariConfig();
 		hikariConfig.setJdbcUrl(credentials.toURI());
 		hikariConfig.setUsername(credentials.getUser());

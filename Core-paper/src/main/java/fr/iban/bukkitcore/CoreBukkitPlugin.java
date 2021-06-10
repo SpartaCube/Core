@@ -52,8 +52,21 @@ public final class CoreBukkitPlugin extends JavaPlugin {
     	instance = this;
     	saveDefaultConfig();
     	
-    	DbAccess.initPool(new DbCredentials(getConfig().getString("database.host"), getConfig().getString("database.user"), getConfig().getString("database.password"), getConfig().getString("database.dbname"), getConfig().getInt("database.port")));
-        RedisAccess.init(new RedisCredentials(getConfig().getString("redis.host"), getConfig().getString("redis.password"), getConfig().getInt("redis.port"), getConfig().getString("redis.clientName")));
+    	try {
+    		DbAccess.initPool(new DbCredentials(getConfig().getString("database.host"), getConfig().getString("database.user"), getConfig().getString("database.password"), getConfig().getString("database.dbname"), getConfig().getInt("database.port")));
+    	}catch (Exception e) {
+    		getLogger().severe("Erreur lors de l'initialisation de la connexion sql.");
+			Bukkit.shutdown();
+		}
+    	
+    	try {
+            RedisAccess.init(new RedisCredentials(getConfig().getString("redis.host"), getConfig().getString("redis.password"), getConfig().getInt("redis.port"), getConfig().getString("redis.clientName")));
+    	}catch (Exception e) {
+    		getLogger().severe("Erreur lors de l'initialisation de la connexion redis.");
+			Bukkit.shutdown();
+		}
+        
+        
         RewardsDAO.createTables();
         
         textInputs = new HashMap<>();
