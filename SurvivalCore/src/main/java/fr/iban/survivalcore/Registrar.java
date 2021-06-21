@@ -48,7 +48,7 @@ public class Registrar {
 		registerEvent(new RaidTriggerListener());
 		registerEvent(new PortalListeners());
 		registerEvent(new PlaceBreakListeners());
-		registerEvent(new InteractListeners());
+		registerEvent(new InteractListeners(main));
 
 		
 		new SpartaCubePlaceHolder(main).register();

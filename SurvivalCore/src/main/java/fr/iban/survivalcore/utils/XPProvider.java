@@ -27,8 +27,9 @@ public class XPProvider {
 		return CompletableFuture.runAsync(() -> {
 			AccountProvider ap = new AccountProvider(player.getUniqueId());
 			Account account = ap.getAccount();
-			
+						
 			int boost = 1+ (getTotalBoost(account, ap)/100) + (getTotalGlobalBoost()/100);
+			
 			
 			if(applynerf && checkLast(player, 6) > 12*boost) {
 				return;
@@ -38,11 +39,11 @@ public class XPProvider {
 			
 			//On log l'xp ajouter
 			getXPLogs(player).put(System.currentTimeMillis(), toAdd);
-
+			
 			short levelbefore = account.getLevel();
 			account.addExp(toAdd);
+			
 			short levelafter = account.getLevel();
-
 			player.sendActionBar(LevelUtils.getLevelProgressBar(account, 20));
 
 			if(levelbefore < levelafter)

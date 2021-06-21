@@ -1,10 +1,12 @@
 fr/iban/bungeecore/commands/TpCMD.class
+fr/iban/bungeecore/listeners/CommandListener.class
 fr/iban/bungeecore/utils/AnnoncesManager.class
 fr/iban/bungeecore/commands/TpahereCMD.class
 fr/iban/bungeecore/teleport/TpToSLocListener.class
 fr/iban/bungeecore/listeners/ProxyJoinQuitListener.class
 fr/iban/bungeecore/listeners/PluginMessageListener.class
 fr/iban/bungeecore/commands/TphereCMD.class
+fr/iban/bungeecore/commands/TabCompleteCMD.class
 fr/iban/bungeecore/utils/HexColor.class
 fr/iban/bungeecore/utils/ChatUtils.class
 fr/iban/bungeecore/CoreBungeePlugin.class

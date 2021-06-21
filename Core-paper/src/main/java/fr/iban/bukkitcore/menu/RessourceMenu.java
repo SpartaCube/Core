@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import fr.iban.bukkitcore.CoreBukkitPlugin;
 import fr.iban.bukkitcore.utils.ItemBuilder;
+import fr.iban.bukkitcore.utils.PluginMessageHelper;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.teleport.PlayerRTP;
 
@@ -52,7 +53,7 @@ public class RessourceMenu extends Menu {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rtp player " + player.getName() + " " + worldname);
 		}else {
 			RedisAccess.getInstance().getRedissonClient().getTopic("PlayerRTP").publish(new PlayerRTP(player.getUniqueId(), worldname));
-			Bukkit.dispatchCommand(player, "queue Ressources");
+			PluginMessageHelper.sendPlayerToServer(player, "Ressources");
 		}
 	}
 

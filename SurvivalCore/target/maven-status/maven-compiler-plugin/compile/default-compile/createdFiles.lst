@@ -21,6 +21,7 @@ fr/iban/survivalcore/utils/FileUtils.class
 fr/iban/survivalcore/commands/ActionBarCMD.class
 fr/iban/survivalcore/utils/Lang.class
 fr/iban/survivalcore/utils/LevelUtils$2.class
+fr/iban/survivalcore/tools/SpecialTools.class
 fr/iban/survivalcore/listeners/PortalListeners.class
 fr/iban/survivalcore/listeners/SpawnListeners.class
 fr/iban/survivalcore/utils/TopJoueur.class
@@ -42,6 +43,7 @@ fr/iban/survivalcore/commands/BoostCMD$2.class
 fr/iban/survivalcore/utils/LevelUtils$4.class
 fr/iban/survivalcore/utils/menu/Menu.class
 fr/iban/survivalcore/utils/LevelUtils$1.class
+fr/iban/survivalcore/commands/GiveSpecialToolsCMD.class
 fr/iban/survivalcore/utils/LevelUtils.class
 fr/iban/survivalcore/commands/ActionBarCMD$1.class
 fr/iban/survivalcore/listeners/InventoryListener.class
@@ -50,6 +52,7 @@ fr/iban/survivalcore/commands/LevelsCMD.class
 fr/iban/survivalcore/listeners/EntityDeathListener$1.class
 fr/iban/survivalcore/SurvivalCorePlugin.class
 fr/iban/survivalcore/utils/XPProvider.class
+fr/iban/survivalcore/commands/RepairCMD.class
 fr/iban/survivalcore/utils/LuckPermsUtils.class
 fr/iban/survivalcore/listeners/PlaceBreakListeners$1.class
 fr/iban/survivalcore/commands/BoostCMD$1.class

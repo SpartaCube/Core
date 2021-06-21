@@ -51,8 +51,7 @@ public class LevelUtils {
 
 		int expfromto = getLevelFromToLevelToEXP(currentlvl, nextlvl);
 		int currentprogress = (int) (account.getExp() - getLevelExp(currentlvl));
-		ChatColor bleu = HexColor.FLAT_BLUE2.getColor();
-		return bleu+ "§l" +currentlvl+ " " + getProgressBar(currentprogress, expfromto, amount, '|', HexColor.FLAT_BLUE.getColor(), ChatColor.AQUA) + " "+ bleu+"§l"+nextlvl;
+		return ChatColor.BLUE + "§l" +currentlvl+ " " + getProgressBar(currentprogress, expfromto, amount, '|', ChatColor.BLUE, ChatColor.AQUA) + " "+ ChatColor.BLUE+"§l"+nextlvl;
 	}
 
 

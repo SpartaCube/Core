@@ -74,6 +74,16 @@ public class SpecialTools {
 		return hades;	
 	}
 	
+	public static ItemStack getFarmerHoe() {
+		ItemStack hades = new ItemStack(Material.NETHERITE_HOE);
+
+		ItemMeta cus = hades.getItemMeta();
+		cus.setDisplayName("§e§lHoue de Déméter");
+		cus.setLore(Arrays.asList("§e§l-------------","§e§lCette houe permet de replanter","§e§lautomatiquement vos récoltes.","§e§l-------------","§c§l[ITEM LEGENDAIRE]"));
+		hades.setItemMeta(cus);
+		return hades;	
+	}
+	
 	public static boolean isLumberjackAxe(ItemStack item) {
 		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette hache détruit entièrement l'arbre");
 	}
@@ -86,6 +96,10 @@ public class SpecialTools {
 		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pioche fait fondre");
 	}
 
+	public static boolean isReplantHoue(ItemStack item) {
+		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette houe permet de replanter");
+	}
+	
 	public static boolean is3x3Pickaxe(ItemStack item) {
 		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§3|| §bMine du §93x3§3 ||");
 	}

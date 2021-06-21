@@ -66,13 +66,13 @@ public class ProxyJoinQuitListener implements Listener {
 
 	}
 
-	@EventHandler
-	public void serverConnectEvent(ServerConnectEvent e) {
-		if(!e.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)){
-			return;
-		}
-		e.setTarget(ProxyServer.getInstance().getServerInfo("Lobby"));
-	}
+//	@EventHandler
+//	public void serverConnectEvent(ServerConnectEvent e) {
+//		if(!e.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)){
+//			return;
+//		}
+//		//e.setTarget(ProxyServer.getInstance().getServerInfo("Lobby"));
+//	}
 
 	@EventHandler
 	public void onQuit(PlayerDisconnectEvent e) {

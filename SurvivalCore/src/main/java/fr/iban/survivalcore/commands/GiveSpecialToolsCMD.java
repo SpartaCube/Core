@@ -53,8 +53,18 @@ public class GiveSpecialToolsCMD implements CommandExecutor {
 						break;
 					}
 				 break;
+				case "houe":
+					switch (args[1]) {
+					case "déméter":
+						player.getInventory().addItem(SpecialTools.getFarmerHoe());
+						break;
+					default:
+						player.sendMessage("/give houe (déméter)");
+						break;
+					}
+				 break;
 				default:
-					player.sendMessage("/givetools (pioche/pelle/hache) (bucheron/hades/3x3)");
+					player.sendMessage("/givetools (pioche/pelle/hache/houe) (bucheron/hades/3x3/déméter)");
 					break;
 				}
 			}
