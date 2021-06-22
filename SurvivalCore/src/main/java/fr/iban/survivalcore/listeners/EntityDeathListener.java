@@ -2,6 +2,7 @@ package fr.iban.survivalcore.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -100,7 +101,7 @@ public class EntityDeathListener implements Listener {
                         } else {
                         	message += "s'est fait assassiner par " + killer.getName() + " !";
                         }
-                    } else if (entity.getDamager() instanceof Creature)
+                    } else if (entity.getDamager() instanceof Mob)
                         message += "s'est fait tuer par un " + entity.getDamager().getType().toString().toLowerCase().replace("_", " ") + " !";
                 }
                 break;
