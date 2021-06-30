@@ -11,5 +11,6 @@ commands:
   ressource:
   packetlog:
   annonce:
+  options:
   recompenses:
   addtabcomplete:

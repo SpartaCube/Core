@@ -14,6 +14,7 @@ import org.redisson.api.RedissonClient;
 
 import fr.iban.bukkitcore.commands.AddTabCompleteCMD;
 import fr.iban.bukkitcore.commands.AnnonceCMD;
+import fr.iban.bukkitcore.commands.OptionsCMD;
 import fr.iban.bukkitcore.commands.RecompensesCMD;
 import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
@@ -35,6 +36,7 @@ import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
 import fr.iban.common.data.sql.DbAccess;
 import fr.iban.common.data.sql.DbCredentials;
+import fr.iban.common.data.sql.DbTables;
 import net.milkbowl.vault.economy.Economy;
 
 public final class CoreBukkitPlugin extends JavaPlugin {
@@ -66,7 +68,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 			Bukkit.shutdown();
 		}
         
-        
+    	DbTables.createTables();
         RewardsDAO.createTables();
         
         textInputs = new HashMap<>();
@@ -87,6 +89,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 
         getCommand("annonce").setExecutor(new AnnonceCMD(this));
         getCommand("survie").setExecutor(new SurvieCMD());
+        getCommand("options").setExecutor(new OptionsCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
         getCommand("recompenses").setExecutor(new RecompensesCMD());
         getCommand("recompenses").setTabCompleter(new RecompensesCMD());

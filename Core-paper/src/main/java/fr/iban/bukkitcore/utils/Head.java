@@ -21,7 +21,14 @@ public enum Head {
 	TNTCREEP("16044"),
 	OAK_L("175"),
 	OAK_INFO("20774"),
-	BAG("30016")
+	BAG("30016"),
+	DEATH("6861"),
+	PLUS("10209"),
+	TCHAT("28599"),
+	MOINS("9351"),
+	AROBASE("42824"),
+	ENDER_PEARL("116"),
+	PVP("27529")
 	;
 	
 	private static HeadDatabaseAPI api;
