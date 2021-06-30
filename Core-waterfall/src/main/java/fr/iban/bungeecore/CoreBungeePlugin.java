@@ -15,6 +15,7 @@ import fr.iban.bungeecore.commands.AnnounceCMD;
 import fr.iban.bungeecore.commands.AnnounceEventCMD;
 import fr.iban.bungeecore.commands.BackCMD;
 import fr.iban.bungeecore.commands.ChatCMD;
+import fr.iban.bungeecore.commands.IgnoreCMD;
 import fr.iban.bungeecore.commands.JoinEventCMD;
 import fr.iban.bungeecore.commands.MessageCMD;
 import fr.iban.bungeecore.commands.MsgToggleCMD;
@@ -28,6 +29,7 @@ import fr.iban.bungeecore.commands.TpaCMD;
 import fr.iban.bungeecore.commands.TpahereCMD;
 import fr.iban.bungeecore.commands.TphereCMD;
 import fr.iban.bungeecore.commands.TpnoCMD;
+import fr.iban.bungeecore.commands.TptoggleCMD;
 import fr.iban.bungeecore.commands.TpyesCMD;
 import fr.iban.bungeecore.listeners.CommandListener;
 import fr.iban.bungeecore.listeners.PluginMessageListener;
@@ -109,7 +111,10 @@ public final class CoreBungeePlugin extends Plugin {
 
 		registerCommands(
 				new AnnounceCMD("announce"),
+				new IgnoreCMD("ignore"),
 				new ChatCMD("chat"),
+				new TptoggleCMD("tptoggle"),
+				new IgnoreCMD("ignore"),
 				new StaffChatToggle("sctoggle", "spartacube.sctoggle", "staffchattoggle"),
 				new MessageCMD("msg", "spartacube.msg", "message", "m", "w", "tell", "t"),
 				new ReplyCMD("reply", "spartacube.reply", "r"),

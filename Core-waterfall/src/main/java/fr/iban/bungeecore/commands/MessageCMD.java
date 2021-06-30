@@ -3,6 +3,10 @@ package fr.iban.bungeecore.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.iban.bungeecore.CoreBungeePlugin;
+import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
+import fr.iban.spartacube.data.Account;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -39,13 +43,18 @@ public class MessageCMD extends Command implements TabExecutor {
 							p.sendMessage(TextComponent.fromLegacyText("§8[§cSocialSpy§8] §c" + player.getName() + " §7➔ " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg));
 						}  
 					});
-					if (!MsgToggleCMD.tmsg.contains(target) || player.hasPermission("spartacube.msgtogglebypass")) {
-						player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §c" + target.getName() + "  §6➤§7 " + msg  + ChatColor.RESET));
-						target.sendMessage(TextComponent.fromLegacyText("§c" + player.getName() + "  §7➔ §8Moi §6➤§7 " + msg + ChatColor.RESET));
-						ProxyServer.getInstance().getLogger().info("§c" + player.getName() + " §7 ➔  " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg);
-					} else {
-						player.sendMessage(TextComponent.fromLegacyText("§c" + target.getName() + " a désactivé ses messages"));
-					}  	
+					ProxyServer.getInstance().getScheduler().runAsync(CoreBungeePlugin.getInstance(), () -> {
+					   Account account = new AccountProvider(target.getUniqueId()).getAccount();
+					   if (!MsgToggleCMD.tmsg.contains(target) || player.hasPermission("spartacube.msgtogglebypass")) {
+						 if(!account.getIgnoredPlayers().contains(player.getUniqueId())) {
+						   player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §c" + target.getName() + "  §6➤§7 " + msg  + ChatColor.RESET));
+						   target.sendMessage(TextComponent.fromLegacyText("§c" + player.getName() + "  §7➔ §8Moi §6➤§7 " + msg + ChatColor.RESET));
+						   ProxyServer.getInstance().getLogger().info("§c" + player.getName() + " §7 ➔  " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg);
+						 } 
+					   } else {
+						   player.sendMessage(TextComponent.fromLegacyText("§c" + target.getName() + " a désactivé ses messages"));
+					   }  	
+					});
 					if (!ReplyCMD.getReplies().containsKey(player)) {
 						ReplyCMD.getReplies().put(player, target);
 					} else {

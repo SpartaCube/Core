@@ -3,7 +3,11 @@ package fr.iban.bungeecore.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.iban.bungeecore.CoreBungeePlugin;
 import fr.iban.bungeecore.teleport.TeleportManager;
+import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
+import fr.iban.spartacube.data.Account;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -30,7 +34,14 @@ public class TpahereCMD extends Command implements TabExecutor{
 						player.sendMessage(TextComponent.fromLegacyText("§cVous ne pouvez pas vous téléporter à vous même."));
 						return;
 					}
-					tpm.sendTeleportHereRequest(player, target);
+					Account account = new AccountProvider(target.getUniqueId()).getAccount();
+					if(account.getOption(Option.TP)) {
+					  if(!account.getIgnoredPlayers().contains(player.getUniqueId())) {
+						  tpm.sendTeleportHereRequest(player, target);
+					  }
+						} else {
+						  player.sendMessage(TextComponent.fromLegacyText("§cCe joueur a désactivé ses demandes de téléportation."));
+						}
 				}else {
 					player.sendMessage(TextComponent.fromLegacyText("§cCe joueur n'est pas en ligne."));
 				}

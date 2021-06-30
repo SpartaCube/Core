@@ -32,6 +32,7 @@ tabcomplete:
     - discord
     - repair
     - ec
+    - tptoggle
   moderation:
     - mod
     - ban
