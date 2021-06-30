@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
 import fr.iban.spartacube.data.Account;
 
 public class DamageListeners implements Listener {
@@ -46,6 +47,6 @@ public class DamageListeners implements Listener {
 	}
 
 	private boolean canPVP(Account data1, Account data2) {
-		return data1.isPvp() && data2.isPvp();
+		return data1.getOption(Option.PVP) && data2.getOption(Option.PVP);
 	}
 }
