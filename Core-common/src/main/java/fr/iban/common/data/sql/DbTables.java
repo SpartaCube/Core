@@ -7,6 +7,8 @@ import java.sql.SQLException;
 public class DbTables {
 
 	public static void createTables() {
+		createOptionsTable();
+		createIgnoredPlayersTable();
 		createplayersTable();
 		createAnnounceBLTable();
 		createIpTable();
@@ -25,7 +27,6 @@ public class DbTables {
 					"  lastseen       bigint DEFAULT 0," +
 					"  exp bigint DEFAULT 0," +
 					"  maxclaims smallint DEFAULT 1," +
-					"  allowpvp boolean DEFAULT false," +
 					"  CONSTRAINT  UC_sc_players" +
 					"  UNIQUE (id)," +
 					"  CONSTRAINT UC_sc_players_uuid" +
@@ -43,6 +44,17 @@ public class DbTables {
 				+ ");"
 				);
 	}
+	
+	private static void createOptionsTable() {
+		createTable("CREATE TABLE IF NOT EXISTS sc_options (" +
+				"  id int," +
+				"  idOption varchar(16)," +
+				"  CONSTRAINT PK_sc_options" +
+				"  PRIMARY KEY (id, idOption)," +
+				"  CONSTRAINT FK_sc_options" +
+				"  FOREIGN KEY (id) REFERENCES sc_players(id)" +
+		") engine = InnoDB;");
+    }
 
 	private static void createAnnounceBLTable() {
 		createTable("CREATE TABLE IF NOT EXISTS sc_annonces_blacklist (" +
@@ -51,6 +63,17 @@ public class DbTables {
 							"  CONSTRAINT PK_sc_annonces_blacklist" +
 							"  PRIMARY KEY (id, idAnnonce)," +
 							"  CONSTRAINT FK_sc_annonces" +
+							"  FOREIGN KEY (id) REFERENCES sc_players(id)" +
+					") engine = InnoDB;");
+	}
+	
+	private static void createIgnoredPlayersTable() {
+		createTable("CREATE TABLE IF NOT EXISTS sc_ignored_players (" +
+							"  id int," +
+							"  uuidPlayer varchar(36) not null," +
+							"  CONSTRAINT PK_sc_ignored_players" +
+							"  PRIMARY KEY (id, uuidPlayer)," +
+							"  CONSTRAINT FK_sc_ignored" +
 							"  FOREIGN KEY (id) REFERENCES sc_players(id)" +
 					") engine = InnoDB;");
 	}

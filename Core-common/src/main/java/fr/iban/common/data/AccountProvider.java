@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -59,9 +61,6 @@ public class AccountProvider {
 						long lastseen = rs.getLong("lastseen");
 						account.setLastSeen(lastseen);
 
-						boolean allowpvp = rs.getBoolean("allowpvp");
-						account.setPvp(allowpvp);
-
 						short maxclaims = rs.getShort("maxclaims");
 						account.setMaxClaims(maxclaims);
 					}else {
@@ -69,6 +68,8 @@ public class AccountProvider {
 					}
 				}
 			}
+			account.setOptions(getOptionsFromDB(connection));
+			account.setIgnoredPlayers(getIgnoredPlayersFromDB(connection));
 			account.setBlackListedAnnounces(getBlackListedAnnouncesFromDB(connection));
 			account.setBoosts(getBoostsFromDB(connection));
 		}catch (SQLException e) {
@@ -79,15 +80,16 @@ public class AccountProvider {
 
 	public void sendAccountToDB(Account account) {
 		try (Connection connection = DbAccess.getDataSource().getConnection()){
-			try(PreparedStatement ps = connection.prepareStatement("INSERT INTO sc_players (uuid, name, exp, lastseen, maxclaims, allowpvp) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=VALUES(name), exp=VALUES(exp), lastseen=VALUES(lastseen), maxclaims=VALUES(maxclaims), allowpvp=VALUES(allowpvp)")){
+			try(PreparedStatement ps = connection.prepareStatement("INSERT INTO sc_players (uuid, name, exp, lastseen, maxclaims) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=VALUES(name), exp=VALUES(exp), lastseen=VALUES(lastseen), maxclaims=VALUES(maxclaims), allowpvp=VALUES(allowpvp)")){
 				ps.setString(1, uuid.toString());
 				ps.setString(2, (account.getName() == null ? "NonDefini" : account.getName()));
 				ps.setLong(3, account.getExp());
 				ps.setLong(4, account.getLastSeen());
 				ps.setInt(5, account.getMaxClaims());
-				ps.setBoolean(6, account.isPvp());
 				ps.executeUpdate();
 			}
+			saveOptionsToDB(account.getOptions(), connection);
+			deleteOptionsFromDB(account.getOptions(), connection);
 			saveBlackListedAnnouncesToDB(account.getBlackListedAnnounces(), connection);
 			saveBoostsToDB(connection, account.getBoosts());
 			if(account.getIp() != null) {
@@ -119,6 +121,25 @@ public class AccountProvider {
 		accountBukket.delete();
 	}
 
+	public Map<Option, Boolean> getOptionsFromDB(Connection connection) throws SQLException{
+		Map<Option, Boolean> options = new HashMap<>();
+		try(PreparedStatement ps = 
+				connection.prepareStatement(
+						"SELECT idOption "
+								+ "FROM sc_players, sc_options "
+								+ "WHERE uuid = ? "
+								+ "AND sc_players.id=sc_options.id"))
+		{
+			ps.setString(1, uuid.toString());
+			try(ResultSet rs = ps.executeQuery()){
+				while(rs.next()) {
+					options.put(Option.valueOf(rs.getString("idOption")), false);
+				}
+			}
+		}
+		return options;
+	}
+	
 	public Set<Integer> getBlackListedAnnouncesFromDB(Connection connection) throws SQLException{
 		Set<Integer> announces = new HashSet<>();
 		try(PreparedStatement ps = 
@@ -136,6 +157,60 @@ public class AccountProvider {
 			}
 		}
 		return announces;
+	}
+	
+	public Set<UUID> getIgnoredPlayersFromDB(Connection connection) throws SQLException{
+		Set<UUID> ignored = new HashSet<>();
+		try(PreparedStatement ps = 
+				connection.prepareStatement(
+						"SELECT uuidPlayer "
+								+ "FROM sc_players, sc_ignored_players "
+								+ "WHERE uuid = ? "
+								+ "AND sc_players.id=sc_ignored_players.id"))
+		{
+			ps.setString(1, uuid.toString());
+			try(ResultSet rs = ps.executeQuery()){
+				while(rs.next()) {
+					ignored.add(UUID.fromString(rs.getString("uuidPlayer")));
+				}
+			}
+		}
+		return ignored;
+	}
+	
+	public void saveIgnoredPlayersToDB(Set<UUID> ignored, Connection connection) throws SQLException {
+		final String INSERT_SQL = "INSERT INTO sc_ignored_players(id, uuidPlayer) VALUES ((SELECT id FROM sc_players WHERE uuid=?), ?) ON DUPLICATE KEY UPDATE id=VALUES(id);";
+		for(UUID uuidP : ignored) {
+			PreparedStatement ps = connection.prepareStatement(INSERT_SQL);
+			ps.setString(1, uuid.toString());
+			ps.setString(2, uuidP.toString());
+			ps.executeUpdate();
+			ps.close();
+		}
+	}
+	
+	public void saveOptionsToDB(Map<Option, Boolean> options, Connection connection) throws SQLException {
+		final String INSERT_SQL = "INSERT INTO sc_options(id, idOption) VALUES ((SELECT id FROM sc_players WHERE uuid=?), ?) ON DUPLICATE KEY UPDATE id=VALUES(id);";
+		for(Option key : options.keySet()) {
+			PreparedStatement ps = connection.prepareStatement(INSERT_SQL);
+			ps.setString(1, uuid.toString());
+			ps.setString(2, key.toString());
+			ps.executeUpdate();
+			ps.close();
+		}
+	}
+	
+	public void deleteOptionsFromDB(Map<Option, Boolean> options, Connection connection) throws SQLException {
+		final String DELETE_SQL = "DELETE FROM sc_options WHERE id = (SELECT id FROM sc_players WHERE uuid=?) AND idOption = ?;";
+		for(Map.Entry<Option, Boolean> set : options.entrySet()) {
+		  if(Boolean.TRUE.equals(options.get(set.getKey()))) {
+			PreparedStatement ps = connection.prepareStatement(DELETE_SQL);
+			ps.setString(1, uuid.toString());
+			ps.setString(2, set.getKey().toString());
+			ps.executeUpdate();
+			ps.close();
+		  }
+	   }
 	}
 
 	public void saveBlackListedAnnouncesToDB(Set<Integer> blacklist, Connection connection) throws SQLException {
