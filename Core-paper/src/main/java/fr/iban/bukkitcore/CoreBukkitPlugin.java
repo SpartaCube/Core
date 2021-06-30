@@ -12,6 +12,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.api.RedissonClient;
 
+import com.earth2me.essentials.Essentials;
+
 import fr.iban.bukkitcore.commands.AddTabCompleteCMD;
 import fr.iban.bukkitcore.commands.AnnonceCMD;
 import fr.iban.bukkitcore.commands.RecompensesCMD;
@@ -44,6 +46,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 	private RedissonClient redisClient;
 	private String serverName = "null";
 	private Map<UUID, TextCallback> textInputs;
+	private Essentials essentials;
 	
 	private Economy econ = null;
 
@@ -51,6 +54,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
     public void onEnable() {
     	instance = this;
     	saveDefaultConfig();
+    	
+		if(getServer().getPluginManager().isPluginEnabled("Essentials")) {
+			essentials = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
+		}
     	
     	try {
     		DbAccess.initPool(new DbCredentials(getConfig().getString("database.host"), getConfig().getString("database.user"), getConfig().getString("database.password"), getConfig().getString("database.dbname"), getConfig().getInt("database.port")));
@@ -162,6 +169,10 @@ public final class CoreBukkitPlugin extends JavaPlugin {
 	
 	public TeleportManager getTeleportManager() {
 		return teleportManager;
+	}
+	
+	public Essentials getEssentials() {
+		return essentials;
 	}
 
 }

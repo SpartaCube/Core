@@ -85,23 +85,23 @@ public class SpecialTools {
 	}
 	
 	public static boolean isLumberjackAxe(ItemStack item) {
-		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette hache détruit entièrement l'arbre");
+		return item.getType() == Material.NETHERITE_AXE && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette hache détruit entièrement l'arbre");
 	}
 
 	public static boolean is3x3Shovel(ItemStack item) {
-		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pelle permet de");
+		return item.getType() == Material.NETHERITE_SHOVEL && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pelle permet de");
 	}
 
 	public static boolean isCutCleanPickaxe(ItemStack item) {
-		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pioche fait fondre");
+		return item.getType() == Material.NETHERITE_PICKAXE && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette pioche fait fondre");
 	}
 
 	public static boolean isReplantHoue(ItemStack item) {
-		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette houe permet de replanter");
+		return item.getType() == Material.NETHERITE_HOE && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette houe permet de replanter");
 	}
 	
 	public static boolean is3x3Pickaxe(ItemStack item) {
-		return item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§3|| §bMine du §93x3§3 ||");
+		return item.getType() == Material.NETHERITE_PICKAXE && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§3|| §bMine du §93x3§3 ||");
 	}
 
 

@@ -1,5 +1,8 @@
 package fr.iban.survivalcore.listeners;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -8,10 +11,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+
 import fr.iban.common.data.AccountProvider;
-import fr.iban.spartacube.data.Account;
 
 public class DamageListeners implements Listener {
+
+	private LoadingCache<UUID, Boolean> pvpCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().isPvp());
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent e) {
@@ -20,12 +27,8 @@ public class DamageListeners implements Listener {
 			if(e.getEntity() instanceof Player) {
 				Player damaged = (Player)e.getEntity();
 				Player damager = getPlayerDamager(event);
-				if(damager != null) {
-					Account damagerAccount = new AccountProvider(damager.getUniqueId()).getAccount();
-					Account damagedAccount = new AccountProvider(damaged.getUniqueId()).getAccount();
-					if(!canPVP(damagerAccount, damagedAccount)) {
-						e.setCancelled(true);
-					}
+				if(damager != null && !canPVP(damaged.getUniqueId(), damager.getUniqueId())) {
+					e.setCancelled(true);
 				}
 			}
 		}
@@ -45,7 +48,7 @@ public class DamageListeners implements Listener {
 		return player;
 	}
 
-	private boolean canPVP(Account data1, Account data2) {
-		return data1.isPvp() && data2.isPvp();
+	private boolean canPVP(UUID p1, UUID p2) {
+		return pvpCache.get(p1).booleanValue() && pvpCache.get(p2).booleanValue();
 	}
 }
