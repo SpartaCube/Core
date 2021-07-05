@@ -1,7 +1,11 @@
 package fr.iban.survivalcore.listeners;
 
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,14 +14,27 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+
+import fr.iban.bukkitcore.CoreBukkitPlugin;
+import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
+import fr.iban.survivalcore.SurvivalCorePlugin;
+
 public class EntityDeathListener implements Listener {
+	
+    String message;
+	private LoadingCache<UUID, Boolean> deathCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getOption(Option.DEATH_MESSAGE));
+	private LoadingCache<UUID, Set<UUID>> ignoredPlayersCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getIgnoredPlayers());
 	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		// ☠ 
+		e.setDeathMessage("");
 		Player killer = e.getEntity().getKiller();
 		Player player = e.getEntity();
-        String message = "☠ " + player.getName() + " ";
+        message = "☠ " + player.getName() + " ";
 
         EntityDamageEvent damageCause = e.getEntity().getLastDamageCause();
         if (damageCause == null)
@@ -110,8 +127,13 @@ public class EntityDeathListener implements Listener {
         }
 
         if (message != null)
-            e.setDeathMessage(message);   
-	}
-
-
-}
+              	Bukkit.getServer().getOnlinePlayers().forEach( p -> {
+            			if (deathCache.get(p.getUniqueId()).booleanValue()) {
+            			  if(!ignoredPlayersCache.get(p.getUniqueId()).contains(player.getUniqueId())) {
+            				p.sendMessage(message);
+            		    }
+            	     }
+                }); 
+        SurvivalCorePlugin.getInstance().getLogger().info(message);
+          } 
+     }

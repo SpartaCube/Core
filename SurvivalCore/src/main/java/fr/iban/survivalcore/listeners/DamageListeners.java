@@ -15,10 +15,11 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
 import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
 
 public class DamageListeners implements Listener {
 
-	private LoadingCache<UUID, Boolean> pvpCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().isPvp());
+	private LoadingCache<UUID, Boolean> pvpCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getOption(Option.PVP));
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent e) {
