@@ -6,15 +6,22 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.redisson.api.RedissonClient;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 
 import fr.iban.bungeecore.chat.ChatManager;
 import fr.iban.bungeecore.commands.AnnounceCMD;
 import fr.iban.bungeecore.commands.AnnounceEventCMD;
 import fr.iban.bungeecore.commands.BackCMD;
 import fr.iban.bungeecore.commands.ChatCMD;
+import fr.iban.bungeecore.commands.IgnoreCMD;
+import fr.iban.bungeecore.commands.IgnoreListCMD;
 import fr.iban.bungeecore.commands.JoinEventCMD;
 import fr.iban.bungeecore.commands.MessageCMD;
 import fr.iban.bungeecore.commands.MsgToggleCMD;
@@ -28,6 +35,7 @@ import fr.iban.bungeecore.commands.TpaCMD;
 import fr.iban.bungeecore.commands.TpahereCMD;
 import fr.iban.bungeecore.commands.TphereCMD;
 import fr.iban.bungeecore.commands.TpnoCMD;
+import fr.iban.bungeecore.commands.TptoggleCMD;
 import fr.iban.bungeecore.commands.TpyesCMD;
 import fr.iban.bungeecore.listeners.CommandListener;
 import fr.iban.bungeecore.listeners.PluginMessageListener;
@@ -39,6 +47,7 @@ import fr.iban.bungeecore.teleport.EventAnnounceListener;
 import fr.iban.bungeecore.teleport.TeleportManager;
 import fr.iban.bungeecore.teleport.TpToSLocListener;
 import fr.iban.bungeecore.utils.AnnoncesManager;
+import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.GlobalBoosts;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
@@ -64,6 +73,7 @@ public final class CoreBungeePlugin extends Plugin {
 	private ChatManager chatManager;
 	private TeleportManager teleportManager;
 	
+	private LoadingCache<UUID, Set<UUID>> ignoredPlayersCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getIgnoredPlayers());
 	private Map<String, SLocation> currentEvents;
 
 	@Override
@@ -109,7 +119,11 @@ public final class CoreBungeePlugin extends Plugin {
 
 		registerCommands(
 				new AnnounceCMD("announce"),
+				new IgnoreCMD("ignore"),
 				new ChatCMD("chat"),
+				new TptoggleCMD("tptoggle"),
+				new IgnoreCMD("ignore"),
+				new IgnoreListCMD("ignorelist"),
 				new StaffChatToggle("sctoggle", "spartacube.sctoggle", "staffchattoggle"),
 				new MessageCMD("msg", "spartacube.msg", "message", "m", "w", "tell", "t"),
 				new ReplyCMD("reply", "spartacube.reply", "r"),
@@ -163,6 +177,10 @@ public final class CoreBungeePlugin extends Plugin {
 
 	public static CoreBungeePlugin getInstance() {
 		return instance;
+	}
+	
+	public Set<UUID> ignoredPlayersChache(UUID uuid) {
+		return ignoredPlayersCache.get(uuid);
 	}
 
 	public void loadConfig() {

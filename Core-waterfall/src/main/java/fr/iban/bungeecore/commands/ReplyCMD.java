@@ -3,7 +3,14 @@ package fr.iban.bungeecore.commands;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+
+import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -19,6 +26,8 @@ public class ReplyCMD extends Command implements TabExecutor {
 	public ReplyCMD(String name, String permission, String name2) {
 		super(name, permission, name2);
 	}
+	
+	private LoadingCache<UUID, Boolean> msgCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getOption(Option.MSG));
 
 	public void execute(CommandSender sender, String[] args) {
 		if (args.length == 0)
@@ -41,9 +50,17 @@ public class ReplyCMD extends Command implements TabExecutor {
 							p.sendMessage(TextComponent.fromLegacyText("§8[§cSocialSpy§8] §c" + player.getName() + " §7➔ " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg));
 						}  
 					});
-					if (!MsgToggleCMD.tmsg.contains(target) || player.hasPermission("spartacube.msgtogglebypass")) {
-						player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §c" + target.getName() + " §6➤§7 " + msg + ChatColor.RESET));
-						target.sendMessage(TextComponent.fromLegacyText("§c" + player.getName() + " §7➔ §8Moi §6➤§7 " + msg + ChatColor.RESET));
+					if (!msgCache.get(target.getUniqueId()).booleanValue() || player.hasPermission("spartacube.msgtogglebypass")) {
+						 if(target.hasPermission("spartacube.staff")) {
+							 player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §8[§6Staff§8] §c" + target.getName() + " §6➤§7 " + msg));
+						 } else {
+							 player.sendMessage(TextComponent.fromLegacyText("§8Moi §7➔ §c" + target.getName() + " §6➤§7 " + msg));
+						 }
+						 if(player.hasPermission("spartacube.staff")) {
+							 target.sendMessage(TextComponent.fromLegacyText("§8[§6Staff§8] §c" + player.getName() + " §7➔ §8Moi §6➤§7 " + msg));
+						 } else {
+							 target.sendMessage(TextComponent.fromLegacyText("§c" + player.getName() + " §7➔ §8Moi §6➤§7 " + msg));
+						 }
 						System.out.println("§c" + player.getName() + " §7 ➔  " +  "§8" + target.getName() + " §6➤ " +  "§7 " + msg);
 					} else {
 						player.sendMessage(TextComponent.fromLegacyText("§c" + target.getName() + " a désactivé ses messages"));
