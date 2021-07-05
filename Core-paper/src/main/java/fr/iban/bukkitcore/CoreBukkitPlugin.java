@@ -3,6 +3,7 @@ package fr.iban.bukkitcore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ import com.earth2me.essentials.Essentials;
 
 import fr.iban.bukkitcore.commands.AddTabCompleteCMD;
 import fr.iban.bukkitcore.commands.AnnonceCMD;
+import fr.iban.bukkitcore.commands.OptionsCMD;
 import fr.iban.bukkitcore.commands.RecompensesCMD;
 import fr.iban.bukkitcore.commands.RessourceCMD;
 import fr.iban.bukkitcore.commands.ServeurCMD;
@@ -33,6 +35,7 @@ import fr.iban.bukkitcore.teleport.TeleportToLocationListener;
 import fr.iban.bukkitcore.teleport.TeleportToPlayerListener;
 import fr.iban.bukkitcore.utils.PluginMessageHelper;
 import fr.iban.bukkitcore.utils.TextCallback;
+import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
 import fr.iban.common.data.sql.DbAccess;
@@ -92,6 +95,7 @@ public final class CoreBukkitPlugin extends JavaPlugin {
         
         getCommand("serveur").setExecutor(new ServeurCMD());
 
+        getCommand("options").setExecutor(new OptionsCMD());
         getCommand("annonce").setExecutor(new AnnonceCMD(this));
         getCommand("survie").setExecutor(new SurvieCMD());
         getCommand("ressource").setExecutor(new RessourceCMD());
