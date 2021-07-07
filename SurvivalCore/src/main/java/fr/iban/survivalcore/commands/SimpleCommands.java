@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
 import fr.iban.spartacube.data.Account;
 import fr.iban.survivalcore.utils.HexColor;
 
@@ -49,8 +50,8 @@ public class SimpleCommands implements CommandExecutor {
 				if(args.length == 0) {
 					AccountProvider ap = new AccountProvider(player.getUniqueId());
 					Account account = ap.getAccount();
-					account.togglePVP();
-					if(account.isPvp()) {
+					account.toggleOption(Option.PVP);
+					if(account.getOption(Option.PVP)) {
 						player.sendMessage("§aPVP activé.");
 					}else {
 						player.sendMessage("§cPVP desactivé.");
@@ -61,8 +62,8 @@ public class SimpleCommands implements CommandExecutor {
 					if(target != null) {
 						AccountProvider ap = new AccountProvider(target.getUniqueId());
 						Account account = ap.getAccount();
-						account.togglePVP();
-						if(account.isPvp()) {
+						account.toggleOption(Option.PVP);
+						if(account.getOption(Option.PVP)) {
 							player.sendMessage("§aPVP de "+ target.getName() +" activé.");
 						}else {
 							player.sendMessage("§cPVP "+ target.getName() +" desactivé.");

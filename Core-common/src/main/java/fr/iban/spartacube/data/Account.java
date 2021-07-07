@@ -1,13 +1,16 @@
 package fr.iban.spartacube.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import fr.iban.common.data.Boost;
+import fr.iban.common.data.Option;
 
 public class Account {
 
@@ -26,7 +29,8 @@ public class Account {
 	private long lastSeen = 0;
 	private boolean bypass = false;
 	private Set<Integer> blackListedAnnounces = new HashSet<>();
-	private boolean pvp = false;
+	private Set<UUID> ignoredPlayers = new HashSet<>();
+	private Map<Option, Boolean> options = new HashMap<>();
 	private String ip;
 	private List<Boost> boosts;
 
@@ -107,26 +111,56 @@ public class Account {
 		return blackListedAnnounces;
 	}
 	
+	public Set<UUID> getIgnoredPlayers() {
+		if(ignoredPlayers == null) {
+			ignoredPlayers = new HashSet<>();
+		}
+		return ignoredPlayers;
+	}
+	
+	public Map<Option, Boolean> getOptions() {
+		if(options == null) {
+			options = new HashMap<>();
+		}
+		return options;
+	}
+	
+	
 	public void setBlackListedAnnounces(Set<Integer> blackListedAnnounces) {
 		this.blackListedAnnounces = blackListedAnnounces;
 	}
-
-	public boolean isPvp() {
-		return pvp;
+	
+	public void setIgnoredPlayers(Set<UUID> ignoredPlayers) {
+		this.ignoredPlayers = ignoredPlayers;
 	}
 	
-	public void setPvp(boolean pvp) {
-		this.pvp = pvp;
+	public void setOptions(Map<Option, Boolean> options) {
+		this.options = options;
 	}
+	
+	public void setOption(Option option, boolean value) {
+		if(!options.containsKey(option)) {
+			options.put(option, true);
+		}
+		this.options.put(option, value);
+	}
+	
 
-	public void togglePVP() {
-		if(pvp) {
-			pvp = false;
-		}else {
-			pvp = true;
+	public void toggleOption(Option option) {
+		if(options.get(option)) {
+			options.put(option, false);
+		} else {
+			options.put(option, true);
 		}
 	}
 	
+	public boolean getOption(Option option) {
+		if(!options.containsKey(option)) {
+			options.put(option, true);
+		}
+		return this.options.get(option);
+	}
+		
 	public String getIp() {
 		return ip;
 	}

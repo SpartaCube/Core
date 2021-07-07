@@ -1,11 +1,17 @@
 package fr.iban.bungeecore.chat;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+
+import fr.iban.bungeecore.CoreBungeePlugin;
 import fr.iban.bungeecore.commands.StaffChatToggle;
 import fr.iban.bungeecore.utils.HexColor;
 import fr.iban.common.data.AccountProvider;
-import fr.iban.spartacube.data.Account;
+import fr.iban.common.data.Option;
+
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -20,54 +26,72 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class ChatManager {
 
 	private boolean isMuted = false;
+	String msg;
+	
+	private LoadingCache<UUID, Boolean> tchatCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getOption(Option.TCHAT));
+	private LoadingCache<UUID, Boolean> mentionCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getOption(Option.MENTION));
+	private LoadingCache<UUID, Short> levelCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getLevel());
 
 	public void sendGlobalMessage(UUID uuid, String message) {
 		ProxyServer server = ProxyServer.getInstance();
 		ProxiedPlayer player = server.getPlayer(uuid);
-		Account account = new AccountProvider(player.getUniqueId()).getAccount();
-		String msg = message;
+		setMSG(message);
 
 		
 		if(player.hasPermission("spartacube.colors")) {
-			msg = translateColors(HexColor.translateHexColorCodes("#", "", msg));
+			setMSG(translateColors(HexColor.translateHexColorCodes("#", "", msg)));
 		}
 		
-
-
-		if(message.startsWith("$") && player.hasPermission("spartacube.staffchat")) {
-			sendStaffMessage(player, msg.substring(1));
+		
+		if(getMSG().startsWith("$") && player.hasPermission("spartacube.staffchat")) {
+			sendStaffMessage(player, getMSG().substring(1));
 			return;
 		}
 		
 
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
+			return;
+		}
+		
+		if(!tchatCache.get(player.getUniqueId()).booleanValue()) {
+		    player.sendMessage(TextComponent.fromLegacyText("§cVous ne pouvez pas envoyer ce message car votre tchat est désactivé"));
+			ProxyServer.getInstance().getLogger().info(translateColors(HexColor.translateHexColorCodes("#", "", "§8[§CDÉSACTIVÉ§8]§r " + getSuffix(player) + getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + getMSG());
 			return;
 		}
 
 		for (ProxiedPlayer p: ProxyServer.getInstance().getPlayers()) {
 			String player1 = p.getName();
-			String player2 = "§6" + "@" + player1 + "§r";
+			String player2 = "#fdcb6e" + "@" + player1 + "§r";
 			String actionbar = "§6" + player.getName() + " vous a mentionné dans le tchat";
 			
 			if (message.toLowerCase().contains(player1.toLowerCase())) {
-				msg = msg.replace(player1, player2);
+			  if(mentionCache.get(p.getUniqueId()).booleanValue()) {
+				setMSG(getMSG().replace(player1, translateColors(HexColor.translateHexColorCodes("#", "", player2))));
 				p.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(actionbar));
+			   } 
 			} 
 		}
 		
-		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + account.getLevel() + "§7] " + getSuffix(player) + getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + msg));
+		ProxyServer.getInstance().getPlayers().forEach( p -> {
+			if(tchatCache.get(p.getUniqueId()).booleanValue()) { 
+				if (!CoreBungeePlugin.getInstance().ignoredPlayersChache(p.getUniqueId()).contains(player.getUniqueId())) {
+					p.sendMessage(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "§7[" + levelCache.get(uuid).shortValue() + "§7] " + getSuffix(player) + getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + getMSG()));
+				}
+			}
+		});
+		ProxyServer.getInstance().getLogger().info(translateColors(HexColor.translateHexColorCodes("#", "", getSuffix(player) + getPrefix(player)+ " " + player.getName() + getSuffix(player) + " ➤ §r")) + getMSG());
 	}
 
 	public void sendAnnonce(UUID uuid, String annonce) {
 		ProxyServer server = ProxyServer.getInstance();
 		ProxiedPlayer player = server.getPlayer(uuid);
-		String msg = annonce;
+		String message = annonce;
 
 		if(isMuted && !player.hasPermission("spartacube.chatmanage")) {
 			return;
 		}
 		
-		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #7bc8fe§l" + msg))));
+		ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(translateColors(HexColor.translateHexColorCodes("#", "", "#f07e71§lAnnonce de #fbb29e§l"+ player.getName() + " #f07e71➤ #7bc8fe§l" + message))));
 	}
 	
 	public void sendRankup(UUID uuid, String group) {
@@ -84,6 +108,14 @@ public class ChatManager {
 
 	public void setMuted(boolean isMuted) {
 		this.isMuted = isMuted;
+	}
+	
+	public void setMSG(String msg) {
+		this.msg = msg;
+	}
+	
+	private String getMSG() {
+		return msg;
 	}
 
 	private String translateColors(String string) {

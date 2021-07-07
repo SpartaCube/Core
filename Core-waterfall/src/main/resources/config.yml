@@ -32,6 +32,9 @@ tabcomplete:
     - discord
     - repair
     - ec
+    - tptoggle
+    - ignore
+    - ignorelist
   moderation:
     - mod
     - ban

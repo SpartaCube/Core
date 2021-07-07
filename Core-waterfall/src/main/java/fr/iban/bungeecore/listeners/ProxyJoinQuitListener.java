@@ -11,6 +11,7 @@ import fr.iban.bungeecore.CoreBungeePlugin;
 import fr.iban.bungeecore.commands.ReplyCMD;
 import fr.iban.bungeecore.utils.ChatUtils;
 import fr.iban.common.data.AccountProvider;
+import fr.iban.common.data.Option;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.utils.ArrayUtils;
 import fr.iban.spartacube.data.Account;
@@ -21,7 +22,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -57,10 +57,24 @@ public class ProxyJoinQuitListener implements Listener {
 				if((System.currentTimeMillis() - account.getLastSeen()) > 60000) {
 					TextComponent message = new TextComponent(new StringBuilder().append("§8[§a+§8] §8").append(String.format(ArrayUtils.getRandomFromArray(joinMessages), player.getName())).toString());
 					message.setHoverEvent(ChatUtils.getShowTextHoverEvent(ChatColor.GRAY+"Vu pour la dernière fois " + getLastSeen(account.getLastSeen())));
-					ProxyServer.getInstance().broadcast(message);
+					ProxyServer.getInstance().getPlayers().forEach( p -> {
+					      AccountProvider ap = new AccountProvider(p.getUniqueId());
+					        if (ap.getAccount().getOption(Option.JOIN_MESSAGE)) {
+							  if(!CoreBungeePlugin.getInstance().ignoredPlayersChache(player.getUniqueId()).contains(player.getUniqueId())) {
+						        p.sendMessage(message);
+							  }
+				            }
+				    });
+					ProxyServer.getInstance().getLogger().info("§8[§a+§8] §8" + String.format(ArrayUtils.getRandomFromArray(joinMessages), player.getName()));
 				}
 			}else {
-				ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§8≫ §7" + player.getName() + " s'est connecté pour la première fois !" ));
+				ProxyServer.getInstance().getPlayers().forEach( p -> {
+					  AccountProvider ap = new AccountProvider(p.getUniqueId());
+						if (ap.getAccount().getOption(Option.JOIN_MESSAGE)) {
+							p.sendMessage(TextComponent.fromLegacyText("§8≫ §7" + player.getName() + " s'est connecté pour la première fois !"));
+						}
+				});
+				ProxyServer.getInstance().getLogger().info("§8≫ §7" + player.getName() + " s'est connecté pour la première fois !");
 			}
 		});
 
@@ -103,7 +117,15 @@ public class ProxyJoinQuitListener implements Listener {
 			Account account = accountProvider.getAccount();
 
 			if((System.currentTimeMillis() - account.getLastSeen()) > 60000) {
-				ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText("§8[§c-§8] §8" + String.format(ArrayUtils.getRandomFromArray(quitMessages), player.getName())));
+				ProxyServer.getInstance().getPlayers().forEach( p -> {
+					  AccountProvider ap = new AccountProvider(p.getUniqueId());
+						if (ap.getAccount().getOption(Option.LEAVE_MESSAGE)) {
+						  if(!CoreBungeePlugin.getInstance().ignoredPlayersChache(player.getUniqueId()).contains(player.getUniqueId())) {
+							p.sendMessage(TextComponent.fromLegacyText("§8[§c-§8] §8" + String.format(ArrayUtils.getRandomFromArray(quitMessages), player.getName())));
+						 }
+					}
+				});
+				ProxyServer.getInstance().getLogger().info("§8[§c-§8] §8" + String.format(ArrayUtils.getRandomFromArray(quitMessages), player.getName()));
 			}
 
 			account.setLastSeen(System.currentTimeMillis());
