@@ -29,7 +29,10 @@ public enum Head {
 	AROBASE("42824"),
 	ENDER_PEARL("116"),
 	PVP("27529"),
-	ARROW("513")
+	ARROW("513"),
+	HOUSE("4449"),
+	NORMAL_CHEST("2970"),
+	FARMER_STEVE("30463")
 	;
 	
 	private static HeadDatabaseAPI api;

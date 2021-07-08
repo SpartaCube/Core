@@ -6,14 +6,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.redisson.api.RedissonClient;
-
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.LoadingCache;
 
 import fr.iban.bungeecore.chat.ChatManager;
 import fr.iban.bungeecore.commands.AnnounceCMD;
@@ -47,7 +42,6 @@ import fr.iban.bungeecore.teleport.EventAnnounceListener;
 import fr.iban.bungeecore.teleport.TeleportManager;
 import fr.iban.bungeecore.teleport.TpToSLocListener;
 import fr.iban.bungeecore.utils.AnnoncesManager;
-import fr.iban.common.data.AccountProvider;
 import fr.iban.common.data.GlobalBoosts;
 import fr.iban.common.data.redis.RedisAccess;
 import fr.iban.common.data.redis.RedisCredentials;
@@ -73,7 +67,6 @@ public final class CoreBungeePlugin extends Plugin {
 	private ChatManager chatManager;
 	private TeleportManager teleportManager;
 	
-	private LoadingCache<UUID, Set<UUID>> ignoredPlayersCache = Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build(uuid -> new AccountProvider(uuid).getAccount().getIgnoredPlayers());
 	private Map<String, SLocation> currentEvents;
 
 	@Override
@@ -100,7 +93,7 @@ public final class CoreBungeePlugin extends Plugin {
 		DbTables.createTables();
 		
 		announceManager = new AnnoncesManager();
-		chatManager = new ChatManager();
+		chatManager = new ChatManager(this);
 		teleportManager = new TeleportManager(this);
 		GlobalBoosts globalBoosts = new GlobalBoosts();
 		globalBoosts.getGlobalBoostsFromDB();
@@ -111,7 +104,7 @@ public final class CoreBungeePlugin extends Plugin {
 		getProxy().registerChannel("proxy:send");
 		
 		registerEvents(
-				new ProxyJoinQuitListener(),
+				new ProxyJoinQuitListener(this),
 				new ProxyPingListener(),
 				new PluginMessageListener(),
 				new CommandListener(this)
@@ -177,10 +170,6 @@ public final class CoreBungeePlugin extends Plugin {
 
 	public static CoreBungeePlugin getInstance() {
 		return instance;
-	}
-	
-	public Set<UUID> ignoredPlayersChache(UUID uuid) {
-		return ignoredPlayersCache.get(uuid);
 	}
 
 	public void loadConfig() {

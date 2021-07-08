@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import javax.sql.DataSource;
 
@@ -44,6 +45,10 @@ public class AccountProvider {
 		}
 
 		return account;
+	}
+
+	public CompletableFuture<Account> getAccountAsync() {
+		return CompletableFuture.supplyAsync(this::getAccount);
 	}
 
 	private Account getAccountFromDB(){
@@ -139,7 +144,7 @@ public class AccountProvider {
 		}
 		return options;
 	}
-	
+
 	public Set<Integer> getBlackListedAnnouncesFromDB(Connection connection) throws SQLException{
 		Set<Integer> announces = new HashSet<>();
 		try(PreparedStatement ps = 
@@ -158,7 +163,7 @@ public class AccountProvider {
 		}
 		return announces;
 	}
-	
+
 	public Set<UUID> getIgnoredPlayersFromDB(Connection connection) throws SQLException{
 		Set<UUID> ignored = new HashSet<>();
 		try(PreparedStatement ps = 
@@ -177,7 +182,7 @@ public class AccountProvider {
 		}
 		return ignored;
 	}
-	
+
 	public void saveIgnoredPlayersToDB(Set<UUID> ignored, Connection connection) throws SQLException {
 		final String INSERT_SQL = "INSERT INTO sc_ignored_players(id, uuidPlayer) VALUES ((SELECT id FROM sc_players WHERE uuid=?), ?) ON DUPLICATE KEY UPDATE id=VALUES(id);";
 		for(UUID uuidP : ignored) {
@@ -188,7 +193,7 @@ public class AccountProvider {
 			ps.close();
 		}
 	}
-	
+
 	public void saveOptionsToDB(Map<Option, Boolean> options, Connection connection) throws SQLException {
 		final String INSERT_SQL = "INSERT INTO sc_options(id, idOption) VALUES ((SELECT id FROM sc_players WHERE uuid=?), ?) ON DUPLICATE KEY UPDATE id=VALUES(id);";
 		for(Option key : options.keySet()) {
@@ -199,18 +204,18 @@ public class AccountProvider {
 			ps.close();
 		}
 	}
-	
+
 	public void deleteOptionsFromDB(Map<Option, Boolean> options, Connection connection) throws SQLException {
 		final String DELETE_SQL = "DELETE FROM sc_options WHERE id = (SELECT id FROM sc_players WHERE uuid=?) AND idOption = ?;";
 		for(Map.Entry<Option, Boolean> set : options.entrySet()) {
-		  if(Boolean.TRUE.equals(options.get(set.getKey()))) {
-			PreparedStatement ps = connection.prepareStatement(DELETE_SQL);
-			ps.setString(1, uuid.toString());
-			ps.setString(2, set.getKey().toString());
-			ps.executeUpdate();
-			ps.close();
-		  }
-	   }
+			if(Boolean.TRUE.equals(options.get(set.getKey()))) {
+				PreparedStatement ps = connection.prepareStatement(DELETE_SQL);
+				ps.setString(1, uuid.toString());
+				ps.setString(2, set.getKey().toString());
+				ps.executeUpdate();
+				ps.close();
+			}
+		}
 	}
 
 	public void saveBlackListedAnnouncesToDB(Set<Integer> blacklist, Connection connection) throws SQLException {
@@ -245,22 +250,22 @@ public class AccountProvider {
 			ps.close();
 		}
 	}
-	
+
 	public void deleteBoostFromDB(Integer id, Long end, Integer value) {
 		DataSource ds = DbAccess.getDataSource();
 		final String DELETE_SQL = "DELETE FROM sc_boosts WHERE id = ? AND end = ? AND value = ?";
-			try (Connection connection = ds.getConnection()) {
-				try(PreparedStatement ps = connection.prepareStatement(DELETE_SQL)){
-					ps.setInt(1, id);
-					ps.setLong(2, end);
-					ps.setInt(3, value);
-					ps.executeUpdate();
-				}
-			}catch (SQLException e) {
-				e.printStackTrace();
+		try (Connection connection = ds.getConnection()) {
+			try(PreparedStatement ps = connection.prepareStatement(DELETE_SQL)){
+				ps.setInt(1, id);
+				ps.setLong(2, end);
+				ps.setInt(3, value);
+				ps.executeUpdate();
 			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	public void removeBoostFromDB(UUID uuid, Integer id) {
 		DataSource ds = DbAccess.getDataSource();
 		final String DELETE_SQL = "DELETE FROM sc_boosts WHERE id = ? AND owner = ?";

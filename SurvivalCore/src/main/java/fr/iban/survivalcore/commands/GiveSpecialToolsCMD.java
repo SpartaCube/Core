@@ -63,8 +63,18 @@ public class GiveSpecialToolsCMD implements CommandExecutor {
 						break;
 					}
 				 break;
+				case "epee":
+					switch (args[1]) {
+					case "hephaistos":
+						player.getInventory().addItem(SpecialTools.getXpSword());
+						break;
+					default:
+						player.sendMessage("/give epee (hephaistos)");
+						break;
+					}
+				 break;
 				default:
-					player.sendMessage("/givetools (pioche/pelle/hache/houe) (bucheron/hades/3x3/déméter)");
+					player.sendMessage("/givetools (pioche/pelle/hache/houe/epee) (bucheron/hades/3x3/déméter/hephaistos)");
 					break;
 				}
 			}

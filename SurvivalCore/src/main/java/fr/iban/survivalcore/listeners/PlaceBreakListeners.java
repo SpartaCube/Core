@@ -86,9 +86,11 @@ public class PlaceBreakListeners implements Listener {
 		if(SpecialTools.isCutCleanPickaxe(itemInHand)) {
 			switch (block.getType()) {
 			case GOLD_ORE:
+			case DEEPSLATE_GOLD_ORE:
 				drop(e, Material.GOLD_INGOT, 1, loc, true);
 				break;
 			case IRON_ORE:
+			case DEEPSLATE_IRON_ORE:
 				drop(e, Material.IRON_INGOT, 0.7, loc, true);
 				break;
 			case ANCIENT_DEBRIS:
@@ -96,6 +98,10 @@ public class PlaceBreakListeners implements Listener {
 				break;
 			case NETHER_GOLD_ORE:
 				drop(e, Material.GOLD_INGOT, 1, loc, false);
+				break;
+			case COPPER_ORE:
+			case DEEPSLATE_COPPER_ORE:
+				drop(e, Material.COPPER_INGOT, 0.7, loc, true);
 				break;
 			default:
 				break;
@@ -105,9 +111,12 @@ public class PlaceBreakListeners implements Listener {
 
 
 	private void drop(BlockBreakEvent e, Material newDrop, double xp, Location loc, boolean fortuneMultiply) {
+		drop(e, newDrop, xp, loc, fortuneMultiply, 1);
+	}
+	
+	private void drop(BlockBreakEvent e, Material newDrop, double xp, Location loc, boolean fortuneMultiply, int amountToDrop) {
 		Player player = e.getPlayer();
 		ItemStack toDrop = new ItemStack(newDrop);
-		int amountToDrop = 1;
 		int expToDrop = 0;
 
 		//Centre du bloc : 

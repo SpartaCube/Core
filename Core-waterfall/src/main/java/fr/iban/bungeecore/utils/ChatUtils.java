@@ -24,6 +24,10 @@ public class ChatUtils {
     public static ClickEvent getCommandClickEvent(String command) {
     	return new ClickEvent(ClickEvent.Action.RUN_COMMAND, command);
     }
+    
+    public static ClickEvent getSuggestCommandClickEvent(String command) {
+    	return new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command);
+    }
 
 	public static String translateColors(String string) {
 		return ChatColor.translateAlternateColorCodes('&', string);

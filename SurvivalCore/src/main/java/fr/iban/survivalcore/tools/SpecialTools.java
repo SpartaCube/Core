@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,14 +25,14 @@ public class SpecialTools {
 			Material.COBBLESTONE, Material.STONE, Material.DIRT, Material.NETHERRACK, Material.GRASS_BLOCK, Material.DIORITE,
 			Material.ANDESITE, Material.GRANITE, Material.IRON_ORE, Material.COAL_ORE, Material.GOLD_ORE, Material.LAPIS_ORE,
 			Material.REDSTONE_ORE, Material.GRAVEL, Material.BASALT, Material.BLACKSTONE, Material.END_STONE, Material.DIRT,
-			Material.BASALT, Material.MAGMA_BLOCK
+			Material.BASALT, Material.MAGMA_BLOCK, Material.DEEPSLATE, Material.DEEPSLATE_COAL_ORE, Material.COBBLED_DEEPSLATE
 			);
 	
 	public static final Set<Material> canBreakWith3x3Shovel = EnumSet.of(
 			Material.GRASS_BLOCK, Material.DIRT, Material.SAND, Material.RED_SAND, Material.GRAVEL
 			);
 
-	public static HashMap<UUID, BlockFace> faces = new HashMap<UUID, BlockFace>();
+	public static Map<UUID, BlockFace> faces = new HashMap<>();
 
 
 	public static ItemStack get3x3Pickaxe() {
@@ -84,6 +85,15 @@ public class SpecialTools {
 		return hades;	
 	}
 	
+	public static ItemStack getXpSword() {
+		ItemStack xpsword = new ItemStack(Material.NETHERITE_SWORD);
+		ItemMeta cus = xpsword.getItemMeta();
+		cus.setDisplayName("§e§lEpée d'Héphaïstos");
+		cus.setLore(Arrays.asList("§e§l-------------","§e§lCette épée, forgée par Héphaïstos en personne","§e§lpermet de récolter §c§l50%§e§l d'XP supplémentaire.","§e§l-------------","§c§l[ITEM LEGENDAIRE]"));
+		xpsword.setItemMeta(cus);
+		return xpsword;	
+	}
+	
 	public static boolean isLumberjackAxe(ItemStack item) {
 		return item.getType() == Material.NETHERITE_AXE && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lCette hache détruit entièrement l'arbre");
 	}
@@ -102,6 +112,10 @@ public class SpecialTools {
 	
 	public static boolean is3x3Pickaxe(ItemStack item) {
 		return item.getType() == Material.NETHERITE_PICKAXE && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§3|| §bMine du §93x3§3 ||");
+	}
+	
+	public static boolean isXpBoostSword(ItemStack item) {
+		return item.getType() == Material.NETHERITE_SWORD && item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains("§e§lpermet de récolter §c§l50%§e§l d'XP supplémentaire.");
 	}
 
 
@@ -159,7 +173,7 @@ public class SpecialTools {
 		default:
 			break;
 		}
-
+		
 		blocks.removeAll(Collections.singleton(null));
 		return blocks;
 	}
